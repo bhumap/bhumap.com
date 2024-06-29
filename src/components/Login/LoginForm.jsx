@@ -41,7 +41,7 @@ const LoginForm = () => {
           isLoading: false,
         });
         refetch()
-        // router.push("/");
+        router.push("/");
       }
     } catch (error) {
       toast.update(id, {
