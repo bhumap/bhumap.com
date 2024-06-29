@@ -35,7 +35,7 @@ const Page = () => {
       <div className="w-full rounded-lg md:mt-0 xl:p-0">
         <div className="p-2 space-y-2 md:space-y-3">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Update Payment Status
+            Payment Status
           </h1>
 
           {fetching ? (
