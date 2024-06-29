@@ -62,7 +62,7 @@ const Page = () => {
 
               {data?.payments?.map((e, i) => {
                 return (
-                  <div className="payment-head">
+                  <div className="payment-head" key={i}>
                     <div className="payment-title">
                       <h4>{e?.Buyer_name}</h4>
                     </div>
