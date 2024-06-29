@@ -16,6 +16,7 @@ const Context = ({ children }) => {
     refetchOnWindowFocus: false,
   });
 
+
   return (
     <AuthContext.Provider value={{ user: data || null, refetch }}>
         <div

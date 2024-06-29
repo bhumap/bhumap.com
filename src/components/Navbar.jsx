@@ -99,9 +99,6 @@ const Navbar = () => {
             >
               <img className="w-32 h-auto" src="/fullLogo.svg" alt="" />
             </Link>
-            
-
-         
 
             {/* <label className="relative block p-2 group md:inline-block">
               <div className="flex items-center justify-between cursor-pointer">
@@ -260,6 +257,13 @@ const Navbar = () => {
                 )}
               </>
             )}
+
+            {user && user.userType === "Admin" && (
+              <Link className="block p-2 md:inline-block" href="/portal/admin">
+                Admin
+              </Link>
+            )}
+            
           </div>
 
           <div className="relative">
@@ -317,10 +321,21 @@ const Navbar = () => {
                     <Link href="/portal/profile">
                       <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                         <i className="bx bx-user text-xl mr-2"></i>
+                       
                         <div className="text-sm">Profile</div>
                       </div>
                     </Link>
 
+                    <Link href="/portal/PaymentStatus">
+                      <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                        <i className="bx bx-wallet-alt text-xl mr-2"></i>
+                        <div className="text-sm">Payment Status</div>
+                      </div>
+                    </Link>
+
+                    
+
+                    
 
                     {user && (
                       <>

@@ -34,13 +34,14 @@ const LoginForm = () => {
       const res = await axios.post("/api/auth/login", formData);
 
       if (res.data.success) {
+
         toast.update(id, {
           render: res.data.message,
           type: "success",
           isLoading: false,
         });
         refetch()
-        router.push("/");
+        // router.push("/");
       }
     } catch (error) {
       toast.update(id, {

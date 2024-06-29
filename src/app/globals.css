@@ -242,6 +242,32 @@ input[type="number"] {
   display: flex;
   justify-content: center;
   align-items: center;
+
+}
+
+.payment-head{
+  height: 45px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 5px;
+}
+.payment-main{
+  height: 50px;
+}
+.payment-title{
+  width: 20%;
+  height: 100%;
+  background-color: #1f74a7;
+  padding: 5px;
+}
+
+.payment-box{
+  overflow-x: scroll;
+  width: 100%;
+}
+
+.payment-head1{
+  font-weight: 600;
 }
 
 @media screen and (max-width: 800px) {
