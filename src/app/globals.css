@@ -255,16 +255,15 @@ input[type="number"] {
   height: 50px;
 }
 .payment-title{
-  width: 20%;
+  width: 33.33%;
   height: 100%;
   background-color: #1f74a7;
   padding: 5px;
 }
-
-.payment-box{
-  overflow-x: scroll;
-  width: 100%;
+.total-amout{
+  color: green;
 }
+
 
 .payment-head1{
   font-weight: 600;
