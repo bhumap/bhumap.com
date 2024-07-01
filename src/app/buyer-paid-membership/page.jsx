@@ -56,7 +56,7 @@ const Page = () => {
             </div>
             <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
+              <p>Get a plot worth 5 Lakh INR after 3 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
@@ -84,7 +84,7 @@ const Page = () => {
             </div>
             <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 7 Lakh INR after 5 years in a city/town of your choice.</p>
+              <p>Get a plot worth 7 Lakh INR after 3 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
@@ -112,7 +112,7 @@ const Page = () => {
             </div>
             <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 8.5 Lakh INR after 5 years in a city/town of your choice.</p>
+              <p>Get a plot worth 8.5 Lakh INR after 3 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
