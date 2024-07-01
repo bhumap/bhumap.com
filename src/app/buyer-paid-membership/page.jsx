@@ -9,11 +9,10 @@ const Page = () => {
     <div className="max-w-6xl mx-auto px-4 py-6 sm:py-10">
       <div className="flex mb-10 flex-col items-center justify-center">
         <h2 className="bg-gradient-to-l mb-2 text-xl font-bold sm:text-3xl text-transparent bg-clip-text inline-block from-black to-black/70">
-          Buyer Paid Membership
+        Bhumap Paid Membership Packages
         </h2>
         <p className="max-w-xl text-gray-500 text-center">
-          Receive a loan from Bhumap to purchase your desired property or to
-          invest in one of Bhumap&apos;s properties.
+        Invest for a short time and receive significant benefits. Select one of our paid membership packages from the options below that best suits your investment budget.
         </p>
       </div>
 
@@ -204,7 +203,7 @@ const Page = () => {
 
       </div>
 
-      <div className="flex mb-10 flex-col items-center justify-center">
+      {/* <div className="flex mb-10 flex-col items-center justify-center">
         <h2 className="bg-gradient-to-l mb-2 text-xl font-bold sm:text-3xl text-transparent bg-clip-text inline-block from-black to-black/70">
           Benefits Of Paid Membership
         </h2>
@@ -243,7 +242,7 @@ const Page = () => {
             Paid members may receive reward points when they invest with Bhumap.
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
