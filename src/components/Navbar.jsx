@@ -258,13 +258,28 @@ const Navbar = () => {
               </>
             )}
 
-            {user && user.userType === "Admin" && (
-              <Link className="block p-2 md:inline-block" href="/portal/admin">
+{/* <Link className="block p-2 md:inline-block" href="/portal/admin">
                 Admin
-              </Link>
-            )}
+              </Link> */}
+
+            {user && user.userType === "Admin" && (
+              <label className="relative block p-2 group md:inline-block">
+                <Link href="/portal/admin">
+                  <div className="flex items-center justify-between cursor-pointer">
+                    Admin<i className="text-xl bx bx-chevron-down"></i>
+                  </div>
+                </Link>
+                <div className="max-h-0 overflow-hidden py-0 group-hover:py-1 group-hover:max-h-80 md:absolute md:block left-2 md:py-1 shadow-md bg-white border rounded-md opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 min-w-32 md:group-hover:top-full transition-all duration-500 top-[110%]">
+                  <Link className="block p-1 px-3" href="/portal/manageReferral">
+                    Manage Referral
+                  </Link>
             
+                </div>
+              </label>
+            )}
           </div>
+
+       
 
           <div className="relative">
             {!user ? (
@@ -321,7 +336,7 @@ const Navbar = () => {
                     <Link href="/portal/profile">
                       <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                         <i className="bx bx-user text-xl mr-2"></i>
-                       
+
                         <div className="text-sm">Profile</div>
                       </div>
                     </Link>
@@ -332,10 +347,6 @@ const Navbar = () => {
                         <div className="text-sm">Payment Status</div>
                       </div>
                     </Link>
-
-                    
-
-                    
 
                     {user && (
                       <>
@@ -362,6 +373,15 @@ const Navbar = () => {
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                           <i className="bx bx-dollar text-xl mr-2"></i>
                           <div className="text-sm">Refer & Earn</div>
+                        </div>
+                      </Link>
+                    )}
+
+                    {user?.userType == "Buyer" && (
+                      <Link href="/portal/Reference">
+                        <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                          <i className="bx bx-dollar text-xl mr-2"></i>
+                          <div className="text-sm">My Earning</div>
                         </div>
                       </Link>
                     )}

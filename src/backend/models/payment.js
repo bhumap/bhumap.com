@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
-// Clear Mongoose models to avoid overwrite errors (development only)
 mongoose.models = {};
 mongoose.modelSchemas = {};
 
-// Re-define your Payment model here
 const paymentSchema = new mongoose.Schema({
   user_phone: {
     type: String,

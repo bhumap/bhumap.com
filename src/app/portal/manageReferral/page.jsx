@@ -12,10 +12,10 @@ const Page = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    user_phone: "",
-    Buyer_name: "",
-    Package_Name: "",
-    Amount: "",
+    Ref_ID: "",
+    Referral_Name: "",
+    Package: "",
+    Commission: "",
     Payment_date: "",
   });
 
@@ -29,11 +29,19 @@ const Page = () => {
     e.preventDefault();
     setLoading(true);
 
-    console.log("Form Data Submitted:", formData); // Log form data
+    console.log("Form Data Submitted:", formData);
+
+    const commission = parseFloat(formData.Commission);
+    const tenPercentCommission = (commission * 0.1).toFixed(2);
+
+    const updatedFormData = { ...formData, Commission: tenPercentCommission };
 
     var id = toast.loading("Please wait...");
     try {
-      const res = await axios.post("http://localhost:3000/api/payment", formData);
+      const res = await axios.post(
+        "http://localhost:3000/api/reference",
+        updatedFormData
+      );
 
       if (res.data.success) {
         toast.update(id, {
@@ -62,18 +70,21 @@ const Page = () => {
       <div className="w-full rounded-lg md:mt-0 max-w-3xl xl:p-0">
         <div className="p-4 space-y-4 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Update Payment Status
+            Manage Referral
           </h1>
           <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
             <div>
-              <label htmlFor="user_phone" className="block mb-2 text-sm font-medium text-gray-900">
-                User Phone Number
+              <label
+                htmlFor="Ref_ID"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Ref ID
               </label>
               <input
                 type="text"
-                name="user_phone"
-                id="user_phone"
-                placeholder="Enter User Phone"
+                name="Ref_ID"
+                id="Ref_ID"
+                placeholder="Enter User Ref ID"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
@@ -82,14 +93,17 @@ const Page = () => {
             </div>
 
             <div>
-              <label htmlFor="Buyer_name" className="block mb-2 text-sm font-medium text-gray-900">
-                Buyer Name
+              <label
+                htmlFor="Referral Name"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Referral Name
               </label>
               <input
                 type="text"
-                name="Buyer_name"
-                id="Buyer_name"
-                placeholder="Enter Buyer Name"
+                name="Referral_Name"
+                id="Referral_Name"
+                placeholder="Enter Referral Name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
@@ -105,8 +119,8 @@ const Page = () => {
                 Package Name
               </label>
               <select
-                name="Package_Name"
-                id="Package_Name"
+                name="Package"
+                id="Package"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
@@ -125,14 +139,17 @@ const Page = () => {
             </div>
 
             <div>
-              <label htmlFor="Amount" className="block mb-2 text-sm font-medium text-gray-900">
-                Amount
+              <label
+                htmlFor="Commission"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Commission
               </label>
               <input
                 type="text"
-                name="Amount"
-                id="Amount"
-                placeholder="Enter Amount"
+                name="Commission"
+                id="Commission"
+                placeholder="Enter Full Amount"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
@@ -141,7 +158,10 @@ const Page = () => {
             </div>
 
             <div>
-              <label htmlFor="Payment_date" className="block mb-2 text-sm font-medium text-gray-900">
+              <label
+                htmlFor="Payment_date"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
                 Payment Date
               </label>
               <input

@@ -283,6 +283,8 @@ input[type="number"] {
   width: 100%;
   display: flex;
   margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-right: none;
 }
 
 .text-gray-600 .text-xl.font-bold{
@@ -290,13 +292,16 @@ input[type="number"] {
 }
 
 .payment-main{
-  height: 50px;
+  height: 45px;
+  border: 1px solid #ccc;
+  border-right: none;
 }
 .payment-title{
   width: 33.33%;
   height: 100%;
-  background-color: #1f74a7;
+  /* background-color: #1f74a7; */
   padding: 5px;
+  border-right: 1px solid #ccc;
 }
 .total-amout{
   color: green;
