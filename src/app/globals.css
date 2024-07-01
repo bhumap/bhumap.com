@@ -9,6 +9,10 @@
   font-style: normal;
 }
 
+body{
+  overflow-x: hidden;
+}
+
 [id^="player"] {
   border-radius: 10px;
   overflow: hidden;
