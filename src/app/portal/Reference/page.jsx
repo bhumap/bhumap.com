@@ -17,7 +17,7 @@ const Page = () => {
         try {
           setFetching(true);
           const res = await axios.get(
-            `http://localhost:3000/api/reference?userId=${user._id}`
+            `https://www.bhumap.com/api/reference?userId=${user._id}`
           );
           setData(res.data);
 
