@@ -19,7 +19,7 @@ const Page = () => {
 
       <div className="gap-4 grid mb-10 lg:mb-20  lg:grid-cols-3">
         <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
-          <img className="mx-auto block w-20" src="/images/b3.svg" alt="" />
+          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
           <h3 className="text-2xl font-semibold text-center">Basic Package</h3>
           <div className="text-sm flex flex-col gap-2 mb-4">
             <div className="flex gap-2 text-gray-700 items-center">
