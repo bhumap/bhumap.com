@@ -251,6 +251,11 @@ input[type="number"] {
   display: flex;
   margin-bottom: 5px;
 }
+
+.text-gray-600 .text-xl.font-bold{
+  margin-top: -3px;
+}
+
 .payment-main{
   height: 50px;
 }

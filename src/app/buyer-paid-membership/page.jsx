@@ -26,7 +26,7 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 4500 INR for 60 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
+            <div className="flex gap-2 text-gray-600">
               <p className="text-xl  font-bold">2</p>
               <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
@@ -54,7 +54,7 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 7500 INR for 36 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
+            <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
               <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
@@ -82,7 +82,7 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 10,500 INR for 36 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
+            <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
               <p>Get a plot worth 7 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
@@ -110,7 +110,7 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 12,500 INR for 36 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
+            <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
               <p>Get a plot worth 8.5 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
@@ -138,7 +138,7 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 16,500 INR for 48 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
+            <div className="flex gap-2 text-gray-600 ">
               <p className="text-xl  font-bold">2</p>
               <p>Get a 1 BHK flat worth 15 Lakh INR after 4 years in your city/town. Flat handover after 3 years.</p>
             </div>
@@ -166,9 +166,9 @@ const Page = () => {
               <p className="text-xl  font-bold">1</p>
               <p>Pay 27,500 INR for 48 months.</p>
             </div>
-            <div className="flex gap-2 text-gray-600 items-center">
-              <p className="text-xl  font-bold">2</p>
-              <p>2.	Get a 2 BHK flat worth 25 Lakh INR after 4 years in your city/town. Flat handover after 3 years.</p>
+            <div className="flex gap-2 text-gray-600">
+              <p className="text-xl font-bold">2</p>
+              <p>Get a 2 BHK flat worth 25 Lakh INR after 4 years in your city/town. Flat handover after 3 years.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
