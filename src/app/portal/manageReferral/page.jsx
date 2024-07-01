@@ -39,7 +39,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/reference",
+        "https://www.bhumap.com/api/reference",
         updatedFormData
       );
 
