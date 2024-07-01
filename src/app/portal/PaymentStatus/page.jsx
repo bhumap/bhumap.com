@@ -17,7 +17,7 @@ const Page = () => {
         try {
           setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/payment?userId=${user._id}`
+            `http://localhost:3000/api/payment?userId=${user._id}`
           );
           setData(res.data);
 

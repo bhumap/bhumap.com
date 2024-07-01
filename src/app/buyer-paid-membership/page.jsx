@@ -20,15 +20,15 @@ const Page = () => {
       <div className="gap-4 grid mb-10 lg:mb-20  lg:grid-cols-3">
         <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
           <img className="mx-auto block w-20" src="/images/b3.svg" alt="" />
-          <h3 className="text-2xl font-semibold text-center">Bronze Package</h3>
+          <h3 className="text-2xl font-semibold text-center">Basic Package</h3>
           <div className="text-sm flex flex-col gap-2 mb-4">
             <div className="flex gap-2 text-gray-700 items-center">
               <p className="text-xl  font-bold">1</p>
-              <p>Pay 7000 INR for 36 months.</p>
+              <p>Pay 4500 INR for 60 months.</p>
             </div>
             <div className="flex gap-2 text-gray-600 items-center">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 5 Lakh INR after 3 years in a city/town of your choice.</p>
+              <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
@@ -37,7 +37,35 @@ const Page = () => {
           </div>
 
           <h3 className="text-4xl font-semibold text-center">
-          7000 <span className="text-black/50 text-lg">₹</span>
+          4500 <span className="text-black/50 text-lg">₹</span>
+          </h3>
+          <div className="flex justify-center mt-4">
+            <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
+              Pay Now
+            </Link>
+          </div>
+        </div>
+
+        <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
+          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
+          <h3 className="text-2xl font-semibold text-center">Bronze Package</h3>
+          <div className="text-sm flex flex-col gap-2 mb-4">
+            <div className="flex gap-2 text-gray-700 items-center">
+              <p className="text-xl  font-bold">1</p>
+              <p>Pay 7500 INR for 36 months.</p>
+            </div>
+            <div className="flex gap-2 text-gray-600 items-center">
+              <p className="text-xl  font-bold">2</p>
+              <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
+            </div>
+            <div className="flex gap-2 text-gray-500 items-center">
+              <p className="text-xl  font-bold">3</p>
+              <p>Terms & conditions applied</p>
+            </div>
+          </div>
+
+          <h3 className="text-4xl font-semibold text-center">
+          7500 <span className="text-black/50 text-lg">₹</span>
           </h3>
           <div className="flex justify-center mt-4">
             <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
@@ -52,11 +80,11 @@ const Page = () => {
           <div className="text-sm flex flex-col gap-2 mb-4">
             <div className="flex gap-2 text-gray-700 items-center">
               <p className="text-xl  font-bold">1</p>
-              <p>Pay 10,000 INR for 36 months.</p>
+              <p>Pay 10,500 INR for 36 months.</p>
             </div>
             <div className="flex gap-2 text-gray-600 items-center">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 7 Lakh INR after 3 years in a city/town of your choice.</p>
+              <p>Get a plot worth 7 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
@@ -65,7 +93,7 @@ const Page = () => {
           </div>
 
           <h3 className="text-4xl font-semibold text-center">
-          10,000 <span className="text-black/50 text-lg">₹</span>
+          10,500 <span className="text-black/50 text-lg">₹</span>
           </h3>
           <div className="flex justify-center mt-4">
             <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
@@ -75,19 +103,16 @@ const Page = () => {
         </div>
 
         <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
-          <img className="mx-auto block w-20" src="/images/b2.svg" alt="" />
+          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
           <h3 className="text-2xl font-semibold text-center">Gold Package</h3>
-          {/* <p className="text-center font-semibold mb-4">
-            (Project Partnership Package)
-          </p> */}
           <div className="text-sm flex flex-col gap-2 mb-4">
             <div className="flex gap-2 text-gray-700 items-center">
               <p className="text-xl  font-bold">1</p>
-              <p>Pay 12,000 INR for 36 months.</p>
+              <p>Pay 12,500 INR for 36 months.</p>
             </div>
             <div className="flex gap-2 text-gray-600 items-center">
               <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 9 Lakh INR after 3 years in a city/town of your choice.</p>
+              <p>Get a plot worth 8.5 Lakh INR after 5 years in a city/town of your choice.</p>
             </div>
             <div className="flex gap-2 text-gray-500 items-center">
               <p className="text-xl  font-bold">3</p>
@@ -95,19 +120,70 @@ const Page = () => {
             </div>
           </div>
 
-          {/* <p className="text-center text-sm mb-4">
-            Buy Bhumap&apos;s owned property at wholesale price
-          </p> */}
-
           <h3 className="text-4xl font-semibold text-center">
-          12,000 <span className="text-black/50 text-lg">₹</span>
+          12,500  <span className="text-black/50 text-lg">₹</span>
           </h3>
           <div className="flex justify-center mt-4">
             <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
               Pay Now
             </Link>
           </div>
+        </div>
 
+        <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
+          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
+          <h3 className="text-2xl font-semibold text-center">Platinum Package</h3>
+          <div className="text-sm flex flex-col gap-2 mb-4">
+            <div className="flex gap-2 text-gray-700 items-center">
+              <p className="text-xl  font-bold">1</p>
+              <p>Pay 16,500 INR for 48 months.</p>
+            </div>
+            <div className="flex gap-2 text-gray-600 items-center">
+              <p className="text-xl  font-bold">2</p>
+              <p>Get a 1 BHK flat worth 15 Lakh INR after 4 years in your city/town. Flat handover after 3 years.</p>
+            </div>
+            <div className="flex gap-2 text-gray-500 items-center">
+              <p className="text-xl  font-bold">3</p>
+              <p>Terms & conditions applied</p>
+            </div>
+          </div>
+
+          <h3 className="text-4xl font-semibold text-center">
+          16,500 <span className="text-black/50 text-lg">₹</span>
+          </h3>
+          <div className="flex justify-center mt-4">
+            <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
+              Pay Now
+            </Link>
+          </div>
+        </div>
+
+        <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
+          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
+          <h3 className="text-2xl font-semibold text-center">Platinum Gold Package</h3>
+          <div className="text-sm flex flex-col gap-2 mb-4">
+            <div className="flex gap-2 text-gray-700 items-center">
+              <p className="text-xl  font-bold">1</p>
+              <p>Pay 27,500 INR for 48 months.</p>
+            </div>
+            <div className="flex gap-2 text-gray-600 items-center">
+              <p className="text-xl  font-bold">2</p>
+              <p>2.	Get a 2 BHK flat worth 25 Lakh INR after 4 years in your city/town. Flat handover after 3 years.</p>
+            </div>
+            <div className="flex gap-2 text-gray-500 items-center">
+              <p className="text-xl  font-bold">3</p>
+              <p>Terms & conditions applied</p>
+            </div>
+          </div>
+
+          <h3 className="text-4xl font-semibold text-center">
+          27,500 <span className="text-black/50 text-lg">₹</span>
+          </h3>
+          <div className="flex justify-center mt-4">
+            <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
+              Pay Now
+            </Link>
+          </div>
           <div className="flex justify-center mt-4">
             <button onClick={()=>setShowMap(true)} className="border text-primary rounded-[.25rem] border-primary/50 bg-primary/10 font-medium text-xs sm:text-sm p-2 sm:px-4">
               Check Bhumap’s Owned Properties
@@ -124,9 +200,8 @@ const Page = () => {
               <img src="./images/map.jpg" alt="" />
             </div>
           </div>
-
-
         </div>
+
       </div>
 
       <div className="flex mb-10 flex-col items-center justify-center">
