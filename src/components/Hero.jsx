@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import queryString from 'query-string';
 import React, { useState } from 'react'
+import { IoMdArrowDropup } from "react-icons/io";
+
 
 const Hero = () => {
 
@@ -24,7 +26,8 @@ const Hero = () => {
     <div>
         <div className="w-full overflow-hidden hero-box">
           <div className='active-user'>
-            <h2>Active user 452</h2> 
+            <p>Monthly Active Users</p>
+            <h2>502 <span><IoMdArrowDropup />13.48%</span></h2> 
           </div>
           <div className="w-full h-[70vh] overflow-hidden flex justify-center items-center">
             <img

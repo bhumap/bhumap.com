@@ -184,11 +184,11 @@ const Page = () => {
               Pay Now
             </Link>
           </div>
-          <div className="flex justify-center mt-4">
+          {/* <div className="flex justify-center mt-4">
             <button onClick={()=>setShowMap(true)} className="border text-primary rounded-[.25rem] border-primary/50 bg-primary/10 font-medium text-xs sm:text-sm p-2 sm:px-4">
               Check Bhumap’s Owned Properties
             </button>
-          </div>
+          </div> */}
 
           <div className={`${showMap ? "opacity-100 visible" : "opacity-0 invisible"} transition-all duration-500  fixed top-0 p-4 left-0 w-screen z-[9999] h-screen bg-black/90`}>
             <div onClick={()=>setShowMap(false)} className="flex justify-end pb-4 px-1 sm:px-4">

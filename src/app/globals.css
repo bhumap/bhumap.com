@@ -204,17 +204,34 @@ input[type="number"] {
   position: fixed;
   left: 15px;
   top: 80px;
+  z-index: 99;
 }
 
 .active-user h2{
   position: relative;
-  color: green;
-  font-weight: bold;
-  background-color: white;
-  padding: 0px 8px;
+  /* color: green; */
+  font-weight: 900;
   border-radius: 4px;
+  font-size: 35px;
+  display: flex;
+  align-items: center;
 }
 
+.active-user h2 span{
+  font-size: 15px;
+  font-weight: 600;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.active-user h2 span svg{
+  color: #06ae7f;
+  font-size: 40px;
+  margin-bottom: -12px;
+  margin-top: -12px;
+}
 /* .active-user h2::before{
   position: absolute;
   content: "+";
