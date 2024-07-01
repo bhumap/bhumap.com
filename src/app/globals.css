@@ -201,10 +201,13 @@ input[type="number"] {
 
 .active-user{
   height: 30px;
-  position: fixed;
+  position: absolute;
   left: 15px;
   top: 80px;
-  z-index: 99;
+}
+
+.extsp{
+  visibility: hidden;
 }
 
 .active-user h2{
@@ -224,6 +227,15 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.active-user {
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(-100%); }
 }
 
 .active-user h2 span svg{
