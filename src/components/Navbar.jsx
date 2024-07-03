@@ -100,25 +100,6 @@ const Navbar = () => {
               <img className="w-32 h-auto" src="/fullLogo.svg" alt="" />
             </Link>
 
-            {/* <label className="relative block p-2 group md:inline-block">
-              <div className="flex items-center justify-between cursor-pointer">
-                <Link className="block p-2 md:inline-block" href="/">
-                  Home<i className="text-xl bx bx-chevron-down"></i>
-                </Link>
-              </div>
-              <div className="max-h-0 overflow-hidden py-0 group-hover:py-1 group-hover:max-h-80 md:absolute md:block left-2 md:py-1 shadow-md bg-white border rounded-md opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 min-w-32 md:group-hover:top-full transition-all duration-500 top-[110%]">
-                <Link className="block p-1 px-3" href="/">
-                  About Company
-                </Link>
-                <Link className="block p-1 px-3" href="/">
-                  Investor Relation
-                </Link>
-                <Link className="block p-1 px-3" href="/">
-                  Contact Us
-                </Link>
-              </div>
-            </label> */}
-
             <label className="relative block p-2 group md:inline-block">
               <Link href="/">
                 <div className="flex items-center justify-between cursor-pointer">
@@ -213,19 +194,6 @@ const Navbar = () => {
               </div>
             </label>
 
-            {/* <label className="relative block p-2 group md:inline-block">
-              <Link href="/Marketplace">
-                <div className="flex items-center justify-between cursor-pointer">
-                  Marketplace<i className="text-xl bx bx-chevron-down"></i>
-                </div>
-              </Link>
-              <div className="max-h-0 overflow-hidden py-0 group-hover:py-1 group-hover:max-h-80 md:absolute md:block left-2 md:py-1 shadow-md bg-white border rounded-md opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 min-w-32 md:group-hover:top-full transition-all duration-500 top-[110%]">
-                <Link className="block p-1 px-3" href="/Ceramic">
-                  Ceramic Tiles
-                </Link>
-              </div>
-            </label> */}
-
             <Link className="block p-2 md:inline-block" href="/Marketplace">
               Marketplace
             </Link>
@@ -258,10 +226,6 @@ const Navbar = () => {
               </>
             )}
 
-{/* <Link className="block p-2 md:inline-block" href="/portal/admin">
-                Admin
-              </Link> */}
-
             {user && user.userType === "Admin" && (
               <label className="relative block p-2 group md:inline-block">
                 <Link href="/portal/admin">
@@ -270,16 +234,16 @@ const Navbar = () => {
                   </div>
                 </Link>
                 <div className="max-h-0 overflow-hidden py-0 group-hover:py-1 group-hover:max-h-80 md:absolute md:block left-2 md:py-1 shadow-md bg-white border rounded-md opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 min-w-32 md:group-hover:top-full transition-all duration-500 top-[110%]">
-                  <Link className="block p-1 px-3" href="/portal/manageReferral">
+                  <Link
+                    className="block p-1 px-3"
+                    href="/portal/manageReferral"
+                  >
                     Manage Referral
                   </Link>
-            
                 </div>
               </label>
             )}
           </div>
-
-       
 
           <div className="relative">
             {!user ? (
@@ -341,12 +305,15 @@ const Navbar = () => {
                       </div>
                     </Link>
 
-                    <Link href="/portal/PaymentStatus">
-                      <div className="flex items-center hover:bg-gray-100 px-4 py-2">
-                        <i className="bx bx-wallet-alt text-xl mr-2"></i>
-                        <div className="text-sm">Payment Status</div>
-                      </div>
-                    </Link>
+                    {(user?.userType === "Buyer" ||
+                      user?.userType === "Seller") && (
+                      <Link href="/portal/PaymentStatus">
+                        <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                          <i className="bx bx-wallet-alt text-xl mr-2"></i>
+                          <div className="text-sm">Payment Status</div>
+                        </div>
+                      </Link>
+                    )}
 
                     {user && (
                       <>
@@ -368,8 +335,10 @@ const Navbar = () => {
                       </>
                     )}
 
-                    {user?.userType == "Buyer" && (
-                      <Link href="/referral-program">
+
+                    {(user?.userType === "Buyer" ||
+                      user?.userType === "Seller") && (
+                        <Link href="/referral-program">
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                           <i className="bx bx-dollar text-xl mr-2"></i>
                           <div className="text-sm">Refer & Earn</div>
@@ -377,7 +346,8 @@ const Navbar = () => {
                       </Link>
                     )}
 
-                    {user?.userType == "Buyer" && (
+                    {(user?.userType === "Buyer" ||
+                      user?.userType === "Seller") && (
                       <Link href="/portal/Reference">
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                           <i className="bx bx-dollar text-xl mr-2"></i>
