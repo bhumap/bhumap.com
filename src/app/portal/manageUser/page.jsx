@@ -165,8 +165,8 @@ const Page = () => {
 
                       <Link
                         className="text-blue-500 hover:text-blue-700"
-                        // href={`/update/${e._id}`}
-                        href="#"
+                        href={`/update/${e._id}`}
+                    
                       >
                         Update
                       </Link>
