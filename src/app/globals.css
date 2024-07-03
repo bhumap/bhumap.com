@@ -12,10 +12,29 @@
 body{
   overflow-x: hidden;
 }
+.user-search-box{
+  display: flex;
+}
 
 [id^="player"] {
   border-radius: 10px;
   overflow: hidden;
+}
+
+.update-form{
+  width: 50%;
+  margin: auto;
+  margin-top: 100px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.update-loading{
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loader {
@@ -315,6 +334,16 @@ input[type="number"] {
 @media screen and (max-width: 800px) {
   .title-main-box {
     flex-direction: column;
+  }
+  .payment-head1 h4{
+    font-size: 13px;
+  }
+  .payment-title h4{
+    font-size: 13px;
+  }
+  .update-form {
+    width: 90%;
+    margin-top: 25px;
   }
   .contact {
     padding: 6px 25px;

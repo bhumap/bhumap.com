@@ -1,5 +1,5 @@
 import dbConnect from "@/src/backend/config/dbConnect";
-import UsersModel from '@/src/backend/models/users'
+import UsersModel from "@/src/backend/models/users";
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -56,17 +56,15 @@ export default async function handler(req, res) {
         });
     }
   } catch (error) {
-    // For duplicate Error
     if (err.code === 11000) {
       return res.status(409).json({
         success: false,
-        message:`${Object.keys(err.keyPattern)[0]} is already in used!`,
+        message: `${Object.keys(err.keyPattern)[0]} is already in used!`,
       });
     }
 
-    // required fields error handling
-    var requiredFildName = Object.keys(err.errors)[0]
-    
+    var requiredFildName = Object.keys(err.errors)[0];
+
     if (requiredFildName) {
       return res.status(400).json({
         success: false,

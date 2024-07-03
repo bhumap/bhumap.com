@@ -40,10 +40,19 @@ const Navbar = () => {
         setLayer(false);
       }, 500);
 
-      // Cleanup the timeout to avoid memory leaks
       return () => clearTimeout(timeoutId2);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (
+      user &&
+      user.userType !== "Admin" &&
+      pathname.startsWith("/portal/admin")
+    ) {
+      window.location.replace("/");
+    }
+  }, [user, pathname]);
 
   const handleLogout = async () => {
     try {
@@ -240,6 +249,12 @@ const Navbar = () => {
                   >
                     Manage Referral
                   </Link>
+                  <Link
+                    className="block p-1 px-3"
+                    href="/portal/manageUser"
+                  >
+                    Manage User
+                  </Link>
                 </div>
               </label>
             )}
@@ -335,10 +350,9 @@ const Navbar = () => {
                       </>
                     )}
 
-
                     {(user?.userType === "Buyer" ||
                       user?.userType === "Seller") && (
-                        <Link href="/referral-program">
+                      <Link href="/referral-program">
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
                           <i className="bx bx-dollar text-xl mr-2"></i>
                           <div className="text-sm">Refer & Earn</div>
