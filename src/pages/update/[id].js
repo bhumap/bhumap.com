@@ -1,5 +1,3 @@
-// pages/update/[id].js
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -27,11 +25,10 @@ const UpdatePaymentPage = () => {
   const fetchPaymentDetails = async (paymentId) => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/payment/${paymentId}`
+        `https://www.bhumap.com/api/payment/${paymentId}`
       );
       if (res.data.success) {
         setPaymentData(res.data.payment);
-        // Populate the form fields with existing payment data if needed
         setUpdatedData({
           Buyer_name: res.data.payment.Buyer_name,
           Package_Name: res.data.payment.Package_Name,
@@ -51,7 +48,7 @@ const UpdatePaymentPage = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/payment/${id}`,
+        `https://www.bhumap.com/api/payment/${id}`,
         updatedData
       );
       if (res.data.success) {

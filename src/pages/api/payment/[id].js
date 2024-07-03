@@ -1,5 +1,3 @@
-// api/payment/[id].js
-
 import dbConnect from "@/src/backend/config/dbConnect";
 import Payment from "@/src/backend/models/payment";
 
