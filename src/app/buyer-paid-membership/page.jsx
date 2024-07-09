@@ -17,33 +17,7 @@ const Page = () => {
       </div>
 
       <div className="gap-4 grid mb-10 lg:mb-20  lg:grid-cols-3">
-        <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
-          <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
-          <h3 className="text-2xl font-semibold text-center">Basic Package</h3>
-          <div className="text-sm flex flex-col gap-2 mb-4">
-            <div className="flex gap-2 text-gray-700 items-center">
-              <p className="text-xl  font-bold">1</p>
-              <p>Pay 4500 INR for 60 months.</p>
-            </div>
-            <div className="flex gap-2 text-gray-600">
-              <p className="text-xl  font-bold">2</p>
-              <p>Get a plot worth 5 Lakh INR after 5 years in a city/town of your choice.</p>
-            </div>
-            <div className="flex gap-2 text-gray-500 items-center">
-              <p className="text-xl  font-bold">3</p>
-              <p>Terms & conditions applied</p>
-            </div>
-          </div>
 
-          <h3 className="text-4xl font-semibold text-center">
-          4500 <span className="text-black/50 text-lg">₹</span>
-          </h3>
-          <div className="flex justify-center mt-4">
-            <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
-              Pay Now
-            </Link>
-          </div>
-        </div>
 
         <div className="border-2 p-4 sm:p-8 border-gray-400 rounded-lg bg-white">
           <img className="mx-auto block w-20" src="/images/b1.svg" alt="" />
