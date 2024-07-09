@@ -7,6 +7,11 @@ export const propertyTypes = [
     "Agricultural",
 ];
 
+export const group = [
+    "group",
+
+];
+
 export const residentialSubTypes = [
     "Flat",
     "Tenament",

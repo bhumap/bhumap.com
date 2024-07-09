@@ -9,6 +9,7 @@ const propertiesSchema = new Schema({
   },
   postType: { type: String },
   description: { type: String },
+  group: { type: String },
   features: [{ type: String }],
   images: [
     {

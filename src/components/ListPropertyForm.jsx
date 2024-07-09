@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "./Loader";
-import { propertyTypes, residentialSubTypes } from "@/src/data";
+import { propertyTypes, residentialSubTypes,group } from "@/src/data";
 import Map from "@/src/components/Map";
 import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import {toast,Toaster} from "react-hot-toast";
@@ -36,6 +36,7 @@ const ListPropertyForm = ({property}) => {
         lng: 73.1116333
     },
     description: "",
+    group: "",
     features: [],
     price: "",
     propertyType: "",
@@ -85,6 +86,21 @@ const ListPropertyForm = ({property}) => {
       type: "textarea",
       cols: 2,
       required: true,
+    },
+    {
+      label: "Property Type",
+      name: "propertyType",
+      type: "select",
+      options: propertyTypes,
+      cols: 1,
+      required: true,
+    },
+    {
+      label: "Group Sell",
+      name: "group",
+      type: "select",
+      options: group,
+      cols: 1,
     },
   ]);
 
