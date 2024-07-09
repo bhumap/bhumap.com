@@ -15,6 +15,9 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const PropertyDetail = ({ property }) => {
+
+  console.log(property);
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
