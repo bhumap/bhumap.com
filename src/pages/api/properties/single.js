@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
     var property = await PropertiesModel.findById(
       req.query.propertyID
-    ).populate("owner", "fullName photo phone username");
+    ).populate("owner", "fullName photo phone username email");
     if (!property) {
       res.status(404).json({
         success: false,
