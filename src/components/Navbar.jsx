@@ -207,6 +207,10 @@ const Navbar = () => {
               Marketplace
             </Link>
 
+            <Link className="block p-2 md:inline-block" href="/GroupSell">
+              Group Sell
+            </Link>
+
             <Link className="block p-2 md:inline-block" href="/">
               Investor
             </Link>
