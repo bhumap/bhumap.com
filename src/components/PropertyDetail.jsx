@@ -15,6 +15,56 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const PropertyDetail = ({ property }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Form validation
+      if (!fullName || !email || !phoneNumber || !message) {
+        setError("All fields are required");
+        return;
+      }
+
+      // Data to send to API
+      const messageData = {
+        fullName,
+        email,
+        phoneNumber,
+        message,
+      };
+
+      // Send messageData to API route
+      const response = await fetch("/api/sendMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(messageData),
+      });
+
+      if (response.ok) {
+        setSuccessMessage("Message sent successfully!");
+        setFullName("");
+        setEmail("");
+        setPhoneNumber("");
+        setMessage("");
+        setError(null);
+      } else {
+        setError("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setError("Failed to send message");
+    }
+  };
+
   var pathname = usePathname();
 
   var { user } = useContext(AuthContext);
@@ -326,32 +376,49 @@ const PropertyDetail = ({ property }) => {
               </div>
 
               <h2 className="text-xl font-semibold mb-2">Contact Us</h2>
-              <form action="">
+              <form onSubmit={handleSubmit}>
                 <input
                   required
                   type="text"
-                  className="w-full border-black/20 border rounded-md mb-2"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Full Name"
                 />
                 <input
                   required
                   type="email"
-                  className="w-full border-black/20 border rounded-md mb-2"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Email"
                 />
                 <input
                   required
-                  type="number"
-                  className="w-full border-black/20 border rounded-md mb-2"
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Phone Number"
                 />
                 <textarea
                   required
-                  className="w-full border-black/20 border rounded-md mb-2"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Message"
+                  rows={4}
                 />
 
-                <button className="border border-primary w-full py-1 rounded-md text-primary bg-primary/5 hover:bg-primary/10">
+                {error && <p className="text-red-500 mb-2">{error}</p>}
+                {successMessage && (
+                  <p className="text-green-500 mb-2">{successMessage}</p>
+                )}
+
+                <button
+                  type="submit"
+                  className="border border-primary w-full py-1 rounded-md text-primary bg-primary/5 hover:bg-primary/10"
+                >
                   Send Query
                 </button>
               </form>
