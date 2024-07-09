@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   try {
     foundItem = await PropertiesModel.findById(req.query.id).populate(
       "owner",
-      "fullName photo phone username"
+      "fullName photo phone username email"
     );
     if (!foundItem) {
       res.status(404).json({

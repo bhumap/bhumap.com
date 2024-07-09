@@ -179,7 +179,7 @@ const RegistrationForm = () => {
           />
         </div>
 
-        {formData.userType !== "Buyer" && (
+
           <>
             <div className="col-span-2 md:col-span-1">
               <label
@@ -226,7 +226,6 @@ const RegistrationForm = () => {
               />
             </div>
           </>
-        )}
 
 
         <div className="col-span-2 md:col-span-1">
