@@ -15,49 +15,55 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const PropertyDetail = ({ property }) => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    message: "",
+  });
+
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { fullName, email, phoneNumber, message } = formData;
+
+    if (!fullName || !email || !phoneNumber || !message) {
+      setError("All fields are required");
+      return;
+    }
+
     try {
-      // Form validation
-      if (!fullName || !email || !phoneNumber || !message) {
-        setError("All fields are required");
-        return;
-      }
-
-      // Data to send to API
-      const messageData = {
-        fullName,
-        email,
-        phoneNumber,
-        message,
-      };
-
-      // Send messageData to API route
       const response = await fetch("/api/sendMessage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(messageData),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         setSuccessMessage("Message sent successfully!");
-        setFullName("");
-        setEmail("");
-        setPhoneNumber("");
-        setMessage("");
+        setFormData({
+          fullName: "",
+          email: "",
+          phoneNumber: "",
+          message: "",
+        });
         setError(null);
       } else {
-        setError("Failed to send message");
+        const data = await response.json();
+        setError(data.error || "Failed to send message");
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -380,31 +386,35 @@ const PropertyDetail = ({ property }) => {
                 <input
                   required
                   type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Full Name"
                 />
                 <input
                   required
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Email"
                 />
                 <input
                   required
                   type="tel"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Phone Number"
                 />
                 <textarea
                   required
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Message"
                   rows={4}
