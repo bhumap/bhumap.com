@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../context/AuthContext";
+import Image from "next/image";
 
 const MyProperties = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const MyProperties = () => {
         title: propertyTitle,
       });
       if (data.success) {
+        alert("success");
         window.document.body.style.overflow = "auto";
         router.push(`/portal/list-property-form/${data.data._id}`);
       }
@@ -37,7 +39,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       var res = await fetch(
-        `/api/properties/${user?.userType == "Buyer" ? "getViews" : "mine"}`,
+        `/api/properties/${user?.userType == "Admin" ? "getViews" : "mine"}`,
         { cache: "no-store" }
       );
       res = await res.json();
@@ -53,10 +55,9 @@ const MyProperties = () => {
     fetchMyProperties();
   }, [user]);
 
-
   return (
     <div className="py-4 sm:p-10">
-      {user?.userType == "Buyer" ? (
+      {user?.userType == "Admin" ? (
         <div className="flex flex-col gap-6">
           {/* Viewed */}
           <div>
@@ -349,6 +350,16 @@ const MyProperties = () => {
               )}
 
               <div className="flex gap-2 justify-center text-sm">
+                <button
+                  onClick={() => {
+                    setShowCreateModal(true);
+                    document.body.style.overflow = "hidden";
+                  }}
+                  className="border px-3 py-2 rounded-md bg-primary text-white shadow-md"
+                >
+                  List New Property
+                </button>
+
                 <Link
                   href={
                     user?.userType == "Buyer"
@@ -381,8 +392,10 @@ const MyProperties = () => {
                       <div className="w-full md:w-40 aspect-video border rounded-md overflow-hidden border-black/20">
                         <img
                           className="w-full h-full object-cover"
-                          src={v.images[0]?.secure_url || "/images/image.png"}
-                          alt=""
+                          src={
+                            v?.images?.[0]?.secure_url || "/images/image.png"
+                          }
+                          alt="property image"
                         />
                       </div>
                       <div className="flex-1">
@@ -458,6 +471,7 @@ const MyProperties = () => {
               >
                 List New Property
               </button>
+
               <Link
                 href={
                   user?.userType == "Buyer"
@@ -468,6 +482,7 @@ const MyProperties = () => {
               >
                 Get Paid Membership
               </Link>
+
             </div>
           </div>
         </div>
