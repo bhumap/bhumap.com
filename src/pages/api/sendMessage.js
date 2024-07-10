@@ -2,19 +2,19 @@ import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { fullName, email, phoneNumber, message } = req.body;
+    const { fullName, email, phoneNumber, message, ownerEmail } = req.body;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: "mdsamsher530@gmail.com",
-        pass: "cixw lxuz yczy vsor", 
+        pass: "cixw lxuz yczy vsor",
       },
     });
 
     const mailOptions = {
       from: email,
-      to: "mdsamsher530@gmail.com",
+      to: ownerEmail,
       subject: `Message from ${fullName}`,
       html: `
         <h1>Message from ${fullName}</h1>

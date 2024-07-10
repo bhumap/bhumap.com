@@ -15,14 +15,15 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const PropertyDetail = ({ property }) => {
-
-  console.log(property);
+  const ownerEmail = property?.owner?.email.value;
 
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phoneNumber: "",
     message: "",
+    ownerEmail: ownerEmail,
+
   });
 
   const [error, setError] = useState(null);
@@ -39,7 +40,7 @@ const PropertyDetail = ({ property }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullName, email, phoneNumber, message } = formData;
+    const { fullName, email, phoneNumber, message ,ownerEmail } = formData;
 
     if (!fullName || !email || !phoneNumber || !message) {
       setError("All fields are required");
@@ -52,7 +53,7 @@ const PropertyDetail = ({ property }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ fullName, email, phoneNumber, message, ownerEmail }),
       });
 
       if (response.ok) {
@@ -62,6 +63,7 @@ const PropertyDetail = ({ property }) => {
           email: "",
           phoneNumber: "",
           message: "",
+          ownerEmail: ownerEmail,
         });
         setError(null);
       } else {
@@ -395,6 +397,8 @@ const PropertyDetail = ({ property }) => {
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Full Name"
                 />
+
+
                 <input
                   required
                   type="email"
