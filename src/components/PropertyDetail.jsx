@@ -206,7 +206,7 @@ const PropertyDetail = ({ property }) => {
                   url={`https://bhumap.com/property/${property._id}`}
                   className="flex items-center"
                 >
-                  
+                  <i className="bx bxl-whatsapp text-xl mt-2 text-white"></i>
                 </WhatsappShareButton>
               </div>
 
@@ -217,10 +217,11 @@ const PropertyDetail = ({ property }) => {
                 target="_blank"
               >
                 <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">
-                  <Image href={whb} height={30} width={30}/>
+                  <Image href={whb} />
                 </div>
                 
               </Link>
+
             </div>
           </div>
         </div>
