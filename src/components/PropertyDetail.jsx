@@ -13,6 +13,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import whb from '../../public/images/whb.webp'
 
 const PropertyDetail = ({ property }) => {
   const ownerEmail = property?.owner?.email.value;
@@ -23,7 +24,6 @@ const PropertyDetail = ({ property }) => {
     phoneNumber: "",
     message: "",
     ownerEmail: ownerEmail,
-
   });
 
   const [error, setError] = useState(null);
@@ -40,7 +40,7 @@ const PropertyDetail = ({ property }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullName, email, phoneNumber, message ,ownerEmail } = formData;
+    const { fullName, email, phoneNumber, message, ownerEmail } = formData;
 
     if (!fullName || !email || !phoneNumber || !message) {
       setError("All fields are required");
@@ -53,7 +53,13 @@ const PropertyDetail = ({ property }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fullName, email, phoneNumber, message, ownerEmail }),
+        body: JSON.stringify({
+          fullName,
+          email,
+          phoneNumber,
+          message,
+          ownerEmail,
+        }),
       });
 
       if (response.ok) {
@@ -193,15 +199,28 @@ const PropertyDetail = ({ property }) => {
                   <i className="bx bxl-instagram text-white"></i>
                 </div>
               </Link>
+              
 
               <div className=" bg-[#25D366]  flex items-center justify-center  h-[35px] text-lg w-[35px] p-[2px] rounded-[100%]">
                 <WhatsappShareButton
                   url={`https://bhumap.com/property/${property._id}`}
                   className="flex items-center"
                 >
-                  <i className="bx bxl-whatsapp text-xl mt-2 text-white"></i>
+                  
                 </WhatsappShareButton>
               </div>
+
+              
+
+              <Link
+                href={`https://web.whatsapp.com/send?text= Please Visit https://bhumap.com/property/${property._id}`}
+                target="_blank"
+              >
+                <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">
+                  <Image href={whb} height={30} width={30}/>
+                </div>
+                
+              </Link>
             </div>
           </div>
         </div>
@@ -397,7 +416,6 @@ const PropertyDetail = ({ property }) => {
                   className="w-full border border-black/20 rounded-md mb-2 p-2"
                   placeholder="Full Name"
                 />
-
 
                 <input
                   required
