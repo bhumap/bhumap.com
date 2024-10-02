@@ -61,6 +61,14 @@ const userSchema = new mongoose.Schema({
   otp:{
     value:Number,
     exexpirationTime:Date
+  },
+  refral_code: {
+    type: String,
+    required:true,
+    unique: true
+  },
+  referred_by: {
+    type: String
   }
 });
 
