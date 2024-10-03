@@ -11,7 +11,7 @@ import { StatusCodes } from 'http-status-codes';
 async function generateUniqueToken(length=6) {
   const token = generateRandomCode(length);
 
-  const isAlreadyExist = await UsersModal.findOne({refral_code: token});
+  const isAlreadyExist = await UsersModal.findOne({referral_code: token});
 
   if (isAlreadyExist) {
     generateRandomCode(length);
@@ -20,8 +20,8 @@ async function generateUniqueToken(length=6) {
   return token;
 }
 
-async function validateRefralCode(refral_code) {
-  const user = await UsersModal.findOne({refral_code});
+async function validateRefralCode(referral_code) {
+  const user = await UsersModal.findOne({referral_code});
 
   if (!user) return {user: null, invalid: true};
 
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
   await dbConnect();
 
   try {
-    const {userType, refral_code} = req.body;
+    const {userType, referral_code} = req.body;
     
     if (String(userType).toLowerCase() == 'admin') {
       res.status(StatusCodes.BAD_REQUEST).json({
@@ -69,18 +69,18 @@ export default async function handler(req, res) {
    }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const new_refral_code = await generateUniqueToken(8);
+    const new_referral_code = await generateUniqueToken(8);
    
     var userDetails = null;
-    if (refral_code) {
-      const {invalid, user} = await validateRefralCode(refral_code);
+    if (referral_code) {
+      const {invalid, user} = await validateRefralCode(referral_code);
       userDetails = user;
     }
 
     var createdUser = await UsersModal.create({
       ...req.body,
-      refral_code: new_refral_code,
-      referred_by: userDetails ? userDetails.refral_code: '',
+      referral_code: new_referral_code,
+      referred_by: userDetails ? userDetails.referral_code: '',
       password: hashedPassword,
     });
 

@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema({
     value:Number,
     exexpirationTime:Date
   },
-  refral_code: {
+  referral_code: {
     type: String,
     required:true,
     unique: true

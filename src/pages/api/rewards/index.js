@@ -15,17 +15,19 @@ export default async function handler(req, res) {
                 const page = req.query.page || 1;
                 const limit = req.query.limit || 10;
                 const skip = (page - 1) * limit;
-
+                
                 const reawrds = await RewardsModel.find({
                     referred_by: userID
                 })
                 .limit(limit)
                 .skip(skip)
-                .sort({ createdAt: -1 });
+                .sort({ createdAt: -1 })
+                .populate('referred_by', 'name email.value') 
+                .populate('referred_to', 'name email.value');
 
                 const total = await RewardsModel.find({referred_by: userID}).count();
-                var starting = total ? skip + 1 : 0;
-                var ending = starting + limit - 1 > total ? total : starting + limit - 1;
+                const starting = total ? skip + 1 : 0;
+                const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 
                 res.status(StatusCodes.OK).json({
                     success: true,
