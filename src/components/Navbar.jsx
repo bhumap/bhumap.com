@@ -334,6 +334,16 @@ const Navbar = () => {
                       </Link>
                     )}
 
+                    {(user?.userType === "Buyer" ||
+                      user?.userType === "Seller") && (
+                      <Link href="/portal/Wallet">
+                        <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                          <i className="bx bx-wallet-alt text-xl mr-2"></i>
+                          <div className="text-sm">Wallet</div>
+                        </div>
+                      </Link>
+                    )}
+
                     {user && (
                       <>
                         {user.userType === "Vendor" ? (
