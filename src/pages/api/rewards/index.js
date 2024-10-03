@@ -22,8 +22,8 @@ export default async function handler(req, res) {
                 .limit(limit)
                 .skip(skip)
                 .sort({ createdAt: -1 })
-                .populate('referred_by', 'name email.value') 
-                .populate('referred_to', 'name email.value');
+                .populate('referred_by', 'fullName') 
+                .populate('referred_to', 'fullName');
 
                 const total = await RewardsModel.find({referred_by: userID}).count();
                 const starting = total ? skip + 1 : 0;
