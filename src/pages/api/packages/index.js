@@ -13,12 +13,11 @@ export default async function (req, res) {
                 const limit = req.query.limit || 10;
                 const skip = (page - 1) * limit;
 
-                const packages = await PackageModel.find({
-                })
+                const packages = await PackageModel.find({})
                 .limit(limit)
                 .skip(skip);
-
-                const total = await PackageModel.find({referred_by: userID}).count();
+                
+                const total = await PackageModel.find().count();
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 
