@@ -15,6 +15,6 @@ const membershipPackageSchema = new mongoose.Schema({
     }
 }, { timestamps: true });  
 
-const MembershipPackage = mongoose.models?.membership_packages || mongoose.model("membership_packages", membershipPackageSchema);
+const MembershipPackage = mongoose.models?.membership_packages || mongoose.model("membershipPackages", membershipPackageSchema);
 
 export default MembershipPackage;

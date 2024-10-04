@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const membershipSchema = new mongoose.Schema({
     membership_package_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "membership_packages",  
+        ref: "membershipPackages",  
         required: true
     },
     user_id: {
