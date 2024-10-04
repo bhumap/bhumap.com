@@ -58,7 +58,7 @@ const Page = () => {
                 {item?.amount} <span className="text-black/50 text-2xl">₹</span>
               </h3>
               <div className="flex justify-center mt-4">
-                <Link href="/buyer-paid-membership/terms-and-conditions" className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
+                <Link href={`/buyer-paid-membership/terms-and-conditions?id=${item._id}`} className="border bg-primary rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6">
                   Pay Now
                 </Link>
               </div>

@@ -1,7 +1,12 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
+  const searchParams = useSearchParams();
+  const package_id = searchParams.get("id");
+
   return (
     <>
       <div className="max-w-6xl mx-auto px-4 mt-14 py-6 sm:py-10 flex flex-col sm:flex-row items-start">
@@ -46,6 +51,7 @@ const Page = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
               />
             </div>
+            <input type="hidden" name="" id="" value={package_id} />
             <button
               type="submit"
               className="w-full bg-primary text-white py-3 rounded-md"
