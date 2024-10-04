@@ -1,7 +1,7 @@
 import dbConnect from "@/src/backend/config/dbConnect";
 import MembershipModel from "@/src/backend/models/memberships";
 import { JWTVerify } from "@/src/backend/helpers/jwt";
-import { HttpStatusCode } from "axios";
+import { StatusCodes } from 'http-status-codes';
 const { ObjectId } = require("mongoose").Types;
 
 const membershipValidationSchema = Joi.object({
@@ -27,7 +27,7 @@ export default async function(req, res) {
             try {
                 const { error, value } = membershipValidationSchema.validate(req.body, { abortEarly: false });
                 if (error) {
-                    return res.status(HttpStatusCode.BadRequest).json({success: false, error: error.details.map(err => err.message)})
+                    return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map(err => err.message)})
                 }
 
                 const membership = await MembershipModel.find({
@@ -42,7 +42,7 @@ export default async function(req, res) {
                 });
 
                 if (membership) {
-                    return res.status(HttpStatusCode.BadRequest).json({
+                    return res.status(StatusCodes.BAD_REQUEST).json({
                         success: false,
                         message: 'Membership Already Active'
                     })
@@ -50,7 +50,7 @@ export default async function(req, res) {
 
                 await MembershipModel.save(value);
             } catch (error) {
-                res.status(HttpStatusCode.InternalServerError).json({ success: false, message: error.message });
+                res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: error.message });
             }
             break;
         

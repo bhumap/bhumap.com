@@ -39,7 +39,7 @@ const membershipSchema = new mongoose.Schema({
     status: {
         type: String,  
         required: true,
-        enum: ["Active", "Pending", "Expired"],  
+        enum: ["Active", "Pending", "Expired", "Deleted"],  
         default: "Pending"
     }
 }, { timestamps: true });  
