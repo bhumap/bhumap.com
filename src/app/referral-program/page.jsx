@@ -51,13 +51,13 @@ const Page = () => {
           </div>
 
           <div className="p-4 border border-black/20 rounded-lg">
-            <i className="bx bx-dollar text-primary text-3xl"></i>
+            <i className="bx bx-rupee text-primary text-3xl"></i>
             <h2 className="mb-2 font-semibold sm:text-lg">Earn 5% on their paid membership fees</h2>
             <p className="text-gray-500 sm:text-base text-sm">Get 5% commission on the membership plan purchased by your referral.</p>
           </div>
 
           <div className="p-4 border border-black/20 rounded-lg">
-            <i className="bx bx-dollar text-primary text-3xl"></i>
+            <i className="bx bx-rupee text-primary text-3xl"></i>
             <h2 className="mb-2 font-semibold sm:text-lg">Earn 2% commission if a referred member purchases a property</h2>
             <p className="text-gray-500 sm:text-base text-sm">Get a 2% commission when your referred member purchases a Bhumap's property.</p>
           </div>
