@@ -358,7 +358,7 @@ const Navbar = () => {
                       user?.userType === "Seller") && (
                       <Link href="/referral-program">
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
-                          <i className="bx bx-dollar text-xl mr-2"></i>
+                          <i className="bx bx-rupee text-xl mr-2"></i>
                           <div className="text-sm">Refer & Earn</div>
                         </div>
                       </Link>
@@ -368,7 +368,7 @@ const Navbar = () => {
                       user?.userType === "Seller") && (
                       <Link href="/portal/Reference">
                         <div className="flex items-center hover:bg-gray-100 px-4 py-2">
-                          <i className="bx bx-dollar text-xl mr-2"></i>
+                          <i className="bx bx-rupee text-xl mr-2"></i>
                           <div className="text-sm">My Earning</div>
                         </div>
                       </Link>
