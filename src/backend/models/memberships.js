@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const membershipSchema = new mongoose.Schema({
     membership_package_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "membershipPackages",  
+        ref: "membershippackages",  
         required: true
     },
     user_id: {
@@ -25,6 +25,10 @@ const membershipSchema = new mongoose.Schema({
     },
     activation_date: {
         type: Date,  
+        required: true,
+    },
+    duration_in_months: {
+        type: Number,
         required: true
     },
     term_and_condition: {
@@ -35,12 +39,12 @@ const membershipSchema = new mongoose.Schema({
     status: {
         type: String,  
         required: true,
-        enum: ["Active", "Expired", "Pending"],  
+        enum: ["Active", "Pending", "Expired"],  
         default: "Pending"
     }
 }, { timestamps: true });  
 
-
+membershipSchema.index({ membership_package_id: 1, user_id: 1 });
 const Membership = mongoose.models?.memberships || mongoose.model("memberships", membershipSchema);
 
 export default Membership;

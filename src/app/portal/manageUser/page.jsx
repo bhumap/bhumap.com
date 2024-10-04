@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,15 +7,36 @@ import { AuthContext } from "@/src/context/AuthContext";
 import Link from "next/link";
 
 const Page = () => {
-  const { refetch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [paymenData, setpaymenData] = useState(null);
+  const [users, setUser] = useState(null);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     user: "",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user && user._id) {
+        try {
+          // setFetching(true);
+          const res = await axios.get(
+            `http://localhost:3000/api/users`
+          );
+          setUser(res.data.message.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          // setFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   const changeHandler = (e) => {
     const name = e.target.name;
@@ -32,7 +53,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/manageUser",
+        "http://localhost:3000/api/users",
         formData
       );
 
@@ -90,10 +111,10 @@ const Page = () => {
       <div className="w-full rounded-lg md:mt-0 max-w-3xl xl:p-0">
         <div className="p-2 space-y-2 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Search User
+            Manage User
           </h1>
           <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
-            <div>
+            {/* <div>
               <label
                 htmlFor="user"
                 className="block mb-2 text-sm font-medium text-gray-900"
@@ -119,7 +140,7 @@ const Page = () => {
                   {loading ? "Processing..." : "Search"}
                 </button>
               </div>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
@@ -133,44 +154,41 @@ const Page = () => {
                   <h4>Name</h4>
                 </div>
                 <div className="payment-title payment-head1">
-                  <h4>Package</h4>
+                  <h4>User Type</h4>
                 </div>
                 <div className="payment-title payment-head1">
-                  <h4>Amount</h4>
+                  <h4>Refral Code</h4>
                 </div>
                 <div className="payment-title payment-head1">
-                  <h4>Update & Delete</h4>
+                  <h4>Address</h4>
+                </div>
+                <div className="payment-title payment-head1">
+                  <h4>Email</h4>
+                </div>
+                <div className="payment-title payment-head1">
+                  <h4>Phone</h4>
                 </div>
               </div>
 
-              {paymenData?.map((e, i) => (
+              {users?.map((e, i) => (
                 <div className="payment-head" key={e._id}>
                   <div className="payment-title">
-                    <h4>{e.Buyer_name}</h4>
+                    <h4>{e.fullName}</h4>
                   </div>
                   <div className="payment-title">
-                    <h4>{e.Package_Name}</h4>
+                    <h4>{e.userType}</h4>
                   </div>
                   <div className="payment-title">
-                    <h4>{e.Amount}</h4>
+                    <h4>{e.refral_code}</h4>
                   </div>
                   <div className="payment-title">
-                    <h4>
-                      <button
-                        onClick={() => handleDelete(e._id)}
-                        className="text-red-500 hover:text-red-700 mr-2"
-                      >
-                        Delete
-                      </button>
-
-                      <Link
-                        className="text-blue-500 hover:text-blue-700"
-                        href={`/update/${e._id}`}
-                    
-                      >
-                        Update
-                      </Link>
-                    </h4>
+                    <h4>{e.address}</h4>
+                  </div>
+                  <div className="payment-title">
+                    <h4>{e.email.value}</h4>
+                  </div>
+                  <div className="payment-title">
+                    <h4>{e.phone.value}</h4>
                   </div>
                 </div>
               ))}

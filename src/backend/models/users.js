@@ -70,7 +70,7 @@ const userSchema = new mongoose.Schema({
   referred_by: {
     type: String
   }
-});
+}, { timestamps: true });
 
 var Users = mongoose.models?.users || mongoose.model("users", userSchema);
 
