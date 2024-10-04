@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const membership = await MembershipModel.find({
+    const membership = await MembershipModel.findOne({
       $and: [
           {
               user_id: userID,
@@ -38,6 +38,7 @@ export default async function handler(req, res) {
     res.status(StatusCodes.OK).json({
       success: true,
       message: {user, membership},
+      
     });
 
 

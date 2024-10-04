@@ -3,6 +3,7 @@ import MembershipModel from "@/src/backend/models/memberships";
 import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { StatusCodes } from 'http-status-codes';
 const { ObjectId } = require("mongoose").Types;
+import Joi from "joi";
 
 const membershipValidationSchema = Joi.object({
     membership_package_id: Joi.string().hex().length(24).required(),
@@ -41,14 +42,20 @@ export default async function(req, res) {
                     ]
                 });
 
-                if (membership) {
+                if (membership.length > 0) {
                     return res.status(StatusCodes.BAD_REQUEST).json({
                         success: false,
                         message: 'Membership Already Active'
                     })
                 }
+console.log('value', value)
+            const memberShip = new MembershipModel(value)
+            await memberShip.save();
 
-                await MembershipModel.save(value);
+            res.status(StatusCodes.CREATED).json({
+                success: true,
+                message: 'Membership updated successfully'
+            });
             } catch (error) {
                 res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: error.message });
             }

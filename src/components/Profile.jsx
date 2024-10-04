@@ -3,10 +3,11 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { AuthContext } from "@/src/context/AuthContext";
 import { toast } from "react-toastify";
+import { format } from 'date-fns';
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
-
+  const { user, membership } = useContext(AuthContext);
+  console.log('lllll',membership);
   // Copy referral code to clipboard
   const copyToClipboard = () => {
     const referralUrl = `https://www.bhumap.com/register?referral=${user?.referral_code}`;
@@ -34,7 +35,6 @@ const Profile = () => {
     <div className="min-h-screen">
       <div className="max-w-4xl mx-auto bg-whiterounded-lg p-6 sm:p-10">
         <div className="text-center">
-          {/* Profile Image */}
           <img
             src={user?.photo || "/images/user.png"}
             alt="Profile Image"
@@ -86,14 +86,27 @@ const Profile = () => {
         </div>
 
         {/* Active Package Section */}
-        <div className="mt-6">
+        {membership ? (
+          <div className="mt-6">
+            <div className="flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-sm">
+              <div>
+                <p className="text-sm text-gray-500">Active Package</p>
+                <p className="text-lg font-semibold text-gray-800">{membership.membership_package_id.name} Package</p>
+              </div>
+              <p className="text-sm text-gray-400">Expiry Date: {format(new Date(membership.expire_date), "MMMM dd, yyyy")}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-6">
           <div className="flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-sm">
             <div>
               <p className="text-sm text-gray-500">Active Package</p>
-              <p className="text-lg font-semibold text-gray-800">{user?.activePackage || "No active package"}</p>
+              <p className="text-lg font-semibold text-gray-800">{"No active package"}</p>
             </div>
           </div>
         </div>
+        ) }
+        
       </div>
     </div>
   );
