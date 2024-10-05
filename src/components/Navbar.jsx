@@ -96,7 +96,7 @@ const Navbar = () => {
           } duration-500 transition-all absolute top-0 left-0 w-[100%] z-10 bg-black/50 backdrop-blur-sm h-[100vh] md:hidden`}
         ></div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-12 items-center">
           <div
             className={`${
               open ? "translate-x-0" : "translate-x-[-100%]"
@@ -251,7 +251,13 @@ const Navbar = () => {
                     className="block p-1 px-3"
                     href="/portal/manageReferral"
                   >
-                    Manage Referral
+                    Update Membership
+                  </Link>
+                  <Link
+                    className="block p-1 px-3"
+                    href="/portal/paid-user"
+                  >
+                    Paid User
                   </Link>
                   <Link
                     className="block p-1 px-3"
