@@ -1,15 +1,17 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
 
 const RegistrationForm = () => {
   const { refetch } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get("referral");
   const [showPwd, setShowPwd] = useState(false);
   const [formData, setFormData] = useState({
     userType: "Buyer",
@@ -19,7 +21,17 @@ const RegistrationForm = () => {
     },
     fullName: "",
     password: "",
+    referral_code: "",
   });
+
+  useEffect(() => {
+    if (referralCode) {
+      setFormData((prevData) => ({
+        ...prevData,
+        referral_code: referralCode,
+      }));
+    }
+  }, [referralCode]);
 
   console.log(formData);
 

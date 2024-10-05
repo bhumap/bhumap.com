@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
 import Link from "next/link";
+import { format } from 'date-fns';
 
 const Page = () => {
   const { user } = useContext(AuthContext);
@@ -24,7 +25,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `https://bhumap.com/api/users`
+            `https://bhumap.com/api/memberships`
           );
           setUser(res.data.message.data);
         } catch (error) {
@@ -108,9 +109,9 @@ const Page = () => {
 
   return (
     <>
-      <div className="w-full max-w-3xl mx-auto mt-15 bg-white rounded-lg p-6">
-        <h1 className="text-3xl font-semibold text-gray-900 mb-6">Manage User</h1>
-        <form className="space-y-4" onSubmit={submitHandler}>
+      <div className="w-full max-w-3xl bg-white rounded-lg p-6">
+        <h1 className="text-3xl font-semibold text-gray-900">Paid User List</h1>
+        {/* <form className="space-y-4" onSubmit={submitHandler}>
           <div>
             <label htmlFor="user" className="block mb-2 text-base font-medium text-gray-800">
               Enter Phone or Username
@@ -135,7 +136,7 @@ const Page = () => {
               </button>
             </div>
           </div>
-        </form>
+        </form> */}
       </div>
 
       <section className="w-full py-5">
@@ -145,11 +146,11 @@ const Page = () => {
               <thead className="text-left">
                 <tr className="text-gray-600 bg-gray-100">
                   <th className="py-3 px-5 text-sm font-semibold">Name</th>
-                  <th className="py-3 px-5 text-sm font-semibold">User Type</th>
-                  <th className="py-3 px-5 text-sm font-semibold">Referral Code</th>
-                  <th className="py-3 px-5 text-sm font-semibold">Address</th>
-                  <th className="py-3 px-5 text-sm font-semibold">Email</th>
-                  <th className="py-3 px-5 text-sm font-semibold">Phone</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Package</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Amount</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Activation Date</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Expiry Date</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,12 +159,12 @@ const Page = () => {
                     key={user._id}
                     className={`border-b ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 transition-all`}
                   >
-                    <td className="py-4 px-5 text-gray-800">{user.fullName}</td>
-                    <td className="py-4 px-5 text-gray-600">{user.userType}</td>
-                    <td className="py-4 px-5 text-gray-600">{user.refral_code || 'N/A'}</td>
-                    <td className="py-4 px-5 text-gray-600">{user.address}</td>
-                    <td className="py-4 px-5 text-gray-600">{user.email.value || 'N/A'}</td>
-                    <td className="py-4 px-5 text-gray-600">{user.phone.value || 'N/A'}</td>
+                    <td className="py-4 px-5 text-gray-800">{user.user_id.fullName}</td>
+                     <td className="py-4 px-5 text-gray-600">{user.membership_package_id.name}</td>
+                     <td className="py-4 px-5 text-gray-600">{user.membership_package_id.amount || 'N/A'}</td>
+                     <td className="py-4 px-5 text-gray-600">{format(new Date(user.activation_date), "MMMM dd, yyyy")}</td>
+                    <td className="py-4 px-5 text-gray-600">{format(new Date(user.expire_date), "MMMM dd, yyyy")}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.status}</td>
                   </tr>
                 ))}
               </tbody>

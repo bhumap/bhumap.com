@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,16 +7,51 @@ import { AuthContext } from "@/src/context/AuthContext";
 
 const Page = () => {
   const { refetch } = useContext(AuthContext);
+  const [users, setUser] = useState([]);
+  const [packages, setPackages] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+        try {
+          // setFetching(true);
+          const res = await axios.get(
+            `https://bhumap.com/api/users`
+          );
+          setUser(res.data.message.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          // setFetching(false);
+        }
+    };
+
+    const fetchPackages = async () => {
+      try {
+        // setFetching(true);
+        const res = await axios.get(
+          `https://bhumap.com/api/packages`
+        );
+        setPackages(res.data.message.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        // setFetching(false);
+      }
+    };
+
+    fetchUsers();
+    fetchPackages();
+  }, []);
 
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const [formData, setFormData] = useState({
-    Ref_ID: "",
-    Referral_Name: "",
-    Package: "",
-    Commission: "",
-    Payment_date: "",
+    membership_package_id: "",
+    user_id: "",
+    utr_number: "",
+    expire_date: "",
+    activation_date: "",
+    duration_in_months: "",
+    status: ""
   });
 
   const changeHandler = (e) => {
@@ -29,17 +64,12 @@ const Page = () => {
     e.preventDefault();
     setLoading(true);
 
-    console.log("Form Data Submitted:", formData);
-
-    const commission = parseFloat(formData.Commission);
-    const tenPercentCommission = (commission * 0.1).toFixed(2);
-
-    const updatedFormData = { ...formData, Commission: tenPercentCommission };
+    const updatedFormData = { ...formData, duration_in_months: Number(formData.duration_in_months) };
 
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/reference",
+        "https://bhumap.com/api/memberships",
         updatedFormData
       );
 
@@ -70,86 +100,73 @@ const Page = () => {
       <div className="w-full rounded-lg md:mt-0 max-w-3xl xl:p-0">
         <div className="p-4 space-y-4 md:space-y-6">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Manage Referral
+            Manage Membership
           </h1>
           <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
             <div>
               <label
-                htmlFor="Ref_ID"
+                htmlFor="user_id"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Ref ID
-              </label>
-              <input
-                type="text"
-                name="Ref_ID"
-                id="Ref_ID"
-                placeholder="Enter User Ref ID"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                required={true}
-                onChange={changeHandler}
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="Referral Name"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Referral Name
-              </label>
-              <input
-                type="text"
-                name="Referral_Name"
-                id="Referral_Name"
-                placeholder="Enter Referral Name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                required={true}
-                onChange={changeHandler}
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="Package"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Package Name
+                User
               </label>
               <select
-                name="Package"
-                id="Package"
+                name="user_id"
+                id="user_id"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
                 disabled={loading}
               >
-                <option value="" disabled selected>
-                  Select Package
+                <option value="" selected disabled>
+                  Select User
                 </option>
-                <option value="Basic">Basic</option>
-                <option value="Bronze">Bronze</option>
-                <option value="Silver">Silver</option>
-                <option value="Gold">Gold</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Platinum Gold ">Platinum Gold </option>
+                {users?.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.fullName}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div>
               <label
-                htmlFor="Commission"
+                htmlFor="membership_package_id"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Commission
+                Package Name
+              </label>
+                <select
+                  name="membership_package_id"
+                  id="membership_package_id"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  required={true}
+                  onChange={changeHandler}
+                  disabled={loading}
+                >
+                  <option value="" disabled selected>
+                    Select Package
+                  </option>
+                  {packages?.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.name}
+                  </option>
+                ))}
+                </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="utr_number"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                UTR Number
               </label>
               <input
                 type="text"
-                name="Commission"
-                id="Commission"
-                placeholder="Enter Full Amount"
+                name="utr_number"
+                id="utr_number"
+                placeholder="Enter UTR Number"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
@@ -159,21 +176,83 @@ const Page = () => {
 
             <div>
               <label
-                htmlFor="Payment_date"
+                htmlFor="activation_date"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Payment Date
+                Activation Date
               </label>
               <input
-                type="datetime-local"
-                name="Payment_date"
-                id="Payment_date"
+                type="date"
+                name="activation_date"
+                id="activation_date"
+                placeholder="Enter activation date"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                required={true}
+                onChange={changeHandler}
+                disabled={loading}
+              />
+            </div>
+            
+            <div>
+              <label
+                htmlFor="duration_in_months"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Duration in Month
+              </label>
+              <input
+                type="text"
+                name="duration_in_months"
+                id="duration_in_months"
+                placeholder="Enter duration in month"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                required={true}
+                onChange={changeHandler}
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="expire_date"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Expriry Date
+              </label>
+              <input
+                type="date"
+                name="expire_date"
+                id="expire_date"
                 placeholder="Enter Payment Date"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required={true}
                 onChange={changeHandler}
                 disabled={loading}
               />
+            </div>
+            
+            <div>
+              <label
+                htmlFor="status"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Status
+              </label>
+                <select
+                  name="status"
+                  id="status"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  required={true}
+                  onChange={changeHandler}
+                  disabled={loading}
+                >
+                  <option value="" disabled selected>
+                    Select Status
+                  </option>
+                  <option value="Active">Active</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Expired">Expired</option>
+                </select>
             </div>
 
             <button

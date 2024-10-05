@@ -1,41 +1,26 @@
 import dbConnect from "@/src/backend/config/dbConnect";
 import UsersModal from '@/src/backend/models/users'
+import { JWTVerify } from "@/src/backend/helpers/jwt";
+import { StatusCodes } from 'http-status-codes';
 
 export default async function handler(req, res) {
   await dbConnect();
+
+  var token = req.cookies.AccessToken || "";
+  // var userID = await JWTVerify(token);
+
   switch (req.method) {
     case "GET":
       try {
-        var match = {};
-
         const page = req.query.page || 1;
         const limit = req.query.limit || 10;
         const skip = (page - 1) * limit;
 
-        if (req.query.keyword) {
-          match.$or = [
-            { fullName: new RegExp(req.query.keyword, "i") },
-            { department: new RegExp(req.query.keyword, "i") },
-          ];
-        }
+        const users = await UsersModal.find({},{password:false}).limit(limit).skip(skip).sort({ createdAt: -1 })
+        const total = await UsersModal.find({}).count();
 
-        if(req.query.courseEditingUsers){
-          const users = await UsersModal.find({$and:[{"rights.resource":"courses"},{"rights.accessType":{$ne:"readOnly"}},{isAdmin:false}]},{otp:false,password:false})
-          res.status(200).json({
-            success: true,
-            message: {
-              data: users,
-            },
-          });
-          return
-        }
-
-        const users = await UsersModal.find(match,{rights:false,password:false,otp:false}).limit(limit).skip(skip).sort({isAdmin:-1})
-        const total = await UsersModal.find(match).count();
-
-        var starting = total ? skip + 1 : 0;
-        var ending =
-          starting + limit - 1 > total ? total : starting + limit - 1;
+        let starting = total ? skip + 1 : 0;
+        let ending = starting + limit - 1 > total ? total : starting + limit - 1;
 
         res.status(200).json({
           success: true,
@@ -47,7 +32,8 @@ export default async function handler(req, res) {
           },
         });
       } catch (error) {
-        res.status(500).json({
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           success: false,
           message: "Something Went Wrong!",
         });

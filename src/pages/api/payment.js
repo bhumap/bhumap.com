@@ -48,7 +48,7 @@ export default async function handler(req, res) {
           Amount,
           Payment_date,
           user: user._id,
-        });
+        });error.details.map(err => err.message)
 
         await newPayment.save();
         res

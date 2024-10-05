@@ -18,7 +18,7 @@ const Context = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user: data || null, refetch }}>
+    <AuthContext.Provider value={{ user: data?.user || null, membership: data?.membership || null, refetch }}>
         <div
           style={{
             height: "100vh",
