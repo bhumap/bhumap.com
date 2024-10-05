@@ -24,7 +24,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `https://bhumap.com/api/users`
+            `https://www.bhumap.com/api/users`
           );
           setUser(res.data.message.data);
         } catch (error) {
@@ -53,7 +53,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://bhumap.com/api/users",
+        "https://www.bhumap.com/api/users",
         formData
       );
 
