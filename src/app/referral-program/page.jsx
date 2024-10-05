@@ -66,6 +66,7 @@ const Page = () => {
             <i className="bx bx-heart text-primary text-3xl"></i>
             <h2 className="mb-2 font-semibold sm:text-lg">Repeat & Earn!</h2>
             <p className="text-gray-500 sm:text-base text-sm">Get these rewards every time your referral buys a membership plan or purchases a Bhumap&apos;s property.</p>
+
           </div>
         </div>
         

@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchBar from './SearchBar'
 import PropertyCardsGrid from '@/src/components/PropertyCardsGrid'
+import Image from 'next/image';
 
 const PropertySearch = ({query,properties}) => {
   return (
@@ -12,7 +13,7 @@ const PropertySearch = ({query,properties}) => {
           <PropertyCardsGrid properties={properties} />
           :
           <div>
-                <img
+                <Image
                   className="w-56 mx-auto"
                   src="/images/propertySearch.svg"
                   alt=""
