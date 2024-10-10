@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import Image from "next/image";
+import { toast } from "react-toastify";
 import axios from 'axios';
 import { AuthContext } from "@/src/context/AuthContext";
 const Page = () => {
@@ -11,9 +12,9 @@ const Page = () => {
     const [loading, setLoading] = useState(true);
     const [formLoading, setFormLoading] = useState(false);
     const { user } = useContext(AuthContext);
-    console.log(user)
     const [formData, setFormData] = useState({
         name: "",
+        min_qty: 1,
         price: 0,
         uom: "",
         description: "",
@@ -47,16 +48,34 @@ const Page = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+
         const updatedFormData = {
             ...formData,
             images: formData.images.slice(1)
         };
-        console.log(updatedFormData);
+        var id = toast.loading("Please wait...");
         try {
-            const response = await axios.post('http://localhost:3000/api/products', updatedFormData);
-            console.log('Data submitted successfully:', response.data);
+            const res = await axios.post('http://localhost:3000/api/products', updatedFormData);
+            if (res.data.success) {
+                toast.update(id, {
+                  render: res.data.message,
+                  type: "success",
+                  isLoading: false,
+                });
+              }
         } catch (error) {
+            toast.update(id, {
+                render: error.response?.data?.message || "An error occurred",
+                type: "error",
+                isLoading: false,
+            });
             console.error('Error submitting data:', error);
+        } finally {
+            setLoading(false);
+            setTimeout(() => {
+              toast.dismiss(id);
+            }, 3000);
         }
     };
 
@@ -203,6 +222,18 @@ const Page = () => {
                     />
                 </div>
 
+                <div>
+                    <label className="block mb-2 font-semibold">Min Quantity</label>
+                    <input
+                    type="number"
+                    name="min_qty"
+                    value={formData.min_qty}
+                    onChange={handleChange}
+                    required
+                    className="w-full border px-3 py-2 rounded-md"
+                    />
+                </div>
+
                 {/* Price */}
                 <div>
                     <label className="block mb-2 font-semibold">Price</label>
@@ -251,7 +282,7 @@ const Page = () => {
                     required
                     className="w-full border px-3 py-2 rounded-md"
                     >
-                        <option value="" selected>Select</option>
+                        <option value="">Select</option>
                         {categories.map((status) => (
                             <option key={status._id} value={status._id}>
                                 {status.name}
@@ -270,7 +301,7 @@ const Page = () => {
                     required
                     className="w-full border px-3 py-2 rounded-md"
                     >
-                    <option value="" selected>Select</option>
+                    <option value="">Select</option>
                     <option value="drafted">Drafted</option>
                     <option value="publish">Publish</option>
                     <option value="delete">Delete</option>

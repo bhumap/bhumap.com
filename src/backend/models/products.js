@@ -5,6 +5,11 @@ const productsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    min_qty: {
+        type: Number,
+        required: true,
+        min: 1
+    },
     price: {
         type: Number,
         required: true,
@@ -19,7 +24,7 @@ const productsSchema = new mongoose.Schema({
     },
     category_id: {
         type:mongoose.Schema.Types.ObjectId,
-        ref:"categories",
+        ref:"Categories",
         required:true
     },
     vendor_id: {
@@ -41,6 +46,6 @@ const productsSchema = new mongoose.Schema({
     }
 }, { timestamps: true});
 
-const Products = mongoose.model?.Productss || mongoose.model("Products", productsSchema);
+const Products = mongoose.model?.Products || mongoose.model("Products", productsSchema);
 
 export default Products; 

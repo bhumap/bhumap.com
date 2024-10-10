@@ -1,5 +1,5 @@
 
-const { default: mongoose } = require("mongoose");
+import mongoose from "mongoose";
 
 const categoriesSchema = new mongoose.Schema({
     name: {
@@ -13,6 +13,6 @@ const categoriesSchema = new mongoose.Schema({
     }
 });
 
-const Categories = mongoose.models?.categories || mongoose.model("categories", categoriesSchema);
+const Categories = mongoose.models?.Categories || mongoose.model("Categories", categoriesSchema);
 
 export default Categories;

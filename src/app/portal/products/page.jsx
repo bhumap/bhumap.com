@@ -5,12 +5,28 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
 
-const MyProducts = () => {
+const Page = () => {
+  const [products, setProducts] = useState([]);
     const router = useRouter();
+    const [error, setError] = useState(false);
     const { user } = useContext(AuthContext);
-    var [properties, setProperties] = useState({});
   
     var [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/products?page=${1}&limit=${10}`);
+          setProducts(response.data.message.data);
+        } catch (err) {
+          setError("Failed to load packages.");
+          console.error("Error fetching data:", err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+  }, [user]);
   
     return (
       <div className="py-4 sm:p-10">
@@ -29,7 +45,7 @@ const MyProducts = () => {
                 </a>
             </div>
               <div className="text-center">
-                {properties?.data?.length ? (
+                {products?.length ? (
                     <div className="overflow-x-auto">
                         <table className="min-w-full border-collapse border border-gray-200">
                             <thead>
@@ -37,19 +53,20 @@ const MyProducts = () => {
                                 <th className="p-2 border border-gray-200 text-left">Image</th>
                                 <th className="p-2 border border-gray-200 text-left">Title</th>
                                 <th className="p-2 border border-gray-200 text-left">Category</th>
-                                <th className="p-2 border border-gray-200 text-left">Pieces</th>
+                                <th className="p-2 border border-gray-200 text-left">Min Pieces</th>
                                 <th className="p-2 border border-gray-200 text-left">Price</th>
+                                <th className="p-2 border border-gray-200 text-left">UOM</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {properties?.data.map((v) => (
+                            {products?.map((v) => (
                                 <tr key={v._id} className="hover:bg-gray-50">
                                 <td className="p-2 border border-gray-200">
-                                    <Link href={`/property/${v.property?._id}`}>
+                                    <Link href={`/property/${v.images?._id}`}>
                                     <img
                                         className="w-20 h-20 object-cover rounded-md"
                                         src={
-                                        v?.property?.images[0]?.secure_url ||
+                                        v?.images[0]?.secure_url ||
                                         "/images/image.png"
                                         }
                                         alt=""
@@ -58,20 +75,23 @@ const MyProducts = () => {
                                 </td>
                                 <td className="p-2 border border-gray-200">
                                     <Link
-                                    href={`/property/${v.property?._id}`}
+                                    href={`/property/${v?._id}`}
                                     className="font-medium text-primary"
                                     >
-                                    {v?.property?.title}
+                                    {v?.name}
                                     </Link>
                                 </td>
                                 <td className="p-2 border border-gray-200">
-                                    {v?.property?.category || "Undefined"}
+                                    {v?.category_id?.name || "Undefined"}
                                 </td>
                                 <td className="p-2 border border-gray-200">
-                                    {v?.property?.minOrder || "Undefined"}
+                                    {v?.min_qty || "Undefined"}
                                 </td>
                                 <td className="p-2 border border-gray-200">
-                                    {v?.property?.price}
+                                    {v?.price}
+                                </td>
+                                <td className="p-2 border border-gray-200">
+                                    {v?.uom}
                                 </td>
                                 </tr>
                             ))}
@@ -99,4 +119,4 @@ const MyProducts = () => {
     );
   };
   
-  export default MyProducts;
+  export default Page;
