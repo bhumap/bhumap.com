@@ -6,7 +6,7 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
 
-  const [showSideCart, setShowSideCart] = useState(true);
+  const [showSideCart, setShowSideCart] = useState(false);
   var pathname = usePathname()
 
   const [cartItems, setCartItems] = useState([]);

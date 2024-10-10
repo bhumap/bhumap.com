@@ -155,7 +155,7 @@ const PropertyDetail = ({ property }) => {
 
               <Link
                 target="_blank"
-                href={`https://www.facebook.com/sharer/sharer.php?u=https://www.bhumap.com/property/${property._id}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=http://localhost:3000/property/${property._id}`}
               >
                 <div className="bg-[#316FF6] h-[35px] text-lg w-[35px] p-[2px]  flex items-center justify-center rounded-[100%]">
                   <i className="bx bxl-facebook  text-white"></i>
@@ -193,7 +193,7 @@ const PropertyDetail = ({ property }) => {
 
               <Link
                 target="_black"
-                href={`https://www.instagram.com/share?url=https://www.bhumap.com/property/${property._id}`}
+                href={`https://www.instagram.com/share?url=http://localhost:3000/property/${property._id}`}
               >
                 <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">
                   <i className="bx bxl-instagram text-white"></i>
@@ -203,7 +203,7 @@ const PropertyDetail = ({ property }) => {
 
               <div className=" bg-[#25D366]  flex items-center justify-center  h-[35px] text-lg w-[35px] p-[2px] rounded-[100%]">
                 <WhatsappShareButton
-                  url={`https://www.bhumap.com/property/${property._id}`}
+                  url={`http://localhost:3000/property/${property._id}`}
                   className="flex items-center"
                 >
                   <i className="bx bxl-whatsapp text-xl mt-2 text-white"></i>
@@ -213,7 +213,7 @@ const PropertyDetail = ({ property }) => {
               
 
               <Link
-                href={`https://web.whatsapp.com/send?text= Please Visit https://www.bhumap.com/property/${property._id}`}
+                href={`https://web.whatsapp.com/send?text= Please Visit http://localhost:3000/property/${property._id}`}
                 target="_blank"
               >
                 <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">

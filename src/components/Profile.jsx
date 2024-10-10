@@ -9,7 +9,7 @@ const Profile = () => {
   const { user, membership } = useContext(AuthContext);
 
   const copyToClipboard = () => {
-    const referralUrl = `https://www.bhumap.com/register?referral=${user?.referral_code}`;
+    const referralUrl = `http://localhost:3000/register?referral=${user?.referral_code}`;
     navigator.clipboard.writeText(referralUrl)
       .then(() => {
         toast.success("Referral code copied to clipboard!", {

@@ -2,6 +2,7 @@ import dbConnect from "@/src/backend/config/dbConnect";
 import ProductsModel from "@/src/backend/models/products";
 import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { StatusCodes } from 'http-status-codes';
+const { ObjectId } = require("mongoose").Types;
 import Joi from "joi";
 
 const productValidationSchema = Joi.object({
@@ -19,18 +20,20 @@ const productValidationSchema = Joi.object({
     status: Joi.string().valid("drafted", "publish", "delete", "inactive").default("drafted").required()
 });
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req, res) {
+    console.log('1');
     await dbConnect();
     
     var token = req.cookies.AccessToken || "";
-    var userID = (await JWTVerify(token));
+    // var userID = await JWTVerify(token);
 
-    if (!userID) {
-        return res.status(StatusCodes.BAD_GATEWAY).json({
-            success: false,
-            message: "Unauthorized Action!",
-        });
-    }
+    // if (!userID) {
+    //     return res.status(StatusCodes.BAD_GATEWAY).json({
+    //         success: false,
+    //         message: "Unauthorized Action!",
+    //     });
+    // }
 
     switch(req.method) {
         case "POST":
@@ -56,10 +59,11 @@ export default async function (req, res) {
             try {
                 const page = req.query.page || 1;
                 const limit = req.query.limit || 10;
+                const category_id = req.query.category_id;
                 const skip = (page - 1) * limit;
 
                 const products = await ProductsModel.find({
-                    vendor_id: userID
+                    category_id: new ObjectId(category_id)
                 })
                 .limit(limit)
                 .skip(skip)

@@ -1,7 +1,7 @@
 import dbConnect from "@/src/backend/config/dbConnect";
-import OrdersModel from "@/models/orders";
+import OrdersModel from "@/src/backend/models/orders";
 const { ObjectId } = require("mongoose").Types;
-import { JWTVerify } from "@/helpers/jwt";
+import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { StatusCodes } from 'http-status-codes';
 
 export default async function(req, res) {

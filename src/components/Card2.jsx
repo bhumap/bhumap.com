@@ -13,6 +13,8 @@ import "slick-carousel/slick/slick-theme.css";
 import img1 from "@/public/images/pla1.webp"
 import Image from "next/image";
 
+import { useContext } from "react";
+import { CartContext } from "@/src/context/CartContext";
 
 const PrevArrow = ({ className, style, onClick }) => (
   <div
@@ -35,6 +37,7 @@ const NextArrow = ({ className, style, onClick }) => (
 );
 
 const Card = ({ property }) => {
+  var { addToCart } = useContext(CartContext);
   if (!property || property.length === 0) {
     return (
       <div className="no-data">
@@ -52,7 +55,6 @@ const Card = ({ property }) => {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
-
   return (
     <>
       {property.map((property, index) => (
@@ -126,6 +128,9 @@ const Card = ({ property }) => {
             <div>
               <a href={`tel:${property.phone}`}>
                 <button className="contact contact2">Contact</button>
+              </a> &nbsp;
+              <a>
+                <button onClick={() => addToCart(property)} className="contact contact2 text-white duration-300 hover:bg-primary hover:text-gray-800"><i className="bx bx-cart mr-2"></i>Add to Cart</button>
               </a>
             </div>
           </div>

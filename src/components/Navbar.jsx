@@ -240,6 +240,20 @@ const Navbar = () => {
               </>
             )}
 
+            {user && (
+              <>
+                {user.userType === "Vendor" && (
+                  <Link
+                    className="px-2 py-1 bg-primary text-white border rounded-md border-primary md:inline-block"
+                    href="/portal/products"
+                  >
+                    Products List
+                  </Link>
+                )}
+              </>
+            )}
+
+
             {user && user.userType === "Admin" && (
               <label className="relative block p-2 group md:inline-block">
                 <Link href="/portal/admin">

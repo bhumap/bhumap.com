@@ -25,7 +25,7 @@ const UpdatePaymentPage = () => {
   const fetchPaymentDetails = async (paymentId) => {
     try {
       const res = await axios.get(
-        `https://www.bhumap.com/api/payment/${paymentId}`
+        `http://localhost:3000/api/payment/${paymentId}`
       );
       if (res.data.success) {
         setPaymentData(res.data.payment);
@@ -48,7 +48,7 @@ const UpdatePaymentPage = () => {
 
     try {
       const res = await axios.put(
-        `https://www.bhumap.com/api/payment/${id}`,
+        `http://localhost:3000/api/payment/${id}`,
         updatedData
       );
       if (res.data.success) {
