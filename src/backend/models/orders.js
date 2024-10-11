@@ -52,6 +52,12 @@ const ordersSchema = new mongoose.Schema({
         ref: "users",
         required: true,
     },
+    images: [
+      {
+          secure_url:{ type: String },
+          public_id:{ type: String },
+      }
+   ],
     address: {
         type: String,
         required: true,
