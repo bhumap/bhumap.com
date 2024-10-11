@@ -172,7 +172,7 @@ export default async function(req, res) {
             try {
                 let subOrders = new Map();
 
-                req.body.carts.forEach((v) => {
+                req.body.subOrders.forEach((v) => {
                     if (subOrders.has(v.vendor_id)) {
                         subOrders.get(v.vendor_id).carts.push({
                             product_id: v.product_id,
@@ -192,7 +192,7 @@ export default async function(req, res) {
                 // calcation
                 subOrders = subOrders.map((order,i)=>{
                     let subTotal = 0
-                    order.carts.map((cart)=>{
+                    order.carts.map((cart)=> {
                         subTotal = subTotal + (cart.price * cart.quantity)
                     })
                     order.gst = Math.ceil(process.env.NEXT_PUBLIC_GST_PERCENTAGE * subTotal) 

@@ -1,3 +1,4 @@
+
 const { default: mongoose } = require("mongoose");
 
 const ordersSchema = new mongoose.Schema({
@@ -64,6 +65,11 @@ const ordersSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    utr_number: {
+      type: String,
+      rquired: true,
+      unique:true,
     },
     isCompleted: {
         type: Boolean,
