@@ -1,17 +1,16 @@
 "use client";
-
 import { useState, useEffect, useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import Image from "next/image";
-import { toast } from "react-toastify";
 import axios from 'axios';
-import { AuthContext } from "@/src/context/AuthContext";
-const Page = () => {
+import { toast } from "react-toastify";
+
+const Page = ({ params }) => {
     const [categories, setCategories] = useState([]);
+    const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
     const [formLoading, setFormLoading] = useState(false);
-    const { user } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         name: "",
         min_qty: 1,
@@ -19,9 +18,35 @@ const Page = () => {
         uom: "",
         description: "",
         category_id: "",
-        images: [{ secure_url: "", public_id: "" }],
-        status: "drafted",
+        images: [],
+        status: "",
     });
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3000/api/categories?page=${1}&&limit=${50}`);
+                setCategories(response.data.message.data);
+            } catch (error) {
+                setCategories([]);
+            }
+        };
+
+        const fetchProduct = async (id) => {
+            try {
+                const response = await axios.get(`http://localhost:3000/api/products/${id}`);
+                setProduct(response.data.data);
+                const {_id, ...restProductDetails} = response.data.data;
+                setFormData({...formData, ...restProductDetails});
+            } catch (error) {
+                setCategories([]);
+            }
+        };
+
+        fetchCategory();
+        fetchProduct(params.id);
+
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,32 +56,17 @@ const Page = () => {
         });
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get(`http://localhost:3000/api/categories?page=${1}&&limit=${50}`);
-            setCategories(response.data.message.data);
-          } catch (err) {
-            // setError("Failed to load packages.");
-            console.error("Error fetching data:", err);
-          } finally {
-            setLoading(false);
-          }
-        };
-        fetchData();
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         const updatedFormData = {
             ...formData,
-            images: formData.images.slice(1)
+            images: formData.images.slice()
         };
         var id = toast.loading("Please wait...");
         try {
-            const res = await axios.post('http://localhost:3000/api/products', updatedFormData);
+            const res = await axios.put(`http://localhost:3000/api/products/${params.id}`, updatedFormData);
             if (res.data.success) {
                 toast.update(id, {
                   render: res.data.message,
@@ -89,16 +99,16 @@ const Page = () => {
             console.log('done');
         }
     };
-    
+
     return (
         <div className="p-0 py-6 sm:p-10">
             <h2 className="text-black font-semibold text-2xl mb-4 text-center">
-                Create Products
+                Update Products
             </h2>
             <Toaster />
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className={`relative col-span-2`}>
-                <h2 className="font-semibold text-md mb-1">Products Images</h2>
+                <h2 className="font-semibold text-md mb-1">Products Images </h2>
                 {formData.images?.length ? (
                     <p className="pb-2 text-gray-600">
                     {formData.images?.length-1}/8 images selected.
@@ -107,7 +117,7 @@ const Page = () => {
 
                 {formData.images.length ? (
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
-                    {formData.images?.slice(1).map((v, i) => {
+                    {formData.images?.slice().map((v, i) => {
                         const handleRemoveImage = (index) => {
                             // Create a new array without the image at the selected index
                             const updatedImages = formData.images.filter((_, idx) => idx !== index);
@@ -155,8 +165,8 @@ const Page = () => {
                             }
 
                             imgs.push({
-                            public_id: res.info.public_id,
-                            secure_url: croppedImageUrl,
+                                public_id: res.info.public_id,
+                                secure_url: croppedImageUrl,
                             });
                             setFormData({ ...formData, images: imgs });
                             saveChanges({ ...formData, images: imgs });
@@ -323,11 +333,11 @@ const Page = () => {
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                 >
-                    Submit
+                    Save
                 </button>
             </form>
         </div>
     );
-  };
-  
-  export default Page;
+};
+
+export default Page;

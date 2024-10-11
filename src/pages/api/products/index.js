@@ -25,7 +25,6 @@ const productValidationSchema = Joi.object({
 
 
 export default async function (req, res) {
-    console.log('1');
     await dbConnect();
 
     switch(req.method) {

@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faIndianRupeeSign, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Page = () => {
   const [products, setProducts] = useState([]);
@@ -29,19 +31,18 @@ const Page = () => {
   }, [user]);
   
     return (
-      <div className="py-4 sm:p-10">
+      <div className="py-2 sm:p-10">
         {user?.userType == "Vendor" && (
           <div className="flex flex-col gap-6">
             {/* Viewed */}
             <div>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-slate-700 font-semibold text-xl">
-                    Product List
+                    Product's
                 </h2>
                 <a href="./products/add"
-                    className="bg-primary text-white font-bold py-2 px-4 rounded ml-auto"
-                >
-                    Add New Product
+                    className="bg-primary text-white font-bold py-2 px-4 rounded ml-auto">
+                    <FontAwesomeIcon icon={faPlus} className="mr-1" /> Add New Product
                 </a>
             </div>
               <div className="text-center">
@@ -50,19 +51,20 @@ const Page = () => {
                         <table className="min-w-full border-collapse border border-gray-200">
                             <thead>
                             <tr className="bg-gray-100">
-                                <th className="p-2 border border-gray-200 text-left">Image</th>
-                                <th className="p-2 border border-gray-200 text-left">Title</th>
-                                <th className="p-2 border border-gray-200 text-left">Category</th>
-                                <th className="p-2 border border-gray-200 text-left">Min Pieces</th>
-                                <th className="p-2 border border-gray-200 text-left">Price</th>
-                                <th className="p-2 border border-gray-200 text-left">UOM</th>
+                                <th className="p-2 border border-gray-200 ">Image</th>
+                                <th className="p-2 border border-gray-200 ">Title</th>
+                                <th className="p-2 border border-gray-200 ">Category</th>
+                                <th className="p-2 border border-gray-200 ">Min Pieces</th>
+                                <th className="p-2 border border-gray-200 ">Price (<FontAwesomeIcon icon={faIndianRupeeSign} className="mr-1" />)</th>
+                                <th className="p-2 border border-gray-200 ">UOM</th>
+                                <th className="p-2 border border-gray-200 ">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {products?.map((v) => (
                                 <tr key={v._id} className="hover:bg-gray-50">
                                 <td className="p-2 border border-gray-200">
-                                    <Link href={`/property/${v.images?._id}`}>
+                                    <Link href={`products/edit/${v._id}`}>
                                     <img
                                         className="w-20 h-20 object-cover rounded-md"
                                         src={
@@ -75,7 +77,7 @@ const Page = () => {
                                 </td>
                                 <td className="p-2 border border-gray-200">
                                     <Link
-                                    href={`/property/${v?._id}`}
+                                    href={`products/edit/${v._id}`}
                                     className="font-medium text-primary"
                                     >
                                     {v?.name}
@@ -88,10 +90,15 @@ const Page = () => {
                                     {v?.min_qty || "Undefined"}
                                 </td>
                                 <td className="p-2 border border-gray-200">
-                                    {v?.price}
+                                    {v?.price}/-
                                 </td>
                                 <td className="p-2 border border-gray-200">
                                     {v?.uom}
+                                </td>
+                                <td className="p-2 border border-gray-200">
+                                  <a href={`products/edit/${v._id}`} className="font-medium text-primary">
+                                      <FontAwesomeIcon icon={faPencil} className="mr-1" />Edit
+                                  </a>
                                 </td>
                                 </tr>
                             ))}
