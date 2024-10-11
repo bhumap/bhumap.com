@@ -192,7 +192,7 @@ const Checkout = () => {
     // Count items and unique chef IDs
     cartItems.forEach((item) => {
       totalCount += item.quantity;
-      uniqueChefIds.add(item.chef._id); // Add chef ID to the set
+      uniqueChefIds.add(item._id); // Add chef ID to the set
     });
 
     // Calculate delivery charges based on unique chef count
@@ -294,8 +294,59 @@ const Checkout = () => {
 
               {
                 paymentMode == "online" ? (<>
+                <div className="max-w-6xl mx-auto px-4 py-6 sm:py-10 flex flex-col sm:flex-row items-start">
+                    {/* QR Code Section */}
+                    <div className="flex-shrink-0 w-full sm:w-1/2 p-4">
+                        <div className="bg-[rgb(210,103,72)] shadow-lg rounded-lg p-6 flex flex-col items-center">
+                            <Image 
+                            src="/images/qr-code.jpg" 
+                            alt="QR Code" 
+                            width={200}  
+                            height={200} 
+                            priority 
+                            className="rounded-md"
+                            />
+                            <p className="mt-4 text-center text-white font-medium">
+                            Scan this QR code to complete your payment quickly and securely.
+                            </p>
+                        </div>
+                    </div>
 
-                <h3 className="border border-black text-sm border-dashed  p-4 text-center mt-4">Payment Method Integration Here</h3>
+                    {/* Form Section */}
+                    <div className="w-full sm:w-1/2 p-4 border">
+                    <h2 className="text-xl font-bold mt-2 text-gray-800 text-center">Enter Details After Payment</h2>
+                    <form className="bg-white rounded-lg p-6 space-y-4">
+                        <div>
+                        <label htmlFor="utr-number" className="block text-sm font-medium text-gray-700">UTR Number</label>
+                        <input
+                            type="text"
+                            id="utr-number"
+                            name="utr-number"
+                            required
+                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                        />
+                        </div>
+                        <div>
+                        <label htmlFor="payment-screenshot" className="block text-sm font-medium text-gray-700">Upload Payment Screenshot</label>
+                        <input
+                            type="file"
+                            id="payment-screenshot"
+                            name="payment-screenshot"
+                            required
+                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                        />
+                        </div>
+                        <input type="hidden" name="" id=""/>
+                        <button
+                        type="submit"
+                        className="w-full bg-primary text-white py-3 rounded-md"
+                        >
+                        Submit
+                        </button>
+                        Note : <small className="text-center">After Successfull Payment, You can proceed to checkout.</small>
+                    </form>
+                    </div>
+                </div>
                 </>) :null
               }
             </div>
@@ -392,18 +443,21 @@ const Checkout = () => {
                           <div className="flex flex-col mb-1 items-start gap-1">
                             <div className="w-full  justify-between">
                               <p className="line-clamp-2 font-semibold">
-                                {v.title}
+                                {v.name}
                               </p>
                               <p className="whitespace-nowrap text-sm">
-                                Price : ₹ {v.price}
+                                Single Peice Price : ₹ {v.price}
+                              </p>
+                              <p className="whitespace-nowrap text-sm">
+                                Min. Order Quantity : {v.min_qty} {v.uom}
                               </p>
                             </div>
                           </div>
                           <p className="whitespace-nowrap text-sm">
                             Subtotal ({v.quantity}{" "}
-                            {v.quantity >= 2 ? "items" : "item"}): ₹{" "}
+                            {v.min_qty >= 2 ? "items" : "item"}): ₹{" "}
                             <span className="font-bold">
-                              {v.price * v.quantity}
+                              {(v.price * v.min_qty) * v.quantity}
                             </span>
                           </p>
                         </div>
@@ -441,12 +495,12 @@ const Checkout = () => {
                 <p className=" text-sm">Subtotal</p>
                 <p className=" text-sm">₹ {calculateTotal()}</p>
               </div>
-              {/* <div className="flex justify-between sm:text-xl mb-2">
+              <div className="flex justify-between sm:text-xl mb-2">
                 <p className=" text-sm">{process.env.NEXT_PUBLIC_GST_PERCENTAGE*100}% GST</p>
                 <p className=" text-sm">
                   ₹ {(process.env.NEXT_PUBLIC_GST_PERCENTAGE * calculateTotal()).toFixed(0)}
                 </p>
-              </div> */}
+              </div>
               {/* <div className="flex justify-between sm:text-xl mb-2">
                 <p className=" text-sm">Shipping Fee ({process.env.NEXT_PUBLIC_SHIPPING_COST} per Chef Order)</p>
                 <p className=" text-sm">{calculateTotals().deliveryCharges}</p>

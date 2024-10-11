@@ -27,12 +27,12 @@ const CartProvider = ({ children }) => {
               ...checkItem,
               quantity: checkItem.quantity + 1,
 
-              totalPrice: (checkItem.quantity + 1) * checkItem.price,
+              totalPrice: (checkItem.quantity + 1) * newItem.price * newItem.min_qty,
             }
           : checkItem
       );
     } else {
-      cartCopy.push({ ...newItem, quantity: 1, totalPrice: newItem.price });
+      cartCopy.push({ ...newItem, quantity: 1, totalPrice: newItem.price * newItem.min_qty });
     }
 
     localStorage.setItem("cartItems", JSON.stringify(cartCopy));
@@ -86,7 +86,7 @@ const CartProvider = ({ children }) => {
   const calculateTotal = () =>{
     var t = 0
     cartItems.map((v,i)=>{
-      t = t + (v.price * v.quantity)
+      t = t + ((v.price * v.min_qty) * v.quantity)
     })
     return t
   }

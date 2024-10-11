@@ -103,7 +103,7 @@ const Card = ({ property }) => {
                 {property.purpose}
               </p>
               <p className="text-sm square">
-                {property.uom} {property.min_qty}
+                <strong>Min. Quantity Order : </strong>{property.min_qty} {property.uom}
               </p>
 
               <Link
@@ -114,13 +114,13 @@ const Card = ({ property }) => {
                 {property.company}
               </Link>
 
-              <p className="text-sm square">Gst No. ({property.gst})</p>
-
+              {/* <p className="text-sm square">Gst No. ({property.gst})</p> */}
+{/* 
               <p className="whitespace-nowrap mt-2">
                 <i className="bx bxs-star"></i> 4.9
-              </p>
+              </p> */}
 
-              <a href={`tel:${property.phone}`}>
+              <a href={`tel:${property?.vendor_id?.phone}`}>
                 <button className="contact contact1">Contact</button>
               </a>
               <h2>{property?.vendor_id.isApproved}</h2>
