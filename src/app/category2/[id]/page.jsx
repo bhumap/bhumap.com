@@ -5,9 +5,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Page = async ({params}) => {
-  // const alldata = await fetchMyPropertiesNearbyYou(params);
-  // console.log(alldata);
-  // const nearbyYouProperties = alldata?.data?.filter(property => property.category === params.id);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,6 +12,7 @@ const Page = async ({params}) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/products?category_id=${params.id}`);
+        console.log(response.data.message.data);
         setProducts(response.data.message.data);
       } catch (err) {
         setError("Failed to load packages.");
@@ -28,12 +26,12 @@ const Page = async ({params}) => {
 
   return (
     <div>
-      {/* <div className="max-w-6xl mx-auto p-4">
-        <h1 className="params-title">{params.id} <IoArrowForwardSharp /> ({nearbyYouProperties.length} products available)</h1>
+      <div className="max-w-6xl mx-auto p-4">
+        <h1 className="params-title">{params.id} <IoArrowForwardSharp /> ({products.length} products available)</h1>
           <PropertyCardsGrid
-          properties={nearbyYouProperties}
+          properties={products}
         />
-      </div> */}
+      </div>
     </div>
   );
 };

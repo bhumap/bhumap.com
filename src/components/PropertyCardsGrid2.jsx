@@ -1,9 +1,10 @@
+"use client"
 import React from "react";
 import Card from "./Card2";
 
 const PropertyCardsGrid = ({ search, properties }) => {
 
-  // console.log(properties);
+  console.log(properties);
   return (
     <div className="w-full overflow-hidden h-auto card-mm">
       <Card property={properties} />

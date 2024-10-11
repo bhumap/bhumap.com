@@ -92,10 +92,10 @@ const Card = ({ property }) => {
           <div className="title-main-box p-4">
             <div>
               <h4 className="font-semibold line-clamp-3 overflow-string">
-                {property.title}
+                {property.name}
               </h4>
               <p className="text-sm address">
-                {property.address?.cityTown}, {property.address?.district},{" "}
+                {property.vendor_id?.fullName}, {property.vendor_id?.address},{" "}
                 {property.address?.zipCode}
               </p>
               <p className="mt-1 price-title">
@@ -103,11 +103,11 @@ const Card = ({ property }) => {
                 {property.purpose}
               </p>
               <p className="text-sm square">
-                {property.minOrder} pieces (Min. order)
+                {property.uom} {property.min_qty}
               </p>
 
               <Link
-                href={property.company}
+                href="#"
                 target="_blank"
                 className="text-sm company-pvt"
               >
@@ -123,7 +123,7 @@ const Card = ({ property }) => {
               <a href={`tel:${property.phone}`}>
                 <button className="contact contact1">Contact</button>
               </a>
-              <h2>Verified</h2>
+              <h2>{property?.vendor_id.isApproved}</h2>
             </div>
             <div>
               <a href={`tel:${property.phone}`}>
