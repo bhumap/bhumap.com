@@ -82,7 +82,7 @@ export default async function (req, res) {
                     query.category_id = new ObjectId(category_id);
                 }
 
-                if (user.userType === 'Vendor') {
+                if (user && user.userType === 'Vendor') {
                     query.vendor_id = new ObjectId(user._id);
                 }
 

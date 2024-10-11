@@ -231,7 +231,7 @@ export default async function(req, res) {
                     orderId: specificId,
                 });
 
-                res.status(201).json({
+                res.status(StatusCodes.CREATED).json({
                     success: true,
                     message: "Order Placed Successfully!",
                 });

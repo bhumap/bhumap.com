@@ -30,7 +30,7 @@ const Page = () => {
       <ul>
         {categories?.map((category, index) => (
           <li key={index}>
-            <Link href={`/category2/${category._id}`}>
+            <Link href={`/products/${category._id}`}>
               <Image
                 src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png"
                 alt={category.name}
