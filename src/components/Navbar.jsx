@@ -379,6 +379,12 @@ const Navbar = () => {
                         )}
                       </>
                     )}
+                    <Link href="/portal/orders">
+                            <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                              <i className="bx bx-basket text-xl mr-2"></i>
+                              <div className="text-sm">My Order</div>
+                            </div>
+                          </Link>
 
                     {(user?.userType === "Buyer" ||
                       user?.userType === "Seller") && (

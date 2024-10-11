@@ -2,6 +2,7 @@ import dbConnect from "@/src/backend/config/dbConnect";
 import OrdersModel from "@/src/backend/models/orders";
 import UsersModel from "@/src/backend/models/users";
 import ProductsModel from "@/src/backend/models/products";
+const { ObjectId } = require("mongoose").Types;
 import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { StatusCodes } from 'http-status-codes';
 import Joi from "joi";
@@ -138,7 +139,7 @@ export default async function(req, res) {
                         orderSubTotal = orderSubTotal + subOrder.subTotal
                         shipping = shipping + subOrder.shipping
                         gst = gst + subOrder.gst
-                        totalDishes = totalDishes + subDishes;
+                        totalDishes = totalDishes + subCarts;
                       }
         
                       return subOrder;

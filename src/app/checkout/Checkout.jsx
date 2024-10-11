@@ -9,6 +9,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
@@ -17,13 +18,13 @@ const Checkout = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [paymentMode,setPaymentMode] = useState("online")
 
-  const { data, isLoading, isError, refetch } = useQuery(
-    ["addresses"],
-    async () => {
-      var res = await axios.get(`/api/addresses`);
-      return res.data.message;
-    }
-  );
+  // const { data, isLoading, isError, refetch } = useQuery(
+  //   ["addresses"],
+  //   async () => {
+  //     var res = await axios.get(`/api/addresses`);
+  //     return res.data.message;
+  //   }
+  // );
 
   var [formData, setFormData] = useState({});
   const {
@@ -145,7 +146,21 @@ const Checkout = () => {
   };
 
   var [address, setAddress] = useState("");
-
+  var [utrNumber, setUtrNumber] = useState("");
+  var [formData, setFormData] = useState({
+    images: [{ secure_url: "", public_id: "" }],
+  });
+  const [formLoading, setFormLoading] = useState(false);
+  const saveChanges = async (data) => {
+    try {
+      setFormLoading(true);
+      console.log(data);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        console.log('done');
+    }
+};
   // Place Order
   const placeOrder = async () => {
     var id;
@@ -154,11 +169,15 @@ const Checkout = () => {
         toast.error("Please Select Address First!");
         return;
       }
-      var dishes = cartItems.map((v) => {
+      if(paymentMode == 'online' && !utrNumber) {
+        toast.error("Please Make Payment and Enter UTR Number For Place Order.");
+        return;
+      }
+      var subOrders = cartItems.map((v) => {
         return {
-          dish: v._id,
-          chef: v.chef._id,
-          price: v.price,
+          product_id: v._id,
+          vendor_id: v.vendor_id._id,
+          price: v.totalPrice,
           quantity: v.quantity,
         };
       });
@@ -166,7 +185,7 @@ const Checkout = () => {
       setLoading(true);
 
       id = toast.loading("Please wait...");
-      var res = await axios.post("/api/orders", { dishes, address,paymentMode });
+      var res = await axios.post("/api/orders", { subOrders, ...formData, address, paymentMode, utr_number: utrNumber });
 
       if (res.data.success) {
         toast.update(id, {
@@ -209,8 +228,17 @@ const Checkout = () => {
           <div className="rounded-md p-4 border bg-white">
             {/* All Address */}
             <div>
-              <h2 className="font-semibold text-xl mb-2">Select Address</h2>
-              <div className="flex flex-col mb-4 gap-4">
+              <h2 className="font-semibold text-xl mb-2">Shipping Details</h2>
+              <label htmlFor="utr-number" className="block text-sm font-medium text-gray-700">Enter Full Shipping Address</label>
+              <textarea
+                  type="text"
+                  id="address"
+                  name="address"
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+              />
+              {/* <div className="flex flex-col mb-4 gap-4">
                 {
                 data?.data.length ?
                 data?.data?.map((v, i) => {
@@ -270,7 +298,7 @@ const Checkout = () => {
                 className="text-primary border-primary border bg-primary/10 text-sm bg-primary-600 py-2 px-4 rounded-md"
               >
                 Add New Address
-              </button>
+              </button> */}
             </div>
 
 
@@ -323,27 +351,135 @@ const Checkout = () => {
                             id="utr-number"
                             name="utr-number"
                             required
+                            onChange={(e) => setUtrNumber(e.target.value)}
                             className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                         />
                         </div>
-                        <div>
-                        <label htmlFor="payment-screenshot" className="block text-sm font-medium text-gray-700">Upload Payment Screenshot</label>
-                        <input
-                            type="file"
-                            id="payment-screenshot"
-                            name="payment-screenshot"
-                            required
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                        />
+                        <div className={`relative col-span-2`}>
+                          <h2 className="font-semibold text-md mb-1">Upload Payment Screenshot</h2>
+
+
+                {formData.images.length ? (
+                    <div>
+                    {formData.images?.slice(1).map((v, i) => {
+                        const handleRemoveImage = (index) => {
+                            // Create a new array without the image at the selected index
+                            const updatedImages = formData.images.filter((_, idx) => idx !== index);
+                            setFormData({
+                                ...formData,
+                                images: updatedImages,
+                            });
+                        };
+                        
+                        return (
+                        <div
+                            key={i}
+                            className="rounded-md group overflow-hidden relative border"
+                        >
+                            <Image
+                            className="w-full h-full object-cover"
+                            src={v.secure_url}
+                            alt=""
+                            height="100"
+                            width="100"
+                            />
+                            <div className="hidden absolute top-0 left-0 w-full h-full bg-black/40 group-hover:flex justify-end items-end p-2">
+                            <i className="bx text-white hover:bg-black/50 p-1 rounded-md cursor-pointer bxs-trash" onClick={() => handleRemoveImage(i)}></i>
+                            </div>
                         </div>
-                        <input type="hidden" name="" id=""/>
+                        );
+                    })}
+
+                    {formData.images.length != 8 && (
+                        <CldUploadWidget
+                        options={{
+                            cropping: "server",
+                            cropping_aspect_ratio: 1.5 / 1,
+                        }}
+                        uploadPreset={
+                            process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+                        }
+                        onSuccess={(res) => {
+                            var imgs = formData.images;
+                            var croppedImageUrl = res.info?.secure_url;
+                            if (res?.info?.coordinates?.custom[0]) {
+                            const [x, y, width, height] =
+                                res?.info?.coordinates?.custom[0];
+                            var croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
+                            }
+
+                            imgs.push({
+                            public_id: res.info.public_id,
+                            secure_url: croppedImageUrl,
+                            });
+                            setFormData({ ...formData, images: imgs });
+                            saveChanges({ ...formData, images: imgs });
+                            document.body.style.overflow = "auto";
+                        }}
+                        >
+                        {({ open }) => {
+                            return (
+                            <label
+                                onClick={() => open()}
+                                htmlFor="images"
+                                className="rounded-md p-4 cursor-pointer hover:bg-gray-100 flex flex-col justify-center items-center group overflow-hidden relative border"
+                            >
+                                <i className="bx mb-2 bx-images"></i>
+                                <div>Select Images</div>
+                            </label>
+                            );
+                        }}
+                        </CldUploadWidget>
+                    )}
+                    </div>
+                ) : (
+                    <CldUploadWidget
+                    options={{
+                        cropping: "server",
+                        cropping_aspect_ratio: 1.5 / 1,
+                    }}
+                    uploadPreset={
+                        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+                    }
+                    onSuccess={(res) => {
+                        var imgs = formData.images;
+                        var croppedImageUrl = res.info?.secure_url;
+                        if (res?.info?.coordinates?.custom[0]) {
+                        const [x, y, width, height] =
+                            res?.info?.coordinates?.custom[0];
+                        var croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
+                        }
+                        imgs.push({
+                        public_id: res.info.public_id,
+                        secure_url: croppedImageUrl,
+                        });
+                        setFormData({ ...formData, images: imgs });
+                        saveChanges({ ...formData, images: imgs });
+                        document.body.style.overflow = "auto";
+                    }}
+                    >
+                    {({ open }) => {
+                        return (
+                        <label
+                            onClick={() => open()}
+                            htmlFor="images"
+                            className="border text-xl bg-primary/5 cursor-pointer hover:bg-primary/10 border-dashed rounded-md border-primary p-4 flex justify-center items-center"
+                        >
+                            <i className="bx mr-2 bx-images"></i> Select Images
+                        </label>
+                        );
+                    }}
+                    </CldUploadWidget>
+                )}
+                </div>
+                        {/* <input type="hidden" name="" id=""/>
                         <button
                         type="submit"
                         className="w-full bg-primary text-white py-3 rounded-md"
                         >
                         Submit
                         </button>
-                        Note : <small className="text-center">After Successfull Payment, You can proceed to checkout.</small>
+                        Note : <small className="text-center">After Successfull Payment, You can proceed to checkout.</small> */}
                     </form>
                     </div>
                 </div>
