@@ -26,9 +26,9 @@ const CartSideBar = () => {
     // Count items and unique chef IDs
     cartItems.forEach((item) => {
       totalCount += item.quantity;
-      uniqueChefIds.add(item.chef._id); // Add chef ID to the set
+      uniqueChefIds.add(item._id); // Add ID to the set
     });
-
+    console.log(cartItems.length);
     // Calculate delivery charges based on unique chef count
     const uniqueChefCount = uniqueChefIds.size;
     const deliveryCharges = uniqueChefCount * parseInt(process.env.NEXT_PUBLIC_SHIPPING_COST);
@@ -77,7 +77,7 @@ const CartSideBar = () => {
                     <div className="w-20 borer">
                       <Image
                         width={600}
-                        height={400}
+                        height={600}
                         className="aspect-video object-cover w-full border bg-gray-100 rounded-[.25rem]"
                         src={v?.images[0]?.secure_url || "/images/image.png"}
                         alt=""
@@ -86,12 +86,18 @@ const CartSideBar = () => {
                     <div className="flex-1">
                       <div className="flex flex-col mb-2 items-start gap-1">
                         <div className="flex w-full justify-between">
-                          <p className="line-clamp-2">{v.title}</p>
-                          <p className="whitespace-nowrap">₹ {v.price}</p>
+                          <p className="line-clamp-2">{v.name}</p>
+                          <p className="whitespace-nowrap">Single {v.uom} : ₹ {v.price}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col mb-2 items-start gap-1">
+                        <div className="flex w-full justify-between">
+                          <p className="line-clamp-2">Min. Order Quantity : {v.min_qty}</p>
+                          {/* <p className="whitespace-nowrap">₹ {v.price}</p> */}
                         </div>
                       </div>
                       <p className="whitespace-nowrap font-medium">
-                        Subtotal ({v.quantity} {v.quantity >= 2 ? "items" : "item"}): ₹ {v.price * v.quantity}
+                        Subtotal ({v.quantity} {v.min_qty >= 2 ? "items" : "item"}): ₹ {(v.price * v.min_qty) * v.quantity}
                       </p>
                     </div>
                   </div>

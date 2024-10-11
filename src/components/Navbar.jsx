@@ -287,7 +287,7 @@ const Navbar = () => {
           <div onClick={()=>setShowSideCart(true)} className="block mt-2 md:inline-block relative cursor-pointer">
               <i className={`text-3xl text-black bx bx-cart`}></i>
               <div className="absolute bg-primary top-0 right-0 translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex justify-center items-center text-xs text-white">
-                0
+                {cartItems.length | 0}
               </div>
           </div>
           <div className="relative">
