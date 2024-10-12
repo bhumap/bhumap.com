@@ -1,12 +1,12 @@
 "use client";
 
 import ListPropertyForm2 from '@/src/components/ListPropertyForm2'
-import axios from 'axios'
+import axios from 'axios';
 
 
 var fetchPropertyByID = async (id) =>{
   try {
-    var res = await axios.get(`https://www.bhumap.com/api/listing/${id}`)
+    var res = await axios.get(`http://localhost:3000/api/listing/${id}`)
     return res.data.message
   } catch (error) {
     console.log(error)

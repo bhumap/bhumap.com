@@ -18,7 +18,7 @@ const Page = () => {
         try {
           setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/rewards`
+            `http://localhost:3000/api/rewards`
           );
           console.log('---------------->',res);
           setData(res.data.message.data);

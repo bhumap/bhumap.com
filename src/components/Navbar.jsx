@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
+import { CartContext } from "@/src/context/CartContext";
 import axios from "axios";
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
   var [open, setOpen] = useState(false);
   var [layer, setLayer] = useState(false);
   var [showProfile, setShowProfile] = useState(false);
-
+  const {cartItems,setShowSideCart} = useContext(CartContext);
   const { user } = useContext(AuthContext);
 
   console.log(user?.userType);
@@ -96,7 +97,7 @@ const Navbar = () => {
           } duration-500 transition-all absolute top-0 left-0 w-[100%] z-10 bg-black/50 backdrop-blur-sm h-[100vh] md:hidden`}
         ></div>
 
-        <div className="flex gap-12 items-center">
+        <div className="flex gap-7 items-center">
           <div
             className={`${
               open ? "translate-x-0" : "translate-x-[-100%]"
@@ -239,6 +240,20 @@ const Navbar = () => {
               </>
             )}
 
+            {user && (
+              <>
+                {user.userType === "Vendor" && (
+                  <Link
+                    className="px-2 py-1 bg-primary text-white border rounded-md border-primary md:inline-block"
+                    href="/portal/products"
+                  >
+                    Products List
+                  </Link>
+                )}
+              </>
+            )}
+
+
             {user && user.userType === "Admin" && (
               <label className="relative block p-2 group md:inline-block">
                 <Link href="/portal/admin">
@@ -269,7 +284,12 @@ const Navbar = () => {
               </label>
             )}
           </div>
-
+          <div onClick={()=>setShowSideCart(true)} className="block mt-2 md:inline-block relative cursor-pointer">
+              <i className={`text-3xl text-black bx bx-cart`}></i>
+              <div className="absolute bg-primary top-0 right-0 translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex justify-center items-center text-xs text-white">
+                {cartItems.length | 0}
+              </div>
+          </div>
           <div className="relative">
             {!user ? (
               <div className="flex gap-2">
@@ -359,6 +379,12 @@ const Navbar = () => {
                         )}
                       </>
                     )}
+                    <Link href="/portal/orders">
+                            <div className="flex items-center hover:bg-gray-100 px-4 py-2">
+                              <i className="bx bx-basket text-xl mr-2"></i>
+                              <div className="text-sm">My Order</div>
+                            </div>
+                          </Link>
 
                     {(user?.userType === "Buyer" ||
                       user?.userType === "Seller") && (

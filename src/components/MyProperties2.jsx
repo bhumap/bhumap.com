@@ -19,7 +19,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       e.preventDefault();
-      var { data } = await axios.post("https://www.bhumap.com/api/listing", {
+      var { data } = await axios.post("http://localhost:3000/api/listing", {
         title: propertyTitle,
       });
       if (data.success) {

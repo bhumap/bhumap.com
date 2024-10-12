@@ -1,23 +1,43 @@
-import React from "react";
+"use client"
+import React, { useState, useEffect } from "react";
 import { buildingMaterials } from "@/src/data";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 
 const Page = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/categories?page=${1}&&limit=${50}`);
+        setCategories(response.data.message.data);
+      } catch (err) {
+        setError("Failed to load packages.");
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="category2-box">
       <h1 className="heading">A WIDE RANGE OF BUILDING MATERIALS</h1>
       <ul>
-        {buildingMaterials?.map((material, index) => (
+        {categories?.map((category, index) => (
           <li key={index}>
-            <Link href={material.url}>
+            <Link href={`/products/${category._id}`}>
               <Image
-                src={material.imageUrl}
-                alt={material.name}
+                src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png"
+                alt={category.name}
                 width={40}
                 height={40}
               />
-              {material.name}
+              {category.name}
             </Link>
           </li>
         ))}

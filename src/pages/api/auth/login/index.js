@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
     // Generating Access Token
     const AccessToken = await GenAccessToken({
-      id: foundUser._id,
+      id: foundUser._id
     });
 
     // setting Cookies

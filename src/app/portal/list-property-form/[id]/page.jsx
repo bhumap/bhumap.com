@@ -4,7 +4,7 @@ import React from 'react'
 
 var fetchPropertyByID = async (id) =>{
   try {
-    var res = await axios.get(`https://www.bhumap.com/api/properties/${id}`)
+    var res = await axios.get(`http://localhost:3000/api/properties/${id}`)
     return res.data.message
   } catch (error) {
     console.log(error)

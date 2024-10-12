@@ -13,6 +13,8 @@ import "slick-carousel/slick/slick-theme.css";
 import img1 from "@/public/images/pla1.webp"
 import Image from "next/image";
 
+import { useContext } from "react";
+import { CartContext } from "@/src/context/CartContext";
 
 const PrevArrow = ({ className, style, onClick }) => (
   <div
@@ -35,6 +37,7 @@ const NextArrow = ({ className, style, onClick }) => (
 );
 
 const Card = ({ property }) => {
+  var { addToCart } = useContext(CartContext);
   if (!property || property.length === 0) {
     return (
       <div className="no-data">
@@ -52,7 +55,6 @@ const Card = ({ property }) => {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
-
   return (
     <>
       {property.map((property, index) => (
@@ -90,10 +92,10 @@ const Card = ({ property }) => {
           <div className="title-main-box p-4">
             <div>
               <h4 className="font-semibold line-clamp-3 overflow-string">
-                {property.title}
+                {property.name}
               </h4>
               <p className="text-sm address">
-                {property.address?.cityTown}, {property.address?.district},{" "}
+                {property.vendor_id?.fullName}, {property.vendor_id?.address},{" "}
                 {property.address?.zipCode}
               </p>
               <p className="mt-1 price-title">
@@ -101,31 +103,34 @@ const Card = ({ property }) => {
                 {property.purpose}
               </p>
               <p className="text-sm square">
-                {property.minOrder} pieces (Min. order)
+                <strong>Min. Quantity Order : </strong>{property.min_qty} {property.uom}
               </p>
 
               <Link
-                href={property.company}
+                href="#"
                 target="_blank"
                 className="text-sm company-pvt"
               >
                 {property.company}
               </Link>
 
-              <p className="text-sm square">Gst No. ({property.gst})</p>
-
+              {/* <p className="text-sm square">Gst No. ({property.gst})</p> */}
+{/* 
               <p className="whitespace-nowrap mt-2">
                 <i className="bx bxs-star"></i> 4.9
-              </p>
+              </p> */}
 
-              <a href={`tel:${property.phone}`}>
+              <a href={`tel:${property?.vendor_id?.phone}`}>
                 <button className="contact contact1">Contact</button>
               </a>
-              <h2>Verified</h2>
+              <h2>{property?.vendor_id.isApproved}</h2>
             </div>
             <div>
               <a href={`tel:${property.phone}`}>
                 <button className="contact contact2">Contact</button>
+              </a> &nbsp;
+              <a>
+                <button onClick={() => addToCart(property)} className="contact contact2 text-white duration-300 hover:bg-primary hover:text-gray-800"><i className="bx bx-cart mr-2"></i>Add to Cart</button>
               </a>
             </div>
           </div>

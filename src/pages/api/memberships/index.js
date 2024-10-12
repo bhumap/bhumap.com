@@ -48,7 +48,7 @@ export default async function(req, res) {
                         message: 'Membership Already Active'
                     })
                 }
-console.log('value', value)
+
             const memberShip = new MembershipModel(value)
             await memberShip.save();
 

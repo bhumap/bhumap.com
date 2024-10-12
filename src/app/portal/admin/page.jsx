@@ -33,7 +33,7 @@ const Page = () => {
 
     var id = toast.loading("Please wait...");
     try {
-      const res = await axios.post("https://www.bhumap.com/api/payment", formData);
+      const res = await axios.post("http://localhost:3000/api/payment", formData);
 
       if (res.data.success) {
         toast.update(id, {

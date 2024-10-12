@@ -24,7 +24,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/users`
+            `http://localhost:3000/api/users`
           );
           setUser(res.data.message.data);
         } catch (error) {
@@ -53,7 +53,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/users",
+        "http://localhost:3000/api/users",
         formData
       );
 
@@ -90,7 +90,7 @@ const Page = () => {
       }
 
       const res = await axios.delete(
-        `https://www.bhumap.com/api/payment/${paymentId}`
+        `http://localhost:3000/api/payment/${paymentId}`
       );
       if (res.data.success) {
         toast.success(res.data.message);

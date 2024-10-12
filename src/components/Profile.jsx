@@ -7,10 +7,9 @@ import { format } from 'date-fns';
 
 const Profile = () => {
   const { user, membership } = useContext(AuthContext);
-  console.log('lllll',membership);
-  // Copy referral code to clipboard
+
   const copyToClipboard = () => {
-    const referralUrl = `https://www.bhumap.com/register?referral=${user?.referral_code}`;
+    const referralUrl = `http://localhost:3000/register?referral=${user?.referral_code}`;
     navigator.clipboard.writeText(referralUrl)
       .then(() => {
         toast.success("Referral code copied to clipboard!", {
