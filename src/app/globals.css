@@ -388,10 +388,11 @@ input[type="number"] {
     white-space: pre-wrap;
   }
   .contact1 {
-    display: block;
+    display: none;
   }
   .contact2 {
-    display: none;
+    /* display: none; */
+    margin-bottom: 5px;
   }
   .company-pvt {
     display: none;

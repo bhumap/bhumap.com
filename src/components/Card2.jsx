@@ -127,7 +127,7 @@ const Card = ({ property }) => {
             </div>
             <div>
               <a href={`tel:${property.phone}`}>
-                <button className="contact contact2">Contact</button>
+                <button className="contact contact2 ml-1">Contact</button>
               </a> &nbsp;
               <a>
                 <button onClick={() => addToCart(property)} className="contact contact2 text-white duration-300 hover:bg-primary hover:text-gray-800"><i className="bx bx-cart mr-2"></i>Add to Cart</button>
