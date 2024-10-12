@@ -189,7 +189,7 @@ const ListPropertyForm = ({ property }) => {
     try {
       setFormLoading(true);
       var res = await axios.put(
-        `http://localhost:3000/api/listing/${formData._id}`,
+        `https://www.bhumap.com/api/listing/${formData._id}`,
         { ...data, center }
       );
       if (res.data.success) {
@@ -214,7 +214,7 @@ const ListPropertyForm = ({ property }) => {
       }
 
       var res = await axios.put(
-        `http://localhost:3000/api/listing/${formData._id}`,
+        `https://www.bhumap.com/api/listing/${formData._id}`,
         { ...formData, status: "Published", center }
       );
       if (res.data.success) {
@@ -232,7 +232,7 @@ const ListPropertyForm = ({ property }) => {
       return;
     }
     try {
-      var res = await axios.delete(`http://localhost:3000/api/listing/${id}`);
+      var res = await axios.delete(`https://www.bhumap.com/api/listing/${id}`);
       if (res.data.success) {
         toast.success(res.data.message);
         router.push("/portal/my-properties2");

@@ -24,7 +24,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `http://localhost:3000/api/orders`
+            `https://www.bhumap.com/api/orders`
           );
           setOrderData(res.data.message.data);
         } catch (error) {

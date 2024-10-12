@@ -25,7 +25,7 @@ const Page = ({ params }) => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/categories?page=${1}&&limit=${50}`);
+                const response = await axios.get(`https://www.bhumap.com/api/categories?page=${1}&&limit=${50}`);
                 setCategories(response.data.message.data);
             } catch (error) {
                 setCategories([]);
@@ -34,7 +34,7 @@ const Page = ({ params }) => {
 
         const fetchProduct = async (id) => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/products/${id}`);
+                const response = await axios.get(`https://www.bhumap.com/api/products/${id}`);
                 setProduct(response.data.data);
                 const {_id, ...restProductDetails} = response.data.data;
                 setFormData({...formData, ...restProductDetails});
@@ -66,7 +66,7 @@ const Page = ({ params }) => {
         };
         var id = toast.loading("Please wait...");
         try {
-            const res = await axios.put(`http://localhost:3000/api/products/${params.id}`, updatedFormData);
+            const res = await axios.put(`https://www.bhumap.com/api/products/${params.id}`, updatedFormData);
             if (res.data.success) {
                 toast.update(id, {
                   render: res.data.message,

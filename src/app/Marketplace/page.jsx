@@ -12,7 +12,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/categories?page=${1}&&limit=${50}`);
+        const response = await axios.get(`https://www.bhumap.com/api/categories?page=${1}&&limit=${50}`);
         setCategories(response.data.message.data);
       } catch (err) {
         setError("Failed to load packages.");

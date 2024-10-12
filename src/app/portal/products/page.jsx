@@ -18,7 +18,7 @@ const Page = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/api/products?page=${1}&limit=${10}`);
+          const response = await axios.get(`https://www.bhumap.com/api/products?page=${1}&limit=${10}`);
           setProducts(response.data.message.data);
         } catch (err) {
           setError("Failed to load packages.");

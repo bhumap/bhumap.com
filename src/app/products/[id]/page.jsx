@@ -11,7 +11,7 @@ const Page = async ({params}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/products?category_id=${params.id}`);
+        const response = await axios.get(`https://www.bhumap.com/api/products?category_id=${params.id}`);
         console.log(response.data.message.data);
         setProducts(response.data.message.data);
       } catch (err) {
