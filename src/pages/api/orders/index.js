@@ -237,14 +237,14 @@ export default async function(req, res) {
                     message: "Order Placed Successfully!",
                 });
             } catch (error) {
-                if (err.code === 11000) {
+                if (error.code === 11000) {
                     return res.status(StatusCodes.CONFLICT).json({
                       success: false,
-                      message: `${Object.keys(err.keyPattern)[0]} is already in used!`,
+                      message: `${Object.keys(error.keyPattern)[0]} is already in used!`,
                     });
                   }
           
-                  let requiredFildName = Object.keys(err.errors)[0];
+                  let requiredFildName = Object.keys(error.errors)[0];
 
                   if (requiredFildName) {
                     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -255,7 +255,7 @@ export default async function(req, res) {
           
                   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     success: false,
-                    message: err.message,
+                    message: error.message,
                   });
             }
             break;
