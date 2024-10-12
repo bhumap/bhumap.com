@@ -38,7 +38,7 @@ const Page = () => {
             <div>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-slate-700 font-semibold text-xl">
-                    Product's
+                    Products
                 </h2>
                 <a href="./products/add"
                     className="bg-primary text-white font-bold py-2 px-4 rounded ml-auto">
