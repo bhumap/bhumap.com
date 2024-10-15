@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,15 +7,36 @@ import { AuthContext } from "@/src/context/AuthContext";
 import Link from "next/link";
 
 const Page = () => {
-  const { refetch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
   const [paymenData, setpaymenData] = useState(null);
+  const [users, setUser] = useState(null);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     user: "",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user && user._id) {
+        try {
+          // setFetching(true);
+          const res = await axios.get(
+            `https://www.bhumap.com/api/users`
+          );
+          setUser(res.data.message.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          // setFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   const changeHandler = (e) => {
     const name = e.target.name;
@@ -32,7 +53,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/manageUser",
+        "https://www.bhumap.com/api/users",
         formData
       );
 
@@ -87,98 +108,71 @@ const Page = () => {
 
   return (
     <>
-      <div className="w-full rounded-lg md:mt-0 max-w-3xl xl:p-0">
-        <div className="p-2 space-y-2 md:space-y-6">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Search User
-          </h1>
-          <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
-            <div>
-              <label
-                htmlFor="user"
-                className="block mb-2 text-sm font-medium text-gray-900"
+      <div className="w-full max-w-3xl mx-auto mt-15 bg-white rounded-lg p-6">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-6">Manage User</h1>
+        <form className="space-y-4" onSubmit={submitHandler}>
+          <div>
+            <label htmlFor="user" className="block mb-2 text-base font-medium text-gray-800">
+              Enter Phone or Username
+            </label>
+            <div className="flex gap-4">
+              <input
+                type="text"
+                name="user"
+                id="user"
+                placeholder="Enter Phone or Username"
+                className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-gray-50 border border-gray-300 rounded-full shadow-sm focus:ring-primary-500 focus:border-primary-500 transition duration-300 ease-in-out"
+                required={true}
+                onChange={changeHandler}
+                disabled={loading}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className={`px-6 py-3 text-base bg-primary font-semibold text-white transition duration-300 ease-in-out ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary-500 hover:bg-primary-600"} rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-400 disabled:opacity-50`}
               >
-                Enter Phone or Username
-              </label>
-              <div className="user-search-box">
-                <input
-                  type="text"
-                  name="user"
-                  id="user"
-                  placeholder="Enter Phone or Username"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 m-auto"
-                  required={true}
-                  onChange={changeHandler}
-                  disabled={loading}
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="disabled:cursor-not-allowed disabled:opacity-50 text-white bg-primary bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                >
-                  {loading ? "Processing..." : "Search"}
-                </button>
-              </div>
+                {loading ? "Processing..." : "Search"}
+              </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
 
-      <section className="flex flex-col items-center justify-center py-4 mx-auto">
-        <div className="w-full rounded-lg">
-          <div className="p-2 space-y-2 ">
-            <div className="payment-box">
-              <div className="payment-head payment-main">
-                <div className="payment-title payment-head1">
-                  <h4>Name</h4>
-                </div>
-                <div className="payment-title payment-head1">
-                  <h4>Package</h4>
-                </div>
-                <div className="payment-title payment-head1">
-                  <h4>Amount</h4>
-                </div>
-                <div className="payment-title payment-head1">
-                  <h4>Update & Delete</h4>
-                </div>
-              </div>
-
-              {paymenData?.map((e, i) => (
-                <div className="payment-head" key={e._id}>
-                  <div className="payment-title">
-                    <h4>{e.Buyer_name}</h4>
-                  </div>
-                  <div className="payment-title">
-                    <h4>{e.Package_Name}</h4>
-                  </div>
-                  <div className="payment-title">
-                    <h4>{e.Amount}</h4>
-                  </div>
-                  <div className="payment-title">
-                    <h4>
-                      <button
-                        onClick={() => handleDelete(e._id)}
-                        className="text-red-500 hover:text-red-700 mr-2"
-                      >
-                        Delete
-                      </button>
-
-                      <Link
-                        className="text-blue-500 hover:text-blue-700"
-                        href={`/update/${e._id}`}
-                    
-                      >
-                        Update
-                      </Link>
-                    </h4>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <section className="w-full py-5">
+        <div className="max-w-6xl mx-auto bg-white border-t-2 p-6">
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border">
+              <thead className="text-left">
+                <tr className="text-gray-600 bg-gray-100">
+                  <th className="py-3 px-5 text-sm font-semibold">Name</th>
+                  <th className="py-3 px-5 text-sm font-semibold">User Type</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Referral Code</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Address</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Email</th>
+                  <th className="py-3 px-5 text-sm font-semibold">Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users?.map((user, i) => (
+                  <tr
+                    key={user._id}
+                    className={`border-b ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 transition-all`}
+                  >
+                    <td className="py-4 px-5 text-gray-800">{user.fullName}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.userType}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.refral_code || 'N/A'}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.address}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.email.value || 'N/A'}</td>
+                    <td className="py-4 px-5 text-gray-600">{user.phone.value || 'N/A'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
     </>
+
   );
 };
 

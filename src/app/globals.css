@@ -346,7 +346,7 @@ input[type="number"] {
     margin-top: 25px;
   }
   .contact {
-    padding: 6px 25px;
+    padding: 6px 16px;
     border: 1px solid rgb(210 103 72);
     color: rgb(210 103 72);
     border-radius: 50px;
@@ -388,10 +388,11 @@ input[type="number"] {
     white-space: pre-wrap;
   }
   .contact1 {
-    display: block;
+    display: none;
   }
   .contact2 {
-    display: none;
+    /* display: none; */
+    margin-bottom: 5px;
   }
   .company-pvt {
     display: none;

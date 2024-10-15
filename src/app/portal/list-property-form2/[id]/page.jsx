@@ -1,7 +1,7 @@
 "use client";
 
 import ListPropertyForm2 from '@/src/components/ListPropertyForm2'
-import axios from 'axios'
+import axios from 'axios';
 
 
 var fetchPropertyByID = async (id) =>{

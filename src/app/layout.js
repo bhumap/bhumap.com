@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 // In app directory
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import Context from "@/src/context/AuthContext";
+import CartProvider from "@/src/context/CartContext";
 // import {DM_Sans} from 'next/font/google'
 
 
@@ -45,11 +46,14 @@ export default function RootLayout({ children }) {
         
           <QueryClientProvider client={queryClient}>
             <Context>
+              <CartProvider>
               <Navbar />
               <ToastContainer />
+              
               <Toaster />
               <main className="min-h-[92vh]">{children}</main>
               <Footer />
+              </CartProvider>
             </Context>
           </QueryClientProvider>
       </body>

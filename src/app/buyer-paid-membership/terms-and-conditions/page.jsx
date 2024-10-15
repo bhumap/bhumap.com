@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 const Page = () => {
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const package_id = searchParams.get("id");
   const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = (event) => {
@@ -77,7 +79,7 @@ const Page = () => {
           </div>
           <button
             disabled={!isChecked}
-            onClick={() => router.push("/buyer-paid-membership/scan-code")}
+            onClick={() => router.push(`/buyer-paid-membership/scan-code?id=${package_id}`)}
             className={`${isChecked ? "bg-primary cursor-pointer" : "bg-primary/30 cursor-not-allowed"
               } border cursor-pointer  rounded-[.25rem] text-white font-medium text-xs sm:text-sm p-2 sm:px-6 mt-3`}
           >
