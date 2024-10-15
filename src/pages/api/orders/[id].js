@@ -1,5 +1,6 @@
 import dbConnect from "@/src/backend/config/dbConnect";
 import OrdersModel from "@/src/backend/models/orders";
+import ProductsModel from "@/src/backend/models/products";
 import UsersModel from "@/src/backend/models/users";
 const { ObjectId } = require("mongoose").Types;
 import { JWTVerify } from "@/src/backend/helpers/jwt";
@@ -85,6 +86,8 @@ export default async function(req, res) {
                     });
                 }
 
+                order.subOrders = order.subOrders.filter(subOrder => subOrder.vendor_id.equals(userID));
+                  
                 res.status(StatusCodes.OK).json({
                     success: true,
                     message: 'Order fetch Successfully!',
