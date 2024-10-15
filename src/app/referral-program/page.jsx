@@ -3,12 +3,13 @@
 import React, { useContext } from "react";
 import { AuthContext } from "@/src/context/AuthContext";
 import { toast } from "react-toastify";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const { user } = useContext(AuthContext);
 
   const copyToClipboard = () => {
-    const referralUrl = `https://www.bhumap.com/register?referral=${user?.referral_code}`;
+    const referralUrl = `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}register?referral=${user?.referral_code}`;
     navigator.clipboard.writeText(referralUrl)
       .then(() => {
         toast.success('Referral code copied to clipboard!', {

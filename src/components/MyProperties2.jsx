@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../context/AuthContext";
+import { isDev } from "@/src/backend/helpers/util";
 
 const MyProperties = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       e.preventDefault();
-      var { data } = await axios.post("https://www.bhumap.com/api/listing", {
+      var { data } = await axios.post(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/listing`, {
         title: propertyTitle,
       });
       if (data.success) {

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "@/src/context/AuthContext";
 import axios from "axios";
 import { format } from 'date-fns';
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const Page = () => {
         try {
           setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/rewards`
+            `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/rewards`
           );
           console.log('---------------->',res);
           setData(res.data.message.data);

@@ -67,6 +67,12 @@ const ordersSchema = new mongoose.Schema({
         required: true,
         enum: ["online", "cashOnDelivery"],
     },
+    payment_status: {
+      type: String,
+      required: true,
+      default: "pending",
+      enum: ["pending", "success", "cancel"],
+    },
     orderId: {
         type: String,
         required: true,

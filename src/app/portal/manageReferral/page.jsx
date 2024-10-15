@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const { refetch } = useContext(AuthContext);
@@ -14,7 +15,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/users`
+            `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/users`
           );
           setUser(res.data.message.data);
         } catch (error) {
@@ -28,7 +29,7 @@ const Page = () => {
       try {
         // setFetching(true);
         const res = await axios.get(
-          `https://www.bhumap.com/api/packages`
+          `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/packages`
         );
         setPackages(res.data.message.data);
       } catch (error) {
@@ -69,7 +70,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/memberships",
+        "`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/memberships",
         updatedFormData
       );
 

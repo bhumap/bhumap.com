@@ -26,8 +26,53 @@ export default async function(req, res) {
                 var user = await UsersModel.findById(userID);
         
                 var orders;
+
+                if (user.userType === "Admin") {
+                  orders = await OrdersModel.find({})
+                    .populate({ path: "user", model: UsersModel, select: 'fullName address userType phone'})
+                    .populate({ path: "subOrders.carts.product_id", model: ProductsModel })
+                    .sort({createdAt:-1});
+
+                  orders = orders.map((order) => {
+                    let orderSubTotal = 0;
+                    let shipping = 0;
+                    let gst = 0;
         
-                if (user.userType == "Vendor") {
+                    let totalDishes = 0;
+        
+                    order.subOrders = order.subOrders.map((subOrder) => {
+                      let subTotal = 0;
+                      let subCarts = 0;
+        
+                      subOrder.carts.map((cart) => {
+                        subTotal = subTotal + cart.quantity * cart.price;
+                        subCarts = subCarts + cart.quantity;
+                      });
+                      
+                      subOrder._doc.subTotal = subTotal;
+                      subOrder._doc.subCarts = subCarts;
+        
+                      if((subOrder.status != "Cancelled") && (subOrder.status != "Rejected")){
+                        orderSubTotal = orderSubTotal + subOrder.subTotal
+                        shipping = shipping + subOrder.shipping
+                        gst = gst + subOrder.gst
+                        totalDishes = totalDishes + subCarts;
+                      }
+        
+                      return subOrder;
+                    });
+        
+                    order._doc.shipping = shipping;
+                    order._doc.subTotal = orderSubTotal;
+                    order._doc.gst = gst;
+                    order._doc.total = shipping + orderSubTotal + gst;
+                    order._doc.totalDishes = totalDishes;
+                    
+                    return order;
+                  });
+
+                }
+                else if (user.userType == "Vendor") {
                   orders = await OrdersModel.aggregate([
                     {
                       $unwind: "$subOrders",
@@ -89,6 +134,8 @@ export default async function(req, res) {
                         user: {
                           _id: "$user._id",
                           fullName: "$user.fullName",
+                          userType: "$user.userType",
+                          payment_status: "$user.payment_status",
                           phone: "$user.phone",
                           photo: "$user.photo",
                         },
@@ -112,7 +159,8 @@ export default async function(req, res) {
                   ]);
                 } else {
                   orders = await OrdersModel.find({ user: new ObjectId(userID) })
-                    .populate({ path: "subOrders.vendor_id", model: UsersModel })
+                    .populate({ path: "subOrders.vendor_id", model: UsersModel, select: 'fullName address userType' })
+                    .populate({ path: "user", model: UsersModel, select: 'fullName address userType phone' })
                     .populate({ path: "subOrders.carts.product_id", model: ProductsModel })
                     .sort({createdAt:-1})
         

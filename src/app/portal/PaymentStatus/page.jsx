@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "@/src/context/AuthContext";
 import axios from "axios";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const { user } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const Page = () => {
         try {
           setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/payment?userId=${user._id}`
+            `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/payment?userId=${user._id}`
           );
           setData(res.data);
 

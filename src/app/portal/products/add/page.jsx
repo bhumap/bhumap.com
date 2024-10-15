@@ -7,6 +7,8 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import axios from 'axios';
 import { AuthContext } from "@/src/context/AuthContext";
+import { isDev } from "@/src/backend/helpers/util";
+
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -34,7 +36,7 @@ const Page = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`https://www.bhumap.com/api/categories?page=${1}&&limit=${50}`);
+            const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/categories?page=${1}&&limit=${50}`);
             setCategories(response.data.message.data);
           } catch (err) {
             // setError("Failed to load packages.");
@@ -56,7 +58,7 @@ const Page = () => {
         };
         var id = toast.loading("Please wait...");
         try {
-            const res = await axios.post('https://www.bhumap.com/api/products', updatedFormData);
+            const res = await axios.post(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/products`, updatedFormData);
             if (res.data.success) {
                 toast.update(id, {
                   render: res.data.message,

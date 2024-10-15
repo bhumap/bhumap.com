@@ -5,6 +5,7 @@ import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import Image from "next/image";
 import axios from 'axios';
 import { toast } from "react-toastify";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = ({ params }) => {
     const [categories, setCategories] = useState([]);
@@ -25,7 +26,7 @@ const Page = ({ params }) => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await axios.get(`https://www.bhumap.com/api/categories?page=${1}&&limit=${50}`);
+                const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/categories?page=${1}&&limit=${50}`);
                 setCategories(response.data.message.data);
             } catch (error) {
                 setCategories([]);
@@ -34,7 +35,7 @@ const Page = ({ params }) => {
 
         const fetchProduct = async (id) => {
             try {
-                const response = await axios.get(`https://www.bhumap.com/api/products/${id}`);
+                const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/products/${id}`);
                 setProduct(response.data.data);
                 const {_id, ...restProductDetails} = response.data.data;
                 setFormData({...formData, ...restProductDetails});
@@ -66,7 +67,7 @@ const Page = ({ params }) => {
         };
         var id = toast.loading("Please wait...");
         try {
-            const res = await axios.put(`https://www.bhumap.com/api/products/${params.id}`, updatedFormData);
+            const res = await axios.put(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/products/${params.id}`, updatedFormData);
             if (res.data.success) {
                 toast.update(id, {
                   render: res.data.message,
