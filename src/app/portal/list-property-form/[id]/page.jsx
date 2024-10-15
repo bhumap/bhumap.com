@@ -1,10 +1,11 @@
 import ListPropertyForm from '@/src/components/ListPropertyForm'
 import axios from 'axios'
 import React from 'react'
+import { isDev } from "@/src/backend/helpers/util";
 
 var fetchPropertyByID = async (id) =>{
   try {
-    var res = await axios.get(`https://www.bhumap.com/api/properties/${id}`)
+    var res = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/properties/${id}`)
     return res.data.message
   } catch (error) {
     console.log(error)

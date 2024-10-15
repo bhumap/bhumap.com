@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faIndianRupeeSign, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +19,7 @@ const Page = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`https://www.bhumap.com/api/products?page=${1}&limit=${10}`);
+          const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/products?page=${1}&limit=${10}`);
           setProducts(response.data.message.data);
         } catch (err) {
           setError("Failed to load packages.");

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from 'next/image';
 import axios from "axios";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const [packages, setPackages] = useState([]);
@@ -12,7 +13,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://www.bhumap.com/api/packages");
+        const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/packages`);
         setPackages(response.data.message.data);
       } catch (err) {
         setError("Failed to load packages.");

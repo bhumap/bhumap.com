@@ -3,6 +3,7 @@ import PropertyCardsGrid from "../../../components/PropertyCardsGrid2";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = async ({params}) => {
   const [products, setProducts] = useState([]);
@@ -11,7 +12,7 @@ const Page = async ({params}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://www.bhumap.com/api/products?category_id=${params.id}`);
+        const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/products?category_id=${params.id}`);
         console.log(response.data.message.data);
         setProducts(response.data.message.data);
       } catch (err) {

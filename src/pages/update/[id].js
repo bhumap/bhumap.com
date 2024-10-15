@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "@/src/app/globals.css";
+import { isDev } from "@/src/backend/helpers/util";
 
 const UpdatePaymentPage = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const UpdatePaymentPage = () => {
   const fetchPaymentDetails = async (paymentId) => {
     try {
       const res = await axios.get(
-        `https://www.bhumap.com/api/payment/${paymentId}`
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/payment/${paymentId}`
       );
       if (res.data.success) {
         setPaymentData(res.data.payment);
@@ -48,7 +49,7 @@ const UpdatePaymentPage = () => {
 
     try {
       const res = await axios.put(
-        `https://www.bhumap.com/api/payment/${id}`,
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/payment/${id}`,
         updatedData
       );
       if (res.data.success) {

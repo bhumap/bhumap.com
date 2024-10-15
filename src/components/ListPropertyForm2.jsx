@@ -8,6 +8,7 @@ import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import "next-cloudinary/dist/cld-video-player.css";
+import { isDev } from "@/src/backend/helpers/util";
 
 const ListPropertyForm = ({ property }) => {
   console.log(property);
@@ -189,7 +190,7 @@ const ListPropertyForm = ({ property }) => {
     try {
       setFormLoading(true);
       var res = await axios.put(
-        `https://www.bhumap.com/api/listing/${formData._id}`,
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/listing/${formData._id}`,
         { ...data, center }
       );
       if (res.data.success) {
@@ -214,7 +215,7 @@ const ListPropertyForm = ({ property }) => {
       }
 
       var res = await axios.put(
-        `https://www.bhumap.com/api/listing/${formData._id}`,
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/listing/${formData._id}`,
         { ...formData, status: "Published", center }
       );
       if (res.data.success) {
@@ -232,7 +233,7 @@ const ListPropertyForm = ({ property }) => {
       return;
     }
     try {
-      var res = await axios.delete(`https://www.bhumap.com/api/listing/${id}`);
+      var res = await axios.delete(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/listing/${id}`);
       if (res.data.success) {
         toast.success(res.data.message);
         router.push("/portal/my-properties2");

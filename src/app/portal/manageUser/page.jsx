@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/src/context/AuthContext";
 import Link from "next/link";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const { user } = useContext(AuthContext);
@@ -24,7 +25,7 @@ const Page = () => {
         try {
           // setFetching(true);
           const res = await axios.get(
-            `https://www.bhumap.com/api/users`
+            `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/users`
           );
           setUser(res.data.message.data);
         } catch (error) {
@@ -53,7 +54,7 @@ const Page = () => {
     var id = toast.loading("Please wait...");
     try {
       const res = await axios.post(
-        "https://www.bhumap.com/api/users",
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/users`,
         formData
       );
 
@@ -90,7 +91,7 @@ const Page = () => {
       }
 
       const res = await axios.delete(
-        `https://www.bhumap.com/api/payment/${paymentId}`
+        `${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}api/payment/${paymentId}`
       );
       if (res.data.success) {
         toast.success(res.data.message);

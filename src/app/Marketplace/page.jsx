@@ -4,6 +4,7 @@ import { buildingMaterials } from "@/src/data";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { isDev } from "@/src/backend/helpers/util";
 
 const Page = () => {
   const [categories, setCategories] = useState([]);
@@ -12,7 +13,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://www.bhumap.com/api/categories?page=${1}&&limit=${50}`);
+        const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}/api/categories?page=${1}&&limit=${50}`);
         setCategories(response.data.message.data);
       } catch (err) {
         setError("Failed to load packages.");
