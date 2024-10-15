@@ -81,7 +81,7 @@ const Page = () => {
                     orderData.isCompleted ? 'Completed' : 'Pending'
                     }</td>
                     <td className="py-4 px-5 text-gray-600">
-                        <a href="#" className="font-medium text-primary">View Details</a> &nbsp;&nbsp;
+                        <a href={`orders/details/${orderData._id}`} className="font-medium text-primary">View Details</a> &nbsp;&nbsp;
                         {user?.userType === 'Admin' ? (<a href={`orders/edit/${orderData._id}`} className="font-medium text-primary" >Update Payment Status</a>): ''}  &nbsp;&nbsp;
                         {user?.userType == 'Vendor' ? (<a href={`orders/edit/${orderData._id}`} className="font-medium text-primary">Update Order Status</a>): '' }
                     </td>

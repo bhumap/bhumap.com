@@ -185,8 +185,9 @@ const Checkout = () => {
       setLoading(true);
 
       id = toast.loading("Please wait...");
-      var res = await axios.post("/api/orders", { subOrders, ...formData, address, paymentMode, utr_number: utrNumber });
 
+      var res = await axios.post("/api/orders", { subOrders, ...formData, address, paymentMode, utr_number: utrNumber });
+      console.log('res', res)
       if (res.data.success) {
         toast.update(id, {
           render: res.data.message,
@@ -198,12 +199,13 @@ const Checkout = () => {
           toast.dismiss(id);
         }, 5000);
         clearCart();
-        router.push("/");
+        router.push("/portal/Thank-you");
       }
     } catch (error) {
       console.log(error);
     }
   };
+  
   const calculateTotals = () => {
     let uniqueChefIds = new Set();
     let totalCount = 0;
