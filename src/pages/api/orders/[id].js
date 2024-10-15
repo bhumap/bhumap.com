@@ -72,7 +72,12 @@ export default async function(req, res) {
         case "GET":
             try {
                 const { id } = req.query;
-                const order = await OrdersModel.findById(id);
+                const order = await OrdersModel.findById(id)
+                        .populate({ path: "subOrders.vendor_id", model: UsersModel, select: 'fullName address userType' })
+                        .populate({ path: "user", model: UsersModel, select: 'fullName address userType phone' })
+                        .populate({ path: "subOrders.carts.product_id", model: ProductsModel })
+                        .sort({createdAt:-1});
+                        
                 if (!order) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,
