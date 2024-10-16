@@ -49,10 +49,10 @@ const Page = () => {
       
         {/* Recharge Button */}
         <div className="mt-6 flex justify-center">
-            <button className="bg-primary text-white px-8 py-3 rounded-md shadow-md transition duration-200 flex items-center">
+            <a href="./recharge" className="bg-primary text-white px-8 py-3 rounded-md shadow-md transition duration-200 flex items-center">
             <FaMoneyBillWave className="mr-2" />
             Recharge Wallet
-            </button>
+            </a>
         </div>
         <hr />
         {/* Transaction History */}
