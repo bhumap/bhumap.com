@@ -6,6 +6,7 @@ const { ObjectId } = require("mongoose").Types;
 import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { StatusCodes } from 'http-status-codes';
 import Joi from "joi";
+import EmailSend from "@/src/backend/helpers/EmailSend";
 
 export default async function(req, res) {
     await dbConnect();
@@ -273,12 +274,42 @@ export default async function(req, res) {
                 
                 const specificId = generateSpecificId();
         
-                await OrdersModel.create({
+                const order = await OrdersModel.create({
                     ...req.body,
                     subOrders,
                     user: userID,
                     orderId: specificId,
                 });
+
+                await EmailSend(
+                  process.env.NEXT_PUBLIC_ADMIN_EMAIL,
+                  'Admin',
+                  'New Order',
+                  'Hi <bold>Admin!</bold> you have received new order.'
+                );
+
+                const user = await UsersModel.findById(userID);
+
+                await EmailSend(
+                  user.email.value,
+                  user.fullName,
+                  `Order (order id: ${specificId})`,
+                  `Hi <bold>${user.fullName}!</bold> your order id is ${specificId}.`
+                );
+
+                const emailPromises = subOrders.map(async ({ vendor_id }) => {
+                  const user = await UsersModel.findById(vendor_id);
+                  if (user) {
+                    return EmailSend(
+                      user.email.value,
+                      user.fullName,
+                      `New Order (order id: ${specificId})`,
+                      `Hi <strong>${user.fullName}!</strong> You have received a new order.`
+                    );
+                  }
+                });
+                
+                await Promise.all(emailPromises);
 
                 res.status(StatusCodes.CREATED).json({
                     success: true,
