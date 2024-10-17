@@ -69,6 +69,20 @@ const userSchema = new mongoose.Schema({
   },
   referred_by: {
     type: String
+  },
+  wallet: {
+    balance: {
+      type: Number,
+      default: 0,
+      min: [0, 'Balance cannot be negative'],
+      get: (value) => (value / 100).toFixed(2),
+      set: (value) => Math.round(value * 100),
+    },
+    status: {
+      type: String,
+      enum: ["Active", "Deleted"],
+      default: "Active",
+    },
   }
 }, { timestamps: true });
 
