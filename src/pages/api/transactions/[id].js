@@ -6,23 +6,9 @@ const { ObjectId } = require("mongoose").Types;
 import usersModel from "@/src/backend/models/users";
 import Joi from "joi";
 
-const transactionValidationSchema = Joi.object({
-    user_id: Joi.string().required(), 
-    amount: Joi.number().positive().precision(2).optional(), 
-    utr_number: Joi.string().required(),
-    type: Joi.string().valid('credit', 'debit').optional().allow(''),
-    description: Joi.string().optional().allow(''),  
-    images: Joi.array().items(
-      Joi.object({
-        secure_url: Joi.string().uri().required(),
-        public_id: Joi.string().required(),
-      })
-    ).optional(),
-    by_admin: Joi.object({
-        amount: Joi.number().positive().precision(2).optional(),
-        is_processed: Joi.boolean().required()
-    }).optional(),
-    transaction_date: Joi.date().default(() => new Date(), 'current date'),
+const transactionValidationSchema = Joi.object({ 
+    amount: Joi.number().positive().precision(2).required(),
+    is_processed: Joi.boolean().required()
 });
 
 export default async function handler(req, res) {
@@ -61,15 +47,18 @@ export default async function handler(req, res) {
                     });
                 }
 
-                await TransactionsModel.findByIdAndUpdate(id, {...value}, { new: true });
+                transaction.by_admin.amount = value.amount;
+                transaction.by_admin.is_processed = value.is_processed;
+
+                await TransactionsModel.findByIdAndUpdate(id, {...transaction}, { new: true });
 
                 if(user.userType === "Admin") {
-                    const amountToUpdate = value.by_admin.amount;
+                    const amountToUpdate = value.amount;
 
-                    if (amountToUpdate !== undefined && value.by_admin?.is_processed) { // Ensure amount exists
+                    if (value.is_processed) {
                         const walletUpdate = {
                             $inc: {
-                                'wallet.balance': (transaction.type === "credit" ? amountToUpdate : -amountToUpdate),
+                                'wallet.balance': (transaction.type === "recharge" ? amountToUpdate : -amountToUpdate),
                             }
                         };
                         await usersModel.findByIdAndUpdate(userID, walletUpdate, { new: true });
