@@ -72,6 +72,7 @@ export default async function(req, res) {
             break;
         case "GET":
             try {
+                let user = await UsersModel.findById(userID);
                 const { id } = req.query;
                 const order = await OrdersModel.findById(id)
                         .populate({ path: "subOrders.vendor_id", model: UsersModel, select: 'fullName address userType' })
@@ -86,7 +87,10 @@ export default async function(req, res) {
                     });
                 }
 
-                order.subOrders = order.subOrders.filter(subOrder => subOrder.vendor_id.equals(userID));
+                if (user.userType == "Vendor") {
+                    order.subOrders = order.subOrders.filter(subOrder => subOrder.vendor_id.equals(userID));
+                }
+
                   
                 res.status(StatusCodes.OK).json({
                     success: true,
