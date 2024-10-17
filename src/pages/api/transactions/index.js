@@ -16,7 +16,7 @@ const transactionValidationSchema = Joi.object({
         secure_url: Joi.string().uri().required(),
         public_id: Joi.string().required(),
       })
-    ).optional(),
+    ).required(),
     transaction_date: Joi.date().default(() => new Date(), 'current date'),
 });
 
