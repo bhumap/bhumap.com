@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                 transaction.by_admin.is_processed = value.is_processed;
 
                 await TransactionsModel.findByIdAndUpdate(id, {...transaction}, { new: true });
-
+                
                 if(user.userType === "Admin") {
                     const amountToUpdate = value.amount;
 
@@ -61,7 +61,8 @@ export default async function handler(req, res) {
                                 'wallet.balance': (transaction.type === "recharge" ? amountToUpdate : -amountToUpdate),
                             }
                         };
-                        await usersModel.findByIdAndUpdate(userID, walletUpdate, { new: true });
+                        console.log('walletUpdate', walletUpdate);
+                        await usersModel.findByIdAndUpdate(transaction.user_id, walletUpdate, { new: true });
                     }
                 }
 

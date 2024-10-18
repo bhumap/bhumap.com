@@ -21,7 +21,7 @@ const Page = () => {
 
             <h1 className="text-3xl font-bold relative z-10">Wallet Balance</h1>
             <p className="mt-2 text-lg relative z-10">Your current balance is:</p>
-            <h2 className="text-4xl font-extrabold relative z-10">₹{user?.wallet?.balance.toFixed(2)}</h2>
+            <h2 className="text-4xl font-extrabold relative z-10">₹{user?.wallet?.balance}</h2>
         </div>
       
         {/* Recharge Button */}

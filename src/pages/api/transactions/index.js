@@ -71,15 +71,15 @@ export default async function(req, res) {
                 }
 
                 const transactions = await TransactionsModel.find(query)
-                    .limit(limit)
-                    .skip(skip)
-                    .sort({ createdAt: -1 })
-                    .populate('user_id', 'fullName phone.value');
+                .limit(limit)
+                .skip(skip)
+                .sort({ createdAt: -1 })
+                .populate('user_id', 'fullName phone.value');
 
                 const total = await TransactionsModel.find(query).count();
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
-
+                ;
                 res.status(StatusCodes.OK).json({
                     success: true,
                     message: {

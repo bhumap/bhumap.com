@@ -36,6 +36,8 @@ const transactionSchema = new mongoose.Schema({
     by_admin: {
         amount: {
             type: Number,
+            default: 0,
+            min: [0, 'Balance cannot be negative'],
             get: (value) => (value / 100).toFixed(2), 
             set: (value) => Math.round(value * 100), 
         },
