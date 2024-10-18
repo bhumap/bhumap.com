@@ -38,7 +38,8 @@ const Transaction = () => {
                 <tr>
                     <th className="py-3 px-4 text-left text-gray-600">Date</th>
                     <th className="py-3 px-4 text-left text-gray-600">Payment Type</th>
-                    <th className="py-3 px-4 text-left text-gray-600">Amount</th>
+                    <th className="py-3 px-4 text-left text-gray-600">Recharge Amount</th>
+                    <th className="py-3 px-4 text-left text-gray-600">Aprroved Amount</th>
                     <th className="py-3 px-4 text-left text-gray-600">Status</th>
                     {user?.userType === 'Admin'? (<th className="py-3 px-4 text-left text-gray-600">Actions</th>) : ""}
                     
@@ -54,6 +55,9 @@ const Transaction = () => {
                     </td>
                     <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
                         ₹{Math.abs(transaction.amount)}/-
+                    </td>
+                    <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                        ₹{Math.abs(transaction.by_admin?.amount)}/-
                     </td>
                     <td className={`py-2 px-4 ${transaction.by_admin?.is_processed === true ? 'text-green-600 capitalize' : 'text-red-600 capitalize'}`}>
                         {transaction.by_admin?.is_processed === false ? 'Pending' : 'Success'}
