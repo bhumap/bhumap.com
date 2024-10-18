@@ -6,6 +6,7 @@ import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { isDev } from "@/src/backend/helpers/util";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -13,10 +14,11 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({
-    amount: "",
-    utr_number: "",
     images: [{ secure_url: "", public_id: "" }],
   });
+  var router = useRouter();
+
+  const [utr_number, setUtrNumber] = useState('');
   
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -33,7 +35,8 @@ const Page = () => {
     const updatedFormData = {
       ...formData,
       amount: 1100,
-      type:'',
+      type:'recharge',
+      utr_number: utr_number,
       description:'',
       images: formData.images.slice(1)
     };
@@ -49,6 +52,7 @@ const Page = () => {
             type: "success",
             isLoading: false,
           });
+          router.push("/portal/Wallet");
       }
     } catch (error) {
           toast.update(id, {
@@ -126,7 +130,7 @@ const Page = () => {
               type="text"
               id="utr_number"
               name="utr_number"
-              onChange={changeHandler}
+              onChange={(e) => setUtrNumber(e.target.value)}
               required
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
             />

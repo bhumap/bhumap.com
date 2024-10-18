@@ -9,6 +9,8 @@ const transactionSchema = new mongoose.Schema({
     },
     amount: {
         type: Number,
+        default: 0,
+        min: [0, 'Balance cannot be negative'],
         get: (value) => (value / 100).toFixed(2), 
         set: (value) => Math.round(value * 100), 
     },
@@ -18,7 +20,8 @@ const transactionSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["credit", "debit"],
+        enum: ["credit", "debit", "recharge"],
+        default: "recharge"
     },
     description: {
         type: String,
@@ -45,7 +48,7 @@ const transactionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-}, { timestamps: true });
+}, { timestamps: true, toJSON: {getters: true}, toObject: {getters: true} });
 
 const Transactions = mongoose.models?.Transactions || mongoose.model("Transactions", transactionSchema);
 
