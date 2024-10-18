@@ -270,6 +270,12 @@ const Navbar = () => {
                   </Link>
                   <Link
                     className="block p-1 px-3"
+                    href="/portal/recharge-wallet"
+                  >
+                    Recharge Wallet
+                  </Link>
+                  <Link
+                    className="block p-1 px-3"
                     href="/portal/paid-user"
                   >
                     Paid User

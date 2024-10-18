@@ -22,7 +22,6 @@ const transactionValidationSchema = Joi.object({
         amount: Joi.number().positive().precision(2).optional(),
         is_processed: Joi.boolean().required()
     }).optional(),
-    transaction_date: Joi.date().default(() => new Date(), 'current date'),
 });
 
 export default async function handler(req, res) {

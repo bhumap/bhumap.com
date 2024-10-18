@@ -9,7 +9,7 @@ import Joi from "joi";
 const transactionValidationSchema = Joi.object({
     amount: Joi.number().positive().precision(2).optional(), 
     utr_number: Joi.string().required(),
-    type: Joi.string().valid('credit', 'debit').optional().allow(''),
+    type: Joi.string().valid('credit', 'debit', 'recharge').optional().allow(''),
     description: Joi.string().optional().allow(''),  
     images: Joi.array().items(
       Joi.object({
@@ -17,7 +17,7 @@ const transactionValidationSchema = Joi.object({
         public_id: Joi.string().required(),
       })
     ).required(),
-    transaction_date: Joi.date().default(() => new Date(), 'current date'),
+    // transaction_date: Joi.date().default(() => new Date(), 'current date'),
 });
 
 export default async function(req, res) {
