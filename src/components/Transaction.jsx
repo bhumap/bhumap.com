@@ -48,16 +48,16 @@ const Transaction = () => {
                 <tbody className="text-gray-700">
                 {transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b hover:bg-gray-50 transition duration-150 ease-in-out">
-                    <td className="py-2 px-4">{format(new Date(transaction.transaction_date), "MMMM dd, yyyy")}</td>
+                    <td className="py-2 px-4">{format(new Date(transaction.transaction_date), "MMMM dd, yyyy hh:mm a")}</td>
                     <td className="py-2 px-4 flex items-center capitalize">
                         <FaRegClock className="mr-1 text-gray-500" />
                         {transaction.type}
                     </td>
                     <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹{Math.abs(transaction.amount)}/-
+                        ₹{Math.abs(transaction.amount / 100).toFixed(2)}/-
                     </td>
                     <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹{Math.abs(transaction.by_admin?.amount)}/-
+                        ₹{Math.abs(transaction.by_admin?.amount / 100).toFixed(2)}/-
                     </td>
                     <td className={`py-2 px-4 ${transaction.by_admin?.is_processed === true ? 'text-green-600 capitalize' : 'text-red-600 capitalize'}`}>
                         {transaction.by_admin?.is_processed === false ? 'Pending' : 'Success'}
