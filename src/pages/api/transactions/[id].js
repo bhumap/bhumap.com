@@ -77,7 +77,9 @@ export default async function handler(req, res) {
             try {
                 const { id } = req.query;
 
-                const transaction = await TransactionsModel.findById(id);
+                const transaction = await TransactionsModel.findById(id)
+                    .populate({ path: "user_id", model: usersModel, select: "fullName address userType"});
+                
                 if (!transaction) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,
