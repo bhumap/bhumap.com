@@ -8,10 +8,6 @@ import Transaction from "@/src/components/Transaction";
 
 const Page = () => {
 
- 
-
-  
-
   return (
     <section className="flex flex-col items-center justify-center mt-5 mx-auto">
      <h3 className="text-xl">Manage Recharge</h3>   
