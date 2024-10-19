@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -20,7 +20,7 @@
     "cookie": "^0.6.0",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.0.0",
-    "framer-motion": "^11.11.8",
+    "framer-motion": "^11.11.9",
     "http-status-codes": "^2.3.0",
     "joi": "^17.13.3",
     "jose": "^5.2.2",
