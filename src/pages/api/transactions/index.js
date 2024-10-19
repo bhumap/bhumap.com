@@ -9,15 +9,15 @@ import Joi from "joi";
 const transactionValidationSchema = Joi.object({
     amount: Joi.number().positive().precision(2).optional(), 
     utr_number: Joi.string().required(),
-    type: Joi.string().valid('credit', 'debit').optional().allow(''),
+    type: Joi.string().valid('credit', 'debit', 'recharge').optional().allow(''),
     description: Joi.string().optional().allow(''),  
     images: Joi.array().items(
       Joi.object({
         secure_url: Joi.string().uri().required(),
         public_id: Joi.string().required(),
       })
-    ).optional(),
-    transaction_date: Joi.date().default(() => new Date(), 'current date'),
+    ).required(),
+    // transaction_date: Joi.date().default(() => new Date(), 'current date'),
 });
 
 export default async function(req, res) {
@@ -71,15 +71,15 @@ export default async function(req, res) {
                 }
 
                 const transactions = await TransactionsModel.find(query)
-                    .limit(limit)
-                    .skip(skip)
-                    .sort({ createdAt: -1 })
-                    .populate('user_id', 'fullName phone.value');
+                .limit(limit)
+                .skip(skip)
+                .sort({ createdAt: -1 })
+                .populate('user_id', 'fullName phone.value');
 
                 const total = await TransactionsModel.find(query).count();
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
-
+                ;
                 res.status(StatusCodes.OK).json({
                     success: true,
                     message: {

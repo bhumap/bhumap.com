@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema({
       default: "Active",
     },
   }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: {getters: true}, toObject: {getters: true}});
 
 var Users = mongoose.models?.users || mongoose.model("users", userSchema);
 

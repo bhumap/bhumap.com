@@ -281,20 +281,233 @@ export default async function(req, res) {
                     orderId: specificId,
                 });
 
-                await EmailSend(
-                  process.env.NEXT_PUBLIC_ADMIN_EMAIL,
-                  'Admin',
-                  'New Order',
-                  'Hi <bold>Admin!</bold> you have received new order.'
-                );
+
+                  // Prepare the HTML email content
+                  const adminEmailContent = `
+                  <!DOCTYPE html>
+                  <html lang="en">
+                  <head>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <style>
+                          body {
+                              font-family: Arial, sans-serif;
+                              background-color: #f7f7f7;
+                              margin: 0;
+                              padding: 0;
+                          }
+                          .container {
+                              max-width: 600px;
+                              margin: auto;
+                              background-color: #ffffff;
+                              border-radius: 8px;
+                              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                              padding: 20px;
+                              border: 1px solid #eaeaea;
+                          }
+                          .logo {
+                              text-align: center;
+                              margin-bottom: 20px;
+                              border-bottom: 1px solid #f7f7f7;
+                          }
+                          .logo img {
+                              max-width: 200px; 
+                              height: auto;
+                              border-radius: 5px;
+                              padding: 10px 10px;
+                          }
+                          h2 {
+                              color: #333;
+                              text-align: center;
+                              font-size: 24px;
+                              margin-bottom: 20px;
+                          }
+                          h3 {
+                              color: #444;
+                              font-size: 20px;
+                              margin-top: 15px;
+                          }
+                          h4 {
+                              color: #555;
+                              font-size: 18px;
+                              margin: 10px 0;
+                          }
+                          p {
+                              color: #555;
+                              line-height: 1.5;
+                          }
+                          .order-details, .customer-details, .vendor-details {
+                              border-top: 2px solid #f0f0f0;
+                              padding-top: 15px;
+                              margin-top: 15px;
+                          }
+                          .footer {
+                              margin-top: 20px;
+                              font-size: 0.9em;
+                              text-align: center;
+                              color: #aaa;
+                          }
+                          /* Responsive Styles */
+                          @media only screen and (max-width: 600px) {
+                              .container {
+                                  padding: 15px;
+                              }
+                              h2 {
+                                  font-size: 22px;
+                              }
+                              h3 {
+                                  font-size: 18px;
+                              }
+                              h4 {
+                                  font-size: 16px;
+                              }
+                          }
+                      </style>
+                  </head>
+                  <body>
+                      <div class="container">
+                          <div class="logo">
+                              <img src="https://www.bhumap.com/fullLogo.svg" alt="Your Company Logo" />
+                          </div>
+                          <h2>New Order Notification</h2>
+                          <p>A new order has been placed. Here are the details:</p>
+
+                          <div class="order-details">
+                              <h3>Order ID: <strong>${specificId}</strong></h3>
+                          </div>
+
+                          <p>If you have any questions or need further assistance, feel free to reach out to us!</p>
+                          <p>Thank you for your attention!</p>
+
+                          <div class="footer">
+                              <p>Your Company Name</p>
+                              <p>Contact: support@yourcompany.com</p>
+                          </div>
+                      </div>
+                  </body>
+                  </html>
+                  `;
+
+                  // Sending the email to admin
+                  await EmailSend(
+                      process.env.NEXT_PUBLIC_ADMIN_EMAIL,
+                      'Admin',
+                      'New Order Notification',
+                      adminEmailContent
+                  );
 
                 const user = await UsersModel.findById(userID);
+                const userEmailContent = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f7f7f7;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            max-width: 600px;
+                            margin: auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                            padding: 20px;
+                            border: 1px solid #eaeaea;
+                        }
+                        .logo {
+                            text-align: center;
+                            margin-bottom: 20px;
+                            border-bottom: 1px solid #f7f7f7;
+                        }
+                        .logo img {
+                            max-width: 200px; 
+                            height: auto;
+                            border-radius: 5px;
+                            padding: 10px 10px;
+                        }
+                        h2 {
+                            color: #333;
+                            text-align: center;
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                        }
+                        h3 {
+                            color: #444;
+                            font-size: 20px;
+                            margin-top: 15px;
+                        }
+                        h4 {
+                            color: #555;
+                            font-size: 18px;
+                            margin: 10px 0;
+                        }
+                        p {
+                            color: #555;
+                            line-height: 1.5;
+                        }
+                        .order-details, .customer-details, .vendor-details {
+                            border-top: 2px solid #f0f0f0;
+                            padding-top: 15px;
+                            margin-top: 15px;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 0.9em;
+                            text-align: center;
+                            color: #aaa;
+                        }
+                        /* Responsive Styles */
+                        @media only screen and (max-width: 600px) {
+                            .container {
+                                padding: 15px;
+                            }
+                            h2 {
+                                font-size: 22px;
+                            }
+                            h3 {
+                                font-size: 18px;
+                            }
+                            h4 {
+                                font-size: 16px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                      <div class="logo">
+                          <img src="https://www.bhumap.com/fullLogo.svg" alt="Your Company Logo" />
+                      </div>
+                      <h2>Order Confirmation</h2>
+                      <p>Dear <strong>${user.fullName}</strong>,</p>
+                      <p>Thank you for your order!</p>
+                      <p>Your order details are as follows:</p>
 
+                      <div class="order-details">
+                          <h3>Order ID: <strong>${specificId}</strong></h3>
+                      </div>
+
+                      <p>If you have any questions or need further assistance, feel free to reach out to us!</p>
+                      <p>Thank you for shopping with us!</p>
+
+                      <div class="footer">
+                          <p>Your Company Name</p>
+                          <p>Contact: support@yourcompany.com</p>
+                      </div>
+                  </div>
+                </body>
+                </html>
+                `;
                 await EmailSend(
                   user.email.value,
                   user.fullName,
                   `Order (order id: ${specificId})`,
-                  `Hi <bold>${user.fullName}!</bold> your order id is ${specificId}.`
+                  userEmailContent
                 );
 
                 const emailPromises = subOrders.map(async ({ vendor_id }) => {
@@ -304,7 +517,109 @@ export default async function(req, res) {
                       user.email.value,
                       user.fullName,
                       `New Order (order id: ${specificId})`,
-                      `Hi <strong>${user.fullName}!</strong> You have received a new order.`
+                      `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f7f7f7;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            max-width: 600px;
+                            margin: auto;
+                            background-color: #ffffff;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                            padding: 20px;
+                            border: 1px solid #eaeaea;
+                        }
+                        .logo {
+                            text-align: center;
+                            margin-bottom: 20px;
+                            border-bottom: 1px solid #f7f7f7;
+                        }
+                        .logo img {
+                            max-width: 200px; 
+                            height: auto;
+                            border-radius: 5px;
+                            padding: 10px 10px;
+                        }
+                        h2 {
+                            color: #333;
+                            text-align: center;
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                        }
+                        h3 {
+                            color: #444;
+                            font-size: 20px;
+                            margin-top: 15px;
+                        }
+                        h4 {
+                            color: #555;
+                            font-size: 18px;
+                            margin: 10px 0;
+                        }
+                        p {
+                            color: #555;
+                            line-height: 1.5;
+                        }
+                        .order-details, .customer-details, .vendor-details {
+                            border-top: 2px solid #f0f0f0;
+                            padding-top: 15px;
+                            margin-top: 15px;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 0.9em;
+                            text-align: center;
+                            color: #aaa;
+                        }
+                        /* Responsive Styles */
+                        @media only screen and (max-width: 600px) {
+                            .container {
+                                padding: 15px;
+                            }
+                            h2 {
+                                font-size: 22px;
+                            }
+                            h3 {
+                                font-size: 18px;
+                            }
+                            h4 {
+                                font-size: 16px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                      <div class="logo">
+                          <img src="https://www.bhumap.com/fullLogo.svg" alt="Your Company Logo" />
+                      </div>
+                      <h2>New Order Notification</h2>
+                      <p>Dear <strong>${user.fullName}</strong>,</p>
+                      <p>You have received a new order!</p>
+                      <div class="order-details">
+                        <h3>Order ID: <strong>${specificId}</strong></h3>
+                      </div>
+                      <p>If you have any questions or need further assistance, feel free to reach out to us!</p>
+                      <p>Thank you for shopping with us!</p>
+
+                      <div class="footer">
+                          <p>Your Company Name</p>
+                          <p>Contact: support@yourcompany.com</p>
+                      </div>
+                  </div>
+                </body>
+                </html>
+                      `
                     );
                   }
                 });

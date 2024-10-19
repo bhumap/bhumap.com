@@ -60,7 +60,7 @@ const Page = () => {
                   <th className="py-3 px-5 text-sm font-semibold">Total Amount (<FontAwesomeIcon icon={faIndianRupeeSign} className="mr-1" />)</th>
                   <th className="py-3 px-5 text-sm font-semibold">Date</th>
                   <th className="py-3 px-5 text-sm font-semibold">Payment Status</th>
-                  <th className="py-3 px-5 text-sm font-semibold">Status</th>
+                  {/* <th className="py-3 px-5 text-sm font-semibold">Status</th> */}
                   <th className="py-3 px-5 text-sm font-semibold">Action</th>
                 </tr>
               </thead>
@@ -77,13 +77,13 @@ const Page = () => {
                     <td className="py-4 px-5 text-gray-600">{
                     orderData.payment_status
                     }</td>
-                    <td className="py-4 px-5 text-gray-600">{
+                    {/* <td className="py-4 px-5 text-gray-600">{
                     orderData.isCompleted ? 'Completed' : 'Pending'
-                    }</td>
+                    }</td> */}
                     <td className="py-4 px-5 text-gray-600">
-                        <a href="#" className="font-medium text-primary">View Details</a> &nbsp;&nbsp;
+                        <a href={`orders/details/${orderData._id}`} className="font-medium text-primary">View Details</a> &nbsp;&nbsp;
                         {user?.userType === 'Admin' ? (<a href={`orders/edit/${orderData._id}`} className="font-medium text-primary" >Update Payment Status</a>): ''}  &nbsp;&nbsp;
-                        {user?.userType == 'Vendor' ? (<a href={`orders/edit/${orderData._id}`} className="font-medium text-primary">Update Order Status</a>): '' }
+                        {/* {user?.userType == 'Vendor' ? (<a href={`orders/update/${orderData._id}`} className="font-medium text-primary">Update Order Status</a>): '' } */}
                     </td>
                   </tr>
                 ))}
