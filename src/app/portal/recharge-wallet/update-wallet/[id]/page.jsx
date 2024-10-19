@@ -86,9 +86,9 @@ const Page = ({ params }) => {
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
-                        Transaction Date: {recharge?.transaction_date}
+                        Transaction Date: 
                       </label>
-                      <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p>
+                      {/* <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p> */}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
@@ -100,7 +100,7 @@ const Page = ({ params }) => {
                       <label className="block text-sm font-bold text-gray-900">
                         Wallet Recharge Amount On Date:
                       </label>
-                      <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p>
+                      {/* <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p> */}
                     </div>
                   </div>
       
@@ -140,7 +140,7 @@ const Page = ({ params }) => {
                           />
                         </div>
       
-                        <div>
+                        {/* <div>
                           <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900">
                             Status
                           </label>
@@ -159,7 +159,7 @@ const Page = ({ params }) => {
                             <option value="Pending">Debit</option>
                             <option value="Expired">Recharge</option>
                           </select>
-                        </div>
+                        </div> */}
       
                         <button
                           type="submit"
