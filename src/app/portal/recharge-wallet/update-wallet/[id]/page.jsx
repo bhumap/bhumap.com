@@ -88,7 +88,7 @@ const Page = ({ params }) => {
                       <label className="block text-sm font-bold text-gray-900">
                         Transaction Date: {recharge?.transaction_date}
                       </label>
-                      <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p>
+                      {/* <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p> */}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
@@ -100,7 +100,7 @@ const Page = ({ params }) => {
                       <label className="block text-sm font-bold text-gray-900">
                         Wallet Recharge Amount On Date:
                       </label>
-                      <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p>
+                      {/* <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p> */}
                     </div>
                   </div>
       
