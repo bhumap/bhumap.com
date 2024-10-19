@@ -54,10 +54,10 @@ const Transaction = () => {
                         {transaction.type}
                     </td>
                     <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹{Math.abs(transaction.amount / 100).toFixed(2)}/-
+                        ₹ {transaction.amount}/-
                     </td>
                     <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹{Math.abs(transaction.by_admin?.amount / 100).toFixed(2)}/-
+                        ₹{transaction.by_admin?.amount}/-
                     </td>
                     <td className={`py-2 px-4 ${transaction.by_admin?.is_processed === true ? 'text-green-600 capitalize' : 'text-red-600 capitalize'}`}>
                         {transaction.by_admin?.is_processed === false ? 'Pending' : 'Success'}

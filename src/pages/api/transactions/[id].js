@@ -39,7 +39,7 @@ export default async function handler(req, res) {
                     return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map(err => err.message)})
                 }
 
-                const transaction = await TransactionsModel.findById(id);
+                let transaction = await TransactionsModel.findById(id);
                 if (!transaction) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,
@@ -47,10 +47,11 @@ export default async function handler(req, res) {
                     });
                 }
 
+                transaction = transaction.toObject({ getters: true });
                 transaction.by_admin.amount = value.amount;
                 transaction.by_admin.is_processed = value.is_processed;
 
-                await TransactionsModel.findByIdAndUpdate(id, {...transaction}, { new: true });
+                await TransactionsModel.findByIdAndUpdate(id, transaction, { new: true });
                 
                 if(user.userType === "Admin") {
                     const amountToUpdate = value.amount;
