@@ -76,7 +76,7 @@ const Page = ({ params }) => {
                       <label className="block text-sm font-bold text-gray-900">
                         Recharge Amount:
                       </label>
-                      <p className="text-gray-700">₹{Math.abs(recharge?.amount / 100).toFixed(2)}/-</p>
+                      <p className="text-gray-700">₹{recharge?.amount}/-</p>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
@@ -88,19 +88,19 @@ const Page = ({ params }) => {
                       <label className="block text-sm font-bold text-gray-900">
                         Transaction Date: {recharge?.transaction_date}
                       </label>
-                      {/* <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p> */}
+                      <p className="text-gray-700">{format(new Date(recharge?.transaction_date), "MMMM dd, yyyy hh:mm a")}</p>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
                         Wallet Recharge Amount By Admin:
                       </label>
-                      <p className="text-gray-700">₹{Math.abs(recharge?.by_admin?.amount / 100).toFixed(2)}/-</p>
+                      <p className="text-gray-700">₹{recharge?.by_admin?.amount}/-</p>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-900">
                         Wallet Recharge Amount On Date:
                       </label>
-                      {/* <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p> */}
+                      <p className="text-gray-700">{format(new Date(recharge?.updatedAt), "MMMM dd, yyyy hh:mm a")}</p>
                     </div>
                   </div>
       
