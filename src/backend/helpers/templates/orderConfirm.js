@@ -9,6 +9,9 @@ const getStatusClass = (status) => {
 };
 
 function GenerateOrderConfirmTemplate(orderData) {
+
+    console.log(orderData);
+
     return `
     <!doctype html>
     <html lang="en">
