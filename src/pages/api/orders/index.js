@@ -308,7 +308,7 @@ export default async function(req, res) {
 
                 const emailPromises = subOrders.map(async ({ vendor_id }) => {
                   const user = await UsersModel.findById(vendor_id);
-                  const vendorEmailTemplate = GenerateOrderConfirmTemplate({...orderDetail,subOrders: orderDetail.subOrders.filter((ele) => ele.vendor_id._id == vendor_id)});
+                  const vendorEmailTemplate = GenerateOrderConfirmTemplate({...orderDetail._doc, subOrders: orderDetail.subOrders.filter((ele) => ele.vendor_id._id == vendor_id)});
                   if (user) {
                     return EmailSend(
                       user.email.value,
