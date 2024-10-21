@@ -29,7 +29,6 @@ const Transaction = () => {
 
   return (
     <section className="w-full">
-        {/* Transaction History */}
         <div className="w-full rounded-lg border mt-10 bg-white p-6">
             <h2 className="text-l font-semibold text-gray-800">Transaction History</h2>
             <div className="overflow-x-auto mt-4">
@@ -37,6 +36,8 @@ const Transaction = () => {
                 <thead className="bg-gray-200">
                 <tr>
                     <th className="py-3 px-4 text-left text-gray-600">Date</th>
+                    <th className="py-3 px-4 text-left text-gray-600">UTR Number</th>
+                    <th className="py-3 px-4 text-left text-gray-600">User</th>
                     <th className="py-3 px-4 text-left text-gray-600">Payment Type</th>
                     <th className="py-3 px-4 text-left text-gray-600">Recharge Amount</th>
                     <th className="py-3 px-4 text-left text-gray-600">Aprroved Amount</th>
@@ -48,25 +49,29 @@ const Transaction = () => {
                 <tbody className="text-gray-700">
                 {transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b hover:bg-gray-50 transition duration-150 ease-in-out">
-                    <td className="py-2 px-4">{format(new Date(transaction.transaction_date), "MMMM dd, yyyy hh:mm a")}</td>
-                    <td className="py-2 px-4 flex items-center capitalize">
-                        <FaRegClock className="mr-1 text-gray-500" />
-                        {transaction.type}
-                    </td>
-                    <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹ {transaction.amount}/-
-                    </td>
-                    <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                        ₹{transaction.by_admin?.amount}/-
-                    </td>
-                    <td className={`py-2 px-4 ${transaction.by_admin?.is_processed === true ? 'text-green-600 capitalize' : 'text-red-600 capitalize'}`}>
-                        {transaction.by_admin?.is_processed === false ? 'Pending' : 'Success'}
-                    </td>
-                    {
-                     user?.userType === 'Admin' ? (<td className="py-4 px-5 text-gray-600">
-                      <a href={`recharge-wallet/update-wallet/${transaction._id}`} className="font-medium text-primary" >Recharge Wallet</a>
-                  </td>) : "" 
-                    }
+                      <td className="py-2 px-4">{format(new Date(transaction.transaction_date), "MMMM dd, yyyy hh:mm a")}</td>
+                      <td className="py-2 px-4">{transaction.utr_number}</td>
+                      <td className={`py-2 px-4 capitalize`}>
+                          {transaction.user_id.fullName}
+                      </td>
+                      <td className="py-2 px-4 flex items-center capitalize">
+                          <FaRegClock className="mr-1 text-gray-500" />
+                          {transaction.type}
+                      </td>
+                      <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                          ₹ {transaction.amount}/-
+                      </td>
+                      <td className={`py-2 px-4 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                          ₹{transaction.by_admin?.amount}/-
+                      </td>
+                      <td className={`py-2 px-4 ${transaction.by_admin?.is_processed === true ? 'text-green-600 capitalize' : 'text-red-600 capitalize'}`}>
+                          {transaction.by_admin?.is_processed === false ? 'Pending' : 'Success'}
+                      </td>
+                      {
+                      user?.userType === 'Admin' ? (<td className="py-4 px-5 text-gray-600">
+                        <a href={`recharge-wallet/update-wallet/${transaction._id}`} className="font-medium text-primary" >Recharge Wallet</a>
+                      </td>) : "" 
+                      }
                     
                     </tr>
                 ))}
