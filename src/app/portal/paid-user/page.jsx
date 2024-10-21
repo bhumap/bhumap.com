@@ -111,7 +111,7 @@ const Page = () => {
   return (
     <>
       <div className="w-full max-w-3xl bg-white rounded-lg p-6">
-        <h1 className="text-3xl font-semibold text-gray-900">Paid User List</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">Paid User List</h1>
         {/* <form className="space-y-4" onSubmit={submitHandler}>
           <div>
             <label htmlFor="user" className="block mb-2 text-base font-medium text-gray-800">
@@ -140,8 +140,8 @@ const Page = () => {
         </form> */}
       </div>
 
-      <section className="w-full py-5">
-        <div className="max-w-6xl mx-auto bg-white border-t-2 p-6">
+      <section className="w-full py-1">
+        <div className="max-w-7xl mx-auto bg-white border-t-2 p-6">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white border">
               <thead className="text-left">
