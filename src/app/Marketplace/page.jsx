@@ -26,9 +26,10 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="category2-box">
+    <div className="">
       <h1 className="heading">A WIDE RANGE OF BUILDING MATERIALS</h1>
-      <ul>
+{/*       <ul> */}
+        <main className="card-container">
         {categories?.map((category, index) => (
             <div className="card" key={index}>
               <Link href={`/products/${category._id}`}>
@@ -49,7 +50,8 @@ const Page = () => {
           //   </Link>
           // </li>
         ))}
-      </ul>
+            </main>
+      // </ul>
     </div>
   );
 };
