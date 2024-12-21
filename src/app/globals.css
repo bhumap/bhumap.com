@@ -412,3 +412,26 @@ input[type="number"] {
     margin-top: 0px;
   }
 }
+
+.card {
+  background: #f3ebeb;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.symbol {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
