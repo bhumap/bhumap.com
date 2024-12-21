@@ -30,17 +30,24 @@ const Page = () => {
       <h1 className="heading">A WIDE RANGE OF BUILDING MATERIALS</h1>
       <ul>
         {categories?.map((category, index) => (
-          <li key={index}>
-            <Link href={`/products/${category._id}`}>
-              <Image
-                src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png"
-                alt={category.name}
-                width={40}
-                height={40}
-              />
-              {category.name}
-            </Link>
-          </li>
+            <div className="card" key={index}>
+              <Link href={`/products/${category._id}`}>
+      <h2>{category.name}</h2>
+      <p class="symbol"><img style={{width:"100px"}} src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" alt=""/></p>
+      <p>{category.name}</p>
+                </Link>
+      </div>
+          // <li key={index}>
+          //   <Link href={`/products/${category._id}`}>
+          //     <Image
+          //       src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png"
+          //       alt={category.name}
+          //       width={40}
+          //       height={40}
+          //     />
+          //     {category.name}
+          //   </Link>
+          // </li>
         ))}
       </ul>
     </div>
