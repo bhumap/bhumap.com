@@ -5,7 +5,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { isDev } from "@/src/backend/helpers/util";
 
-const Page = async ({params}) => {
+export const runtime = "edge";
+
+const Page = ({params}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
