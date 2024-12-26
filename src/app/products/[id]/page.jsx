@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { isDev } from "@/src/backend/helpers/util";
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const Page = ({params}) => {
   const [products, setProducts] = useState([]);

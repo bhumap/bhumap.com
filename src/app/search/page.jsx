@@ -1,6 +1,7 @@
 import React from 'react'
 import PropertySearch from './PropertySearch'
 import queryString from 'query-string';
+export const dynamic = 'force-dynamic'
 
 var fetchSearchedProperties = async (searchParams) => {
   try {
@@ -12,7 +13,22 @@ var fetchSearchedProperties = async (searchParams) => {
   }
 };
 
-const page = async ({searchParams}) => {
+const page = ({searchParams}) => {
+
+ 
+
+
+  return (
+    <div>
+        <PageComp searchParams={searchParams}/>
+    </div>
+  )
+}
+
+export default page
+
+
+const PageComp = async({searchParams}) => {
 
   var properties = await fetchSearchedProperties(searchParams)
 
@@ -23,5 +39,3 @@ const page = async ({searchParams}) => {
     </div>
   )
 }
-
-export default page
