@@ -1,58 +1,45 @@
 "use client"
-import React, { useState, useEffect } from "react";
-import { buildingMaterials } from "@/src/data";
-import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
-import { isDev } from "@/src/backend/helpers/util";
+import React from "react";
+
 
 const Page = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}/api/categories?page=${1}&&limit=${50}`);
-        setCategories(response.data.message.data);
-      } catch (err) {
-        setError("Failed to load packages.");
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  
+  const items = [
+    { id: 1, name: "Tiles", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=21936&format=png&color=000000" },
+    { id: 1, name: "Cement", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=FSU2NoyEB9uz&format=png&color=000000" },
+    { id: 2, name: "Timber", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=6530&format=png&color=000000" },
+    { id: 3, name: "Wood", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=BEB8PPSQeZIx&format=png&color=000000" },
+    { id: 4, name: "Plywood", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=GsXSGKwhXkad&format=png&color=000000" },
+    { id: 5, name: "Brick", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=u7VLUZ413KGF&format=png&color=000000" },
+    { id: 6, name: "Glass", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Sand", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Stone", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=32185&format=png&color=000000" },
+    { id: 6, name: "Mortar", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=31639&format=png&color=000000" },
+    { id: 6, name: "Ceramic", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Marble", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Plaster", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Paint", title:"test1",description:"test description", image:"https://img.icons8.com/?size=100&id=O9TF9KJi_P_w&format=png&color=000000" },
+    { id: 6, name: "Granite", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "Limestone", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+    { id: 6, name: "POP", title:"test1",description:"test description", image:"https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" },
+  ];
 
   return (
-    <div className="">
-      <h1 className="heading">A WIDE RANGE OF BUILDING MATERIALS</h1>
-{/*       <ul> */}
-        <main className="card-container">
-        {categories?.map((category, index) => (
-            <div className="card" key={index}>
-              <Link href={`/products/${category._id}`}>
-      <h2>{category.name}</h2>
-      <p class="symbol"><img style={{width:"100px"}} src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png" alt=""/></p>
-      <p>{category.name}</p>
-                </Link>
-      </div>
-          // <li key={index}>
-          //   <Link href={`/products/${category._id}`}>
-          //     <Image
-          //       src="https://icons.veryicon.com/png/o/commerce-shopping/e-commerce-icon-4/category-49.png"
-          //       alt={category.name}
-          //       width={40}
-          //       height={40}
-          //     />
-          //     {category.name}
-          //   </Link>
-          // </li>
-        ))}
-            </main>
-      {/* // </ul> */}
-    </div>
+    <>
+     <h1 className="text-3xl text-center my-4">A WIDE RANGE OF BUILDING MATERIALS</h1>
+      <main class="card-container">
+      {items.map((item,idx) => (
+        <div key={idx} className="card">
+        <h2 className="text-md">{item.name}</h2>
+        <p class="symbol">
+          <Image className="mx-auto" width={100} height={120} src={item.image} alt={item.name}/>
+        </p>
+        <p>{item.description}</p>
+        </div>
+      ))}
+    </main>
+    </>
   );
 };
 
