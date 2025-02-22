@@ -20,7 +20,7 @@ const page = async () => {
   return (
     <div>
       <Hero />
-      <h1>Test</h1>
+      <h1>Test test</h1>
     
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
