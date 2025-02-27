@@ -2,28 +2,49 @@
 import Hero from "@/src/components/Hero";
 import Investments from "@/src/components/Investments";
 import PropertyCardsGrid from "../components/PropertyCardsGrid";
+import { useEffect, useState } from "react";
 
-var fetchMyPropertiesNearbyYou = async () => {
-  try {
-    console.log("fetching properties");
-    var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
-      cache: "no-store",
-    });
-    res = await res.json();
-    return res.message;
-  } catch (error) {
-    console.log( "-------- home --------",error);
-  }
-};
+// var fetchMyPropertiesNearbyYou = async () => {
+//   try {
+//     var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
+//       cache: "no-store",
+//     });
+//     res = await res.json();
+//     return res.message;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const page = async () => {
-  var nearbyYouProperties = await fetchMyPropertiesNearbyYou();
-  console.log( "-------- home --------",nearbyYouProperties);
+  const [nearbyYouProperties, setNearbyYouProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        console.log("Fetching properties");
+        const baseUrl =
+          process.env.NEXT_PUBLIC_DOMAIN || "https://www.bhumap.com";
+        const res = await fetch(`${baseUrl}/api/properties`, {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        setNearbyYouProperties(data.message);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchProperties();
+  }, []);
 
   return (
     <div>
       <Hero />    
     
+      <div>
+      No properties available.
+      </div>
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
           title="Properties Nearby You"
