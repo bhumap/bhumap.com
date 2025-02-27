@@ -1,3 +1,4 @@
+'use client';
 import Hero from "@/src/components/Hero";
 import Investments from "@/src/components/Investments";
 import PropertyCardsGrid from "../components/PropertyCardsGrid";
@@ -21,7 +22,7 @@ const page = async () => {
 
   return (
     <div>
-      <Hero />     
+      <Hero />    
     
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
