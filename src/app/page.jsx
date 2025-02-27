@@ -40,7 +40,10 @@ const page = async () => {
 
   return (
     <div>
-      <Hero />     
+      <Hero />    
+      <div className="max-w-6xl mx-auto p-4">
+      No properties available.
+        </div> 
     
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
