@@ -5,7 +5,8 @@ import PropertyCardsGrid from "../components/PropertyCardsGrid";
 var fetchMyPropertiesNearbyYou = async () => {
   try {
     console.log( "-------- home --------",process.env.NEXT_PUBLIC_DOMAIN);
-    var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
+    const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "https://www.bhumap.com";
+    var res = await fetch(`${baseUrl}/api/properties`, {
       cache: "no-store",
     });
     res = await res.json();
