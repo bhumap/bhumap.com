@@ -4,18 +4,20 @@ import PropertyCardsGrid from "../components/PropertyCardsGrid";
 
 var fetchMyPropertiesNearbyYou = async () => {
   try {
+    console.log( "-------- home --------",process.env.NEXT_PUBLIC_DOMAIN);
     var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
       cache: "no-store",
     });
     res = await res.json();
     return res.message;
   } catch (error) {
-    console.log(error);
+    console.log(" --------- error ------------",error);
   }
 };
 
 const page = async () => {
   var nearbyYouProperties = await fetchMyPropertiesNearbyYou();
+  console.log( "-------- home --------", nearbyYouProperties);
 
   return (
     <div>
