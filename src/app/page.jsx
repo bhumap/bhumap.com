@@ -4,7 +4,6 @@ import PropertyCardsGrid from "../components/PropertyCardsGrid";
 
 var fetchMyPropertiesNearbyYou = async () => {
   try {
-    console.log("fetching properties", process.env.NEXT_PUBLIC_DOMAIN);
     var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
       cache: "no-store",
     });
