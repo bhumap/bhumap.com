@@ -47,7 +47,7 @@ const page = async () => {
     
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
-          title="Properties Nearby You"
+          title="Properties Neerby You"
           properties={nearbyYouProperties}
         />
       </div>
