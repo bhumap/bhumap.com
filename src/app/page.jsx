@@ -4,7 +4,7 @@ import PropertyCardsGrid from "../components/PropertyCardsGrid";
 
 var fetchMyPropertiesNearbyYou = async () => {
   try {
-    var res = await fetch(`${process.env.DOMAIN}/api/properties`, {
+    var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
       cache: "no-store",
     });
     res = await res.json();
@@ -29,8 +29,8 @@ const page = async () => {
       </div>
       <Investments />
       <div className="max-w-6xl mx-auto p-4">
-        <PropertyCardsGrid title="Sponsored Properties" />
-        <PropertyCardsGrid title="Popular Properties" search={true} />
+        <PropertyCardsGrid properties={nearbyYouProperties} title="Sponsored Properties" />
+        <PropertyCardsGrid properties={nearbyYouProperties} title="Popular Properties" search={true} />
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export default async function handler(req, res) {
           .limit(limit)
           .skip(skip)
           .sort({ createdAt: -1 });
-        const total = await PropertiesModel.find(match).count();
+        const total = await PropertiesModel.countDocuments(match);
 
         var starting = total ? skip + 1 : 0;
         var ending =
