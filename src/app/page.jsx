@@ -4,7 +4,8 @@ import PropertyCardsGrid from "../components/PropertyCardsGrid";
 
 var fetchMyPropertiesNearbyYou = async () => {
   try {
-    var res = await fetch(`https://www.bhumap.com/api/properties`, {
+    console.log("fetching properties", process.env.NEXT_PUBLIC_DOMAIN);
+    var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
       cache: "no-store",
     });
     res = await res.json();
@@ -20,7 +21,7 @@ const page = async () => {
   return (
     <div>
       <Hero />     
-    <div>No properties available.</div>
+    
       <div className="max-w-6xl mx-auto p-4">
         <PropertyCardsGrid
           title="Properties Nearby You"
