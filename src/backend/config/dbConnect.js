@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const dbConnect = async () => {
-  console.log(" -----------",process.env.DB_URI, process.env.MAILJET_SENDER_NAME, process.env.JWT_SECRET, process.env.FAST2SMS_API_KEY)
+  console.log(" -----------",process.env.DB_URI, process.env.MAILJET_SENDER_NAME, process.env.JWT_SECRET, process.env)
 
   if (mongoose?.connection?.readyState >= 1){
     return
