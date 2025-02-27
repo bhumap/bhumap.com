@@ -17,7 +17,7 @@ export default async function (req, res) {
                 .limit(limit)
                 .skip(skip);
 
-                const total = await PackageModel.find({}).count();
+                const total = await PackageModel.countDocuments({});
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 

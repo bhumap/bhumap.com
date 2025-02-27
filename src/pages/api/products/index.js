@@ -94,7 +94,7 @@ export default async function (req, res) {
                     .populate('vendor_id', 'fullName address phone.value isApproved')
                     .populate('category_id', 'name');
 
-                const total = await ProductsModel.find(query).count();
+                const total = await ProductsModel.countDocuments(query);
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 

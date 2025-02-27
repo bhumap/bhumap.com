@@ -75,7 +75,7 @@ export default async function(req, res) {
                     .populate('membership_package_id', 'name amount') 
                     .populate('user_id', 'fullName');
 
-                    const total = await MembershipModel.find({}).count();
+                    const total = await MembershipModel.countDocuments({});
                     const starting = total ? skip + 1 : 0;
                     const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 

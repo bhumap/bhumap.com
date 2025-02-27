@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         const skip = (page - 1) * limit;
 
         const users = await UsersModal.find({},{password:false}).limit(limit).skip(skip).sort({ createdAt: -1 })
-        const total = await UsersModal.find({}).count();
+        const total = await UsersModal.countDocuments({});
 
         let starting = total ? skip + 1 : 0;
         let ending = starting + limit - 1 > total ? total : starting + limit - 1;

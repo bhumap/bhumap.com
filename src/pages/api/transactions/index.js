@@ -76,7 +76,7 @@ export default async function(req, res) {
                 .sort({ createdAt: -1 })
                 .populate('user_id', 'fullName phone.value');
 
-                const total = await TransactionsModel.find(query).count();
+                const total = await TransactionsModel.countDocuments(query);
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
                 ;

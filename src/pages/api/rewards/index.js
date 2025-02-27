@@ -25,7 +25,7 @@ export default async function handler(req, res) {
                 .populate('referred_by', 'fullName') 
                 .populate('referred_to', 'fullName');
 
-                const total = await RewardsModel.find({referred_by: userID}).count();
+                const total = await RewardsModel.countDocuments({referred_by: userID});
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 

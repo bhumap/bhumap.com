@@ -17,7 +17,7 @@ export default async function handler(req, res) {
                 .limit(limit)
                 .skip(skip);
 
-                const total = await CategoriesModel.find({}).count();
+                const total = await CategoriesModel.countDocuments({});
                 const starting = total ? skip + 1 : 0;
                 const ending = starting + limit - 1 > total ? total : starting + limit - 1;
 
