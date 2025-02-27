@@ -303,7 +303,7 @@ const Navbar = () => {
                   className="px-2 py-1 text-primary border rounded-md border-primary"
                   href="/login"
                 >
-                  Login
+                  Log In
                 </Link>
                 <Link
                   className="px-2 py-1 text-white border rounded-md bg-primary border-primary"

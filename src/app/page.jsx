@@ -1,25 +1,42 @@
+'use client';
 import Hero from "@/src/components/Hero";
 import Investments from "@/src/components/Investments";
 import PropertyCardsGrid from "../components/PropertyCardsGrid";
+import { useEffect, useState } from "react";
 
-var fetchMyPropertiesNearbyYou = async () => {
-  try {
-    console.log( "-------- home --------",process.env.NEXT_PUBLIC_DOMAIN);
-    const baseUrl = process.env.DOMAIN || "https://www.bhumap.com";
-    console.log9( "-------- baseUrl --------",baseUrl);
-    var res = await fetch(`https://www.bhumap.com/api/properties`, {
-      cache: "no-store",
-    });
-    res = await res.json();
-    return res.message;
-  } catch (error) {
-    console.log(" --------- error ------------",error);
-  }
-};
+// var fetchMyPropertiesNearbyYou = async () => {
+//   try {
+//     var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
+//       cache: "no-store",
+//     });
+//     res = await res.json();
+//     return res.message;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const page = async () => {
-  var nearbyYouProperties = await fetchMyPropertiesNearbyYou();
-  console.log( "-------- home --------", nearbyYouProperties);
+  const [nearbyYouProperties, setNearbyYouProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const baseUrl =
+          process.env.NEXT_PUBLIC_DOMAIN || "https://www.bhumap.com";
+          console.log(baseUrl, `${baseUrl}/api/properties`);
+        const res = await fetch(`${baseUrl}/api/properties`, {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        setNearbyYouProperties(data.message);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchProperties();
+  }, []);
 
   return (
     <div>
