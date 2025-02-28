@@ -20,20 +20,20 @@ const Card = ({property}) => {
       </div>
 
       <div className="relative p-3 w-full flex flex-col gap-1 justify-between">
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row gap-1 justify-between">
           <div>
-            <h4 className="font-semibold text-xs md:text-md line-clamp-3">
+            <h4 className="font-semibold text-[12px] md:text-md line-clamp-3">
               {property.title}
             </h4>
-            <p className="text-xs md:text-md mt-1">{property.address?.cityTown}, {property.address?.district}, {property.address?.zipCode}</p>
+            <p className="text-[12px] md:text-md mt-1">{property.address?.cityTown}, {property.address?.district}, {property.address?.zipCode}</p>
           </div>
 
-          <p className="whitespace-nowrap text-xs md:text-md">
+          <p className="whitespace-nowrap text-[12px] md:text-md">
             <i className="bx bxs-star"></i> 4.9
           </p>
         </div>
         <span>
-          <p className="text-xs md:text-md">
+          <p className="text-[12px] md:text-md">
             <span className="font-semibold">{property.price}</span> for {property.purpose}
           </p>
         </span>
