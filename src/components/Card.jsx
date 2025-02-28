@@ -13,27 +13,27 @@ const Card = ({property}) => {
       <div className="relative overflow-hidden">
         <i className="bx bx-heart absolute text-primary z-50 top-3 right-3 text-2xl"></i>
         <img
-          className="w-full h-[250px] object-cover border hover:scale-110 transition-all duration-1000"
+          className="w-full h-[180px] md:h-[200px] object-cover border hover:scale-110 transition-all duration-1000"
           src={property?.images[0]?.secure_url}
           alt=""
         />
       </div>
 
-      <div className="relative p-3 w-full flex flex-col justify-between">
+      <div className="relative p-3 w-full flex flex-col gap-1 justify-between">
         <div className="flex justify-between">
           <div>
-            <h4 className="font-semibold text-sm lg:text-lg line-clamp-3">
+            <h4 className="font-semibold text-xs md:text-md line-clamp-3">
               {property.title}
             </h4>
-            <p className="text-sm">{property.address?.cityTown}, {property.address?.district}, {property.address?.zipCode}</p>
+            <p className="text-xs md:text-md mt-1">{property.address?.cityTown}, {property.address?.district}, {property.address?.zipCode}</p>
           </div>
 
-          <p className="whitespace-nowrap">
+          <p className="whitespace-nowrap text-xs md:text-md">
             <i className="bx bxs-star"></i> 4.9
           </p>
         </div>
         <span>
-          <p>
+          <p className="text-xs md:text-md">
             <span className="font-semibold">{property.price}</span> for {property.purpose}
           </p>
         </span>
