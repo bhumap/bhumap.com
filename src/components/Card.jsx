@@ -22,7 +22,7 @@ const Card = ({property}) => {
       <div className="relative p-3 w-full flex flex-col justify-between">
         <div className="flex justify-between">
           <div>
-            <h4 className="font-semibold line-clamp-3">
+            <h4 className="font-semibold text-sm lg:text-lg line-clamp-3">
               {property.title}
             </h4>
             <p className="text-sm">{property.address?.cityTown}, {property.address?.district}, {property.address?.zipCode}</p>
@@ -44,7 +44,7 @@ const Card = ({property}) => {
       <div className="relative overflow-hidden">
         <i className="bx bx-heart absolute text-primary z-50 top-3 right-3 text-2xl"></i>
         <img
-          className="w-full h-[250px] object-cover border hover:scale-110 transition-all duration-1000"
+          className="w-full sm:h-[200] h-[250px] object-cover border hover:scale-110 transition-all duration-1000"
           src="https://a0.muscache.com/im/pictures/miso/Hosting-50545526/original/af14ce0b-481e-41be-88d1-b84758f578e5.jpeg?im_w=1200"
           alt=""
         />

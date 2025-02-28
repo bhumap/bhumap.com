@@ -31,7 +31,7 @@ const PropertyCardsGrid = ({ title, search, properties }) => {
         </div>
       )}
 
-      <div className="h-auto mx-auto my-8 overflow-hidden grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
+      <div className="h-auto mx-auto my-8 overflow-hidden grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
         {filteredProperties?.length > 0 ? (
           filteredProperties?.map((property, index) => (
             <Card key={property._id} property={property} />
