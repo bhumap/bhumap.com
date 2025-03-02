@@ -5,7 +5,8 @@ const dbConnect = async () => {
     return
   };
   mongoose.set('debug', true);
-  await mongoose.connect(process.env.DB_URI)
+  await mongoose.connect(process.env.DB_URI);
+  console.log("connecte to DB")
 };
 
 export default dbConnect;

@@ -266,6 +266,7 @@ const PropertyDetail = ({ property }) => {
                 className="w-full h-full object-cover"
                 src={v.secure_url}
                 sizes="100vw"
+                priority
                 alt="Description of my image"
               />
             );

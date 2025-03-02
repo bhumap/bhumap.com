@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Card from "./Card";
 
 const PropertyCardsGrid = ({ title, search, properties }) => {
-  console.log(properties);
 
   const filteredProperties = properties?.data?.filter(
     (property) => !property.group
