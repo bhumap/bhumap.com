@@ -23,7 +23,7 @@ const Hero = () => {
     <div>
       <div className="w-full overflow-hidden hero-box">
 
-        <div className="active-user">
+        {/* <div className="active-user">
           <p>Monthly<span className="extsp">_</span>Active<span className="extsp">_</span>Users</p>
           <h2>
             502{" "}
@@ -32,7 +32,7 @@ const Hero = () => {
               13.48%
             </span>
           </h2>
-        </div>
+        </div> */}
 
        
         <div className="w-full h-[70vh] overflow-hidden flex justify-center items-center">
