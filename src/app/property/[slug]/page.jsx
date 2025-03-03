@@ -9,12 +9,11 @@ var fetchSingleProperty = async (slug) => {
     var res
     if(cookies().has("AccessToken")){
       const token = cookies().get("AccessToken").value
-      res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties/single?AccessToken=${token}&propertyID=${slug}`, { cache: "no-store"});
+      res = await fetch(`${process.env.DOMAIN}/api/properties/single?AccessToken=${token}&propertyID=${slug}`, { cache: "no-store"});
     }else{
-      res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties/single?propertyID=${slug}`, { cache: "no-store"});
+      res = await fetch(`${process.env.DOMAIN}/api/properties/single?propertyID=${slug}`, { cache: "no-store"});
     }
     res = await res.json();
-    console.log(res,"property====>");
     return res
   } catch (error) {
     return false

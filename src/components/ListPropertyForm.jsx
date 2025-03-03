@@ -2,18 +2,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "./Loader";
-import { propertyTypes, residentialSubTypes,group } from "@/src/data";
+import { propertyTypes, residentialSubTypes, group } from "@/src/data";
 import Map from "@/src/components/Map";
 import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
-import {toast,Toaster} from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { toast, Toaster } from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
 import "next-cloudinary/dist/cld-video-player.css";
 
-const ListPropertyForm = ({property}) => {
-
-  console.log(property);
-
-  var router = useRouter()
+const ListPropertyForm = ({ property }) => {
+  var router = useRouter();
+  const params = useParams();
 
   var [center, setCenter] = useState({
     lat: property?.center?.lat || 26.734461205646056,
@@ -24,16 +22,16 @@ const ListPropertyForm = ({property}) => {
 
   const [formData, setFormData] = useState({
     address: {
-        cityTown: "",
-        district: "",
-        zipCode: "",
-        line1: "",
-        line2: "",
-        line3: "",
+      cityTown: "",
+      district: "",
+      zipCode: "",
+      line1: "",
+      line2: "",
+      line3: "",
     },
     center: {
-        lat: 31.4154491,
-        lng: 73.1116333
+      lat: 31.4154491,
+      lng: 73.1116333
     },
     description: "",
     group: "",
@@ -154,15 +152,19 @@ const ListPropertyForm = ({property}) => {
     const value = e.target.value;
 
     if (name == "propertyType") {
-      var forminputscopy = formInputs;
+      var forminputscopy = [...formInputs];
       if (value == "Residential") {
-        forminputscopy.splice(2, 0, {
-          label: "Residential Type",
-          name: "residentialSubType",
-          type: "select",
-          options: residentialSubTypes,
-          cols: 1,
-        });
+        const subTypeExists = forminputscopy.some(input => input.name === "residentialSubType");
+        if (!subTypeExists) {
+          forminputscopy.splice(2, 0, {
+            label: "Residential Type",
+            name: "residentialSubType",
+            type: "select",
+            options: residentialSubTypes,
+            cols: 1,
+          });
+          setFormInputs(forminputscopy);
+        }
       } else {
         setFormInputs(
           forminputscopy.filter((v) => v.name != "residentialSubType")
@@ -179,7 +181,7 @@ const ListPropertyForm = ({property}) => {
     }
 
     if (name == "features") {
-      var copy = formData.features;
+      var copy = [...formData.features];
       copy[i] = value;
       setFormData({ ...formData, features: copy });
       return;
@@ -188,17 +190,17 @@ const ListPropertyForm = ({property}) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const saveChanges = async (data) =>{
+  const saveChanges = async (data) => {
     try {
-        setFormLoading(true)
-        var res = await axios.put(`/api/properties/${formData._id}`,{...data,center})
-        console.log(res);
+      setFormLoading(true);
+      var res = await axios.put(`/api/properties/${params.id}`, { ...data, center });
+      toast.success("Changes saved successfully");
     } catch (error) {
-        alert(error)
-    }finally{
-        setFormLoading(false)
+      toast.error(error.message || "Failed to save changes");
+    } finally {
+      setFormLoading(false);
     }
-  }
+  };
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -207,35 +209,85 @@ const ListPropertyForm = ({property}) => {
       setFormLoading(true);
 
       if (formData.images?.length < 1) {
-        alert("Please Select Atleast 1 Images of your Property!");
+        toast.error("Please select at least 1 image of your property!");
+        setFormLoading(false);
         return;
       }
 
-      var res = await axios.put(`/api/properties/${formData._id}`,{...formData,status:"Published",center})
+      var res = await axios.put(`/api/properties/${params.id}`, { ...formData, status: "Published", center });
+      if (res.data.success) {
+        toast.success("Property published successfully!");
+        router.push("/portal/my-properties");
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message || "Failed to publish property");
     } finally {
       setFormLoading(false);
     }
   };
 
+  // Delete an Item From Database ---------------------------------------------------------
+  const deleteItem = async (id) => {
+    if (!window.confirm("Are you sure to delete this Property?")) {
+      return;
+    }
+    try {
+      setFormLoading(true);
+      var res = await axios.delete(`/api/properties/${id}`);
+      if (res.data.success) {
+        toast.success(res.data.message);
+        router.push("/portal/my-properties");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      setFormLoading(false);
+    }
+  };
 
-    // Delete an Item From Database ---------------------------------------------------------
-    const deleteItem = async (id) => {
-      if (!window.confirm("Are you sure to delete this Property?")) {
-        return;
-      }
-      try {
-        var res = await axios.delete(`/api/properties/${id}`);
-        if (res.data.success) {
-          toast.success(res.data.message);
-          router.push("/portal/my-properties")
-        }
-      } catch (error) {
-        toast.success("Something went wrong!");
-      }
-    };
-  
+  // Handle image upload success without page refresh
+  const handleImageUploadSuccess = (res) => {
+    var imgs = [...formData.images]; 
+    var croppedImageUrl = res.info?.secure_url;
+    
+    if (res?.info?.coordinates?.custom[0]) {
+      const [x, y, width, height] = res?.info?.coordinates?.custom[0];
+      croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
+    }
+    
+    imgs.push({ public_id: res.info.public_id, secure_url: croppedImageUrl });
+    
+    // Update form data first, then save to API
+    setFormData(prevData => {
+      const updatedData = { ...prevData, images: imgs };
+      saveChanges(updatedData).catch(error => {
+        toast.error("Failed to save image");
+      });
+      return updatedData;
+    });
+    
+    document.body.style.overflow = "auto";
+  };
+
+  // Handle video upload success
+  const handleVideoUploadSuccess = (res) => {
+    setFormData(prevData => {
+      const updatedData = { ...prevData, video: res.info.public_id };
+      saveChanges(updatedData).catch(error => {
+        toast.error("Failed to save video");
+      });
+      return updatedData;
+    });
+    
+    document.body.style.overflow = "auto";
+  };
+
+  // Remove image handler
+  const removeImage = (index) => {
+    const updatedImages = formData.images.filter((_, i) => i !== index);
+    setFormData({ ...formData, images: updatedImages });
+    saveChanges({ ...formData, images: updatedImages });
+  };
 
   return (
     <div>
@@ -250,8 +302,8 @@ const ListPropertyForm = ({property}) => {
 
         <form onSubmit={submitForm} className={``}>
           <div className="grid grid-cols-2 gap-6">
-                       {/* images */}
-                       <div className={`relative col-span-2`}>
+            {/* images */}
+            <div className={`relative col-span-2`}>
               <h2 className="font-semibold text-xl mb-1">Property Images</h2>
               {formData.images?.length ? (
                 <p className="pb-2 text-gray-600">
@@ -274,13 +326,7 @@ const ListPropertyForm = ({property}) => {
                         />
                         <div className="hidden absolute top-0 left-0 w-full h-full bg-black/40 group-hover:flex justify-end items-end p-2">
                           <i
-                            // onClick={() =>
-                            //   setTempImages(
-                            //     Array.from(tempImages)?.filter((f, a) => {
-                            //       return a != i;
-                            //     })
-                            //   )
-                            // }
+                            onClick={() => removeImage(i)}
                             className="bx text-white hover:bg-black/50 p-1 rounded-md cursor-pointer bxs-trash"
                           ></i>
                         </div>
@@ -290,81 +336,65 @@ const ListPropertyForm = ({property}) => {
 
                   {formData.images.length != 8 && (
                     <CldUploadWidget
-                    options={{
-                      cropping:"server",
-                      cropping_aspect_ratio : 1.5/1
-                    }}
-                    uploadPreset={
-                      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-                    }
-                    onSuccess={(res) => {
-                      var imgs = formData.images
-                      var croppedImageUrl = res.info?.secure_url;
-                      if(res?.info?.coordinates?.custom[0]){
-                        const [x, y, width, height] = res?.info?.coordinates?.custom[0];
-                        var croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
+                      options={{
+                        cropping: "server",
+                        cropping_aspect_ratio: 1.5/1,
+                        sources: ["local", "camera"],
+                        maxFileSize: 50000000
+                      }}
+                      uploadPreset={
+                        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
                       }
-                      
-                      imgs.push({public_id:res.info.public_id,secure_url:croppedImageUrl})
-                      setFormData({ ...formData, images:  imgs});
-                      saveChanges({ ...formData, images:  imgs})
-                      document.body.style.overflow = "auto";
-                    }}
-                  >
-                    {({ open }) => {
-                      return (
-                        <label
-                        onClick={()=>open()}
-                        htmlFor="images"
-                        className="rounded-md p-4 cursor-pointer hover:bg-gray-100 flex flex-col justify-center items-center group overflow-hidden relative border"
-                      >
-                        <i className="bx mb-2 bx-images"></i>
-                        <div>More Images</div>
-                      </label>
-                      );
-                    }}
-                  </CldUploadWidget>
-                    
+                      onSuccess={handleImageUploadSuccess}
+                      onClose={() => {
+                        document.body.style.overflow = "auto";
+                      }}
+                    >
+                      {({ open }) => {
+                        return (
+                          <div
+                            onClick={() => open()}
+                            className="rounded-md p-4 cursor-pointer hover:bg-gray-100 flex flex-col justify-center items-center group overflow-hidden relative border"
+                          >
+                            <i className="bx mb-2 bx-images"></i>
+                            <div>More Images</div>
+                          </div>
+                        );
+                      }}
+                    </CldUploadWidget>
                   )}
                 </div>
               ) : (
                 <CldUploadWidget
                   options={{
-                    cropping:"server",
-                    cropping_aspect_ratio : 1.5/1
+                    cropping: "server",
+                    cropping_aspect_ratio: 1.5/1,
+                    sources: ["local", "camera"],
+                    maxFileSize: 50000000
                   }}
                   uploadPreset={
                     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
                   }
-                  onSuccess={(res) => {
-                    var imgs = formData.images
-                    var croppedImageUrl = res.info?.secure_url;
-                    if(res?.info?.coordinates?.custom[0]){
-                      const [x, y, width, height] = res?.info?.coordinates?.custom[0];
-                      var croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
-                    }
-                    imgs.push({public_id:res.info.public_id,secure_url:croppedImageUrl})
-                    setFormData({ ...formData, images:  imgs});
-                    saveChanges({ ...formData, images:  imgs})
+                  onSuccess={handleImageUploadSuccess}
+                  onClose={() => {
                     document.body.style.overflow = "auto";
                   }}
                 >
                   {({ open }) => {
                     return (
-                        <label
-                        onClick={()=>open()}
-                        htmlFor="images"
+                      <div
+                        onClick={() => open()}
                         className="border text-xl bg-primary/5 cursor-pointer hover:bg-primary/10 border-dashed rounded-md border-primary p-4 flex justify-center items-center"
                       >
                         <i className="bx mr-2 bx-images"></i> Select Images
-                      </label>
+                      </div>
                     );
                   }}
                 </CldUploadWidget>
-                
               )}
             </div>
-            {/* General Info */}
+            
+            {/* Form inputs - rest of the form remains the same */}
             {formInputs.map((v, i) => {
               var label = (
                 <label
@@ -443,8 +473,6 @@ const ListPropertyForm = ({property}) => {
                   );
               }
             })}
-
- 
 
             {/* Features */}
             <div className=" rounded-md col-span-2">
@@ -573,20 +601,20 @@ const ListPropertyForm = ({property}) => {
                   uploadPreset={
                     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
                   }
-                  onSuccess={(res) => {
-                    setFormData({ ...formData, video: res.info.public_id });
-                    saveChanges({ ...formData, video: res.info.public_id })
+                  onSuccess={handleVideoUploadSuccess}
+                  onClose={() => {
+                    // Ensure no page refresh on widget close
                     document.body.style.overflow = "auto";
                   }}
                 >
                   {({ open }) => {
                     return (
-                      <label
+                      <div
                         onClick={() => open()}
                         className="border text-xl bg-primary/5 cursor-pointer hover:bg-primary/10 border-dashed rounded-md border-primary p-4 flex justify-center items-center"
                       >
                         <i className="bx mr-2 bx-video"></i> Select Video
-                      </label>
+                      </div>
                     );
                   }}
                 </CldUploadWidget>
