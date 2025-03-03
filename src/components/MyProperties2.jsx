@@ -28,7 +28,7 @@ const MyProperties = () => {
         router.push(`/portal/list-property-form2/${data.data._id}`);
       }
     } catch (error) {
-      alert(error.message);
+        alert(error.message);
     } finally {
       // setLoading(false);
     }
@@ -38,9 +38,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       var res = await fetch(
-        `/api/listing/${user?.userType == "Buyer" ? "getViews" : "mine"}`,
-        { cache: "no-store" }
-      );
+        `/api/listing/${user?.userType == "Buyer" ? "getViews" : "mine"}`);
       res = await res.json();
       setProperties(res.message);
     } catch (error) {

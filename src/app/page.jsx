@@ -17,8 +17,6 @@ var fetchMyPropertiesNearbyYou = async () => {
 const page = async () => {
   var nearbyYouProperties = await fetchMyPropertiesNearbyYou();
 
-  console.log(nearbyYouProperties,"near")
-
   return (
     <div>
       <Hero />     
