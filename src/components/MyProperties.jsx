@@ -39,9 +39,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       var res = await fetch(
-        `/api/properties/${user?.userType == "Admin" ? "getViews" : "mine"}`,
-        { cache: "no-store" }
-      );
+        `/api/properties/${user?.userType == "Admin" ? "getViews" : "mine"}`);
       res = await res.json();
       setProperties(res.message);
     } catch (error) {

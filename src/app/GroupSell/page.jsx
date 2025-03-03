@@ -9,9 +9,7 @@ const Page = () => {
   useEffect(() => {
     const fetchMyPropertiesNearbyYou = async () => {
       try {
-        const res = await fetch(`/api/properties`, {
-          cache: "no-store",
-        });
+        const res = await fetch(`/api/properties`);
         const data = await res.json();
         setNearbyYouProperties(data.message);
       } catch (error) {
