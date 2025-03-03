@@ -28,7 +28,7 @@ const MyProperties = () => {
         router.push(`/portal/list-property-form2/${data.data._id}`);
       }
     } catch (error) {
-      alert(error.message);
+        alert(error.message);
     } finally {
       // setLoading(false);
     }
