@@ -1,9 +1,10 @@
 import dbConnect from "@/src/backend/config/dbConnect";
 import PropertiesModel from "@/src/backend/models/property";
 import { JWTVerify } from "@/src/backend/helpers/jwt";
+import { uploadMiddleware } from "@/src/backend/helpers/uploadfiles";
 const { ObjectId } = require("mongoose").Types;
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   await dbConnect();
 
   var token = req.cookies.AccessToken || "";
@@ -70,6 +71,9 @@ export default async function handler(req, res) {
       try {
         var token = req.cookies.AccessToken || "";
         var userID = (await JWTVerify(token)) || req.query.id;
+         
+        // const image = req?.files?.map((item) =>{ return { secure_url: item.location, public_id: item.etag} });
+        // req.body.images = image ?? [];
 
         if (!req.body.title) {
           return res.status(400).json({
@@ -80,7 +84,7 @@ export default async function handler(req, res) {
 
         var item = await PropertiesModel.create({ ...req.body, owner: userID });
 
-        res.status(201).json({
+        return res.status(201).json({
           success: true,
           message: "Added Successfully!",
           data: item,
@@ -111,3 +115,15 @@ export default async function handler(req, res) {
       break;
   }
 }
+
+
+
+
+
+export default uploadMiddleware(handler);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  }
+};

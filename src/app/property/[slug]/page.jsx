@@ -1,37 +1,72 @@
+"use client"
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import PropertyDetail from '@/src/components/PropertyDetail'
-import Map from '../../../components/SimpleMap'
 import '@/src/app/embla.css'
-import { notFound } from 'next/navigation';
-import { cookies } from 'next/headers';
 
-var fetchSingleProperty = async (slug) => {
-  try {
-    var res
-    if(cookies().has("AccessToken")){
-      const token = cookies().get("AccessToken").value
-      res = await fetch(`${process.env.DOMAIN}/api/properties/single?AccessToken=${token}&propertyID=${slug}`, { cache: "no-store"});
-    }else{
-      res = await fetch(`${process.env.DOMAIN}/api/properties/single?propertyID=${slug}`, { cache: "no-store"});
-    }
-    res = await res.json();
-    return res
-  } catch (error) {
-    return false
+const PropertyDetailPage = () => {
+  const [property, setProperty] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const params = useParams();
+  const slug = params?.slug;
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      if (!slug) return;
+
+      try {
+        setIsLoading(true);
+        const accessToken = localStorage.getItem('AccessToken');
+        
+        const url = new URL(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties/single`);
+        url.searchParams.set('propertyID', slug);
+        
+        if (accessToken) {
+          url.searchParams.set('AccessToken', accessToken);
+        }
+
+        const response = await fetch(url.toString(), { 
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setProperty(data.message);
+        } else {
+          setError('Property not found');
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [slug]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-};
 
-const page = async ({params}) => {
-  var property = await fetchSingleProperty(params.slug);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-  if(!property?.success){
-    notFound()
+  if (!property) {
+    return <div>No property found</div>;
   }
 
   return (
     <div>
-        <PropertyDetail property={property.message} />
+      <PropertyDetail property={property} />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default PropertyDetailPage;
