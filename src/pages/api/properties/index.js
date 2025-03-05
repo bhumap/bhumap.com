@@ -4,7 +4,7 @@ import { JWTVerify } from "@/src/backend/helpers/jwt";
 import { uploadMiddleware } from "@/src/backend/helpers/uploadfiles";
 const { ObjectId } = require("mongoose").Types;
 
-async function handler(req, res) {
+export default async function handler(req, res) {
   await dbConnect();
 
   var token = req.cookies.AccessToken || "";
@@ -72,9 +72,6 @@ async function handler(req, res) {
         var token = req.cookies.AccessToken || "";
         var userID = (await JWTVerify(token)) || req.query.id;
          
-        // const image = req?.files?.map((item) =>{ return { secure_url: item.location, public_id: item.etag} });
-        // req.body.images = image ?? [];
-
         if (!req.body.title) {
           return res.status(400).json({
             success: false,
@@ -115,15 +112,3 @@ async function handler(req, res) {
       break;
   }
 }
-
-
-
-
-
-export default uploadMiddleware(handler);
-
-export const config = {
-  api: {
-    bodyParser: false,
-  }
-};
