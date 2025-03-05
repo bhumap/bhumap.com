@@ -31,7 +31,7 @@ const ListPropertyForm = ({ property }) => {
     },
     center: {
       lat: 31.4154491,
-      lng: 73.1116333
+      lng: 73.1116333,
     },
     description: "",
     group: "",
@@ -43,7 +43,7 @@ const ListPropertyForm = ({ property }) => {
     title: "",
     video: "",
     images: [],
-    ...property
+    ...property,
   });
 
   const [formInputs, setFormInputs] = useState([
@@ -154,7 +154,9 @@ const ListPropertyForm = ({ property }) => {
     if (name == "propertyType") {
       var forminputscopy = [...formInputs];
       if (value == "Residential") {
-        const subTypeExists = forminputscopy.some(input => input.name === "residentialSubType");
+        const subTypeExists = forminputscopy.some(
+          (input) => input.name === "residentialSubType"
+        );
         if (!subTypeExists) {
           forminputscopy.splice(2, 0, {
             label: "Residential Type",
@@ -193,7 +195,10 @@ const ListPropertyForm = ({ property }) => {
   const saveChanges = async (data) => {
     try {
       setFormLoading(true);
-      var res = await axios.put(`/api/properties/${params.id}`, { ...data, center });
+      var res = await axios.put(`/api/properties/${params.id}`, {
+        ...data,
+        center,
+      });
       toast.success("Changes saved successfully");
     } catch (error) {
       toast.error(error.message || "Failed to save changes");
@@ -214,7 +219,11 @@ const ListPropertyForm = ({ property }) => {
         return;
       }
 
-      var res = await axios.put(`/api/properties/${params.id}`, { ...formData, status: "Published", center });
+      var res = await axios.put(`/api/properties/${params.id}`, {
+        ...formData,
+        status: "Published",
+        center,
+      });
       if (res.data.success) {
         toast.success("Property published successfully!");
         router.push("/portal/my-properties");
@@ -247,38 +256,30 @@ const ListPropertyForm = ({ property }) => {
 
   // Handle image upload success without page refresh
   const handleImageUploadSuccess = (res) => {
-    var imgs = [...formData.images]; 
-    var croppedImageUrl = res.info?.secure_url;
-    
-    if (res?.info?.coordinates?.custom[0]) {
-      const [x, y, width, height] = res?.info?.coordinates?.custom[0];
-      croppedImageUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_crop,x_${x},y_${y},w_${width},h_${height}/${res?.info?.public_id}.png`;
-    }
-    
-    imgs.push({ public_id: res.info.public_id, secure_url: croppedImageUrl });
-    
-    // Update form data first, then save to API
-    setFormData(prevData => {
-      const updatedData = { ...prevData, images: imgs };
-      saveChanges(updatedData).catch(error => {
-        toast.error("Failed to save image");
-      });
-      return updatedData;
-    });
-    
-    document.body.style.overflow = "auto";
+     
+    console.log("Image Upload Success:", res.target.files);
+   
+    // setFormData((prevData) => {
+    //   const updatedData = { ...prevData, images: imgs };
+    //   saveChanges(updatedData).catch((error) => {
+    //     toast.error("Failed to save image");
+    //   });
+    //   return updatedData;
+    // });
+
+    // document.body.style.overflow = "auto";
   };
 
   // Handle video upload success
   const handleVideoUploadSuccess = (res) => {
-    setFormData(prevData => {
+    setFormData((prevData) => {
       const updatedData = { ...prevData, video: res.info.public_id };
-      saveChanges(updatedData).catch(error => {
+      saveChanges(updatedData).catch((error) => {
         toast.error("Failed to save video");
       });
       return updatedData;
     });
-    
+
     document.body.style.overflow = "auto";
   };
 
@@ -335,65 +336,30 @@ const ListPropertyForm = ({ property }) => {
                   })}
 
                   {formData.images.length != 8 && (
-                    <CldUploadWidget
-                      options={{
-                        cropping: "server",
-                        cropping_aspect_ratio: 1.5/1,
-                        sources: ["local", "camera"],
-                        maxFileSize: 50000000
-                      }}
-                      uploadPreset={
-                        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-                      }
-                      onSuccess={handleImageUploadSuccess}
-                      onClose={() => {
-                        document.body.style.overflow = "auto";
-                      }}
-                    >
-                      {({ open }) => {
-                        return (
-                          <div
-                            onClick={() => open()}
-                            className="rounded-md p-4 cursor-pointer hover:bg-gray-100 flex flex-col justify-center items-center group overflow-hidden relative border"
-                          >
-                            <i className="bx mb-2 bx-images"></i>
-                            <div>More Images</div>
-                          </div>
-                        );
-                      }}
-                    </CldUploadWidget>
+                    <input
+                      type="file"
+                      id="files"
+                      name="files"
+                      multiple
+                      accept="image/*,video/*"
+                      onChange={handleImageUploadSuccess}
+                      className="w-full p-2 border rounded"
+                    />
                   )}
                 </div>
               ) : (
-                <CldUploadWidget
-                  options={{
-                    cropping: "server",
-                    cropping_aspect_ratio: 1.5/1,
-                    sources: ["local", "camera"],
-                    maxFileSize: 50000000
-                  }}
-                  uploadPreset={
-                    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-                  }
-                  onSuccess={handleImageUploadSuccess}
-                  onClose={() => {
-                    document.body.style.overflow = "auto";
-                  }}
-                >
-                  {({ open }) => {
-                    return (
-                      <div
-                        onClick={() => open()}
-                        className="border text-xl bg-primary/5 cursor-pointer hover:bg-primary/10 border-dashed rounded-md border-primary p-4 flex justify-center items-center"
-                      >
-                        <i className="bx mr-2 bx-images"></i> Select Images
-                      </div>
-                    );
-                  }}
-                </CldUploadWidget>
+                <input
+                  type="file"
+                  id="files"
+                  name="files"
+                  multiple
+                  accept="image/*,video/*"
+                  onChange={handleImageUploadSuccess}
+                  className="w-full p-2 border rounded"
+                />
               )}
             </div>
-            
+
             {/* Form inputs - rest of the form remains the same */}
             {formInputs.map((v, i) => {
               var label = (
@@ -586,7 +552,11 @@ const ListPropertyForm = ({ property }) => {
               </h3>
               {formData.video ? (
                 <div>
-                  <CldVideoPlayer width={100} height={100} src={formData.video} />
+                  <CldVideoPlayer
+                    width={100}
+                    height={100}
+                    src={formData.video}
+                  />
                 </div>
               ) : (
                 <CldUploadWidget
@@ -623,26 +593,26 @@ const ListPropertyForm = ({ property }) => {
 
             <div className="col-span-2 text-xs sm:text-base flex justify-between">
               <div>
-              <button
-                type="button"
-                onClick={()=>deleteItem(formData._id)}
-                className="border-primary border px-3 py-2 rounded-md text-primary mr-3"
-              >
-                Delete
-              </button>
+                <button
+                  type="button"
+                  onClick={() => deleteItem(formData._id)}
+                  className="border-primary border px-3 py-2 rounded-md text-primary mr-3"
+                >
+                  Delete
+                </button>
               </div>
               <div>
-              <button
-                type="button"
-                onClick={()=>saveChanges(formData)}
-                className="border-primary border px-5 py-2 rounded-md text-primary mr-3"
-              >
-                Save
-              </button>
+                <button
+                  type="button"
+                  onClick={() => saveChanges(formData)}
+                  className="border-primary border px-5 py-2 rounded-md text-primary mr-3"
+                >
+                  Save
+                </button>
 
-              <button className="bg-primary border-primary border hover:bg-primary px-5 py-2 rounded-md text-white">
-                <span>{formLoading ? "Processing..." : "Publish"}</span>
-              </button>
+                <button className="bg-primary border-primary border hover:bg-primary px-5 py-2 rounded-md text-white">
+                  <span>{formLoading ? "Processing..." : "Publish"}</span>
+                </button>
               </div>
             </div>
           </div>
