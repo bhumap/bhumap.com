@@ -24,7 +24,7 @@ function sendNodemail(receiverEmail, subject, message) {
     return info
   } catch (error) {
     console.log(error)
-    return false
+     return false
   }
 
 }
