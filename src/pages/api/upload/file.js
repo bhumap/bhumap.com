@@ -13,7 +13,9 @@ async function handler(req, res) {
 
         // const data = await uploadToS3(req.files);
 
-        return res.json({data:req.files});
+        const data = req?.files?.map((item) =>  item.location)
+
+        return res.json({data});
       } catch (error) {
         console.log(error);
       }
