@@ -256,18 +256,36 @@ const ListPropertyForm = ({ property }) => {
 
   // Handle image upload success without page refresh
   const handleImageUploadSuccess = (res) => {
-     
-    console.log("Image Upload Success:", res.target.files);
-   
-    // setFormData((prevData) => {
-    //   const updatedData = { ...prevData, images: imgs };
-    //   saveChanges(updatedData).catch((error) => {
-    //     toast.error("Failed to save image");
-    //   });
-    //   return updatedData;
-    // });
+    const formData = new FormData();
+    formData.append("file", res.target.files[0]);
 
-    // document.body.style.overflow = "auto";
+    console.log("Image Upload Success:", res.target.file);
+
+    fetch("http://localhost:3000/api/upload/file", {
+      method: "POST",
+      "Contetnt-Type": "multipart/form-data",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const imgs = data.data.map((item) => {
+          return { secure_url: item };  
+        });
+
+        setFormData((prevData) => {
+          const updatedData = {
+            ...prevData,
+            images: [...prevData.images, ...imgs],
+          };
+          saveChanges(updatedData).catch((error) => {
+            toast.error("Failed to save image");
+          });
+          return updatedData;
+        });
+      })
+      .catch((error) => console.log(error));
+
+    document.body.style.overflow = "auto";
   };
 
   // Handle video upload success
@@ -283,7 +301,7 @@ const ListPropertyForm = ({ property }) => {
     document.body.style.overflow = "auto";
   };
 
-  // Remove image handler
+
   const removeImage = (index) => {
     const updatedImages = formData.images.filter((_, i) => i !== index);
     setFormData({ ...formData, images: updatedImages });
@@ -339,7 +357,7 @@ const ListPropertyForm = ({ property }) => {
                     <input
                       type="file"
                       id="files"
-                      name="files"
+                      name="file"
                       multiple
                       accept="image/*,video/*"
                       onChange={handleImageUploadSuccess}
@@ -351,7 +369,7 @@ const ListPropertyForm = ({ property }) => {
                 <input
                   type="file"
                   id="files"
-                  name="files"
+                  name="file"
                   multiple
                   accept="image/*,video/*"
                   onChange={handleImageUploadSuccess}
@@ -360,7 +378,6 @@ const ListPropertyForm = ({ property }) => {
               )}
             </div>
 
-            {/* Form inputs - rest of the form remains the same */}
             {formInputs.map((v, i) => {
               var label = (
                 <label
