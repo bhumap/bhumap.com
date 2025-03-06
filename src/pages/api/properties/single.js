@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     console.log("Request Query:", req.query);
 
     const token = req.query.AccessToken || "";
-    let userID =  await JWTVerify(token);
+    let userID =  await JWTVerify(token) ;
 
 
     if (!mongoose.isValidObjectId(req.query.propertyID)) {
@@ -41,9 +41,9 @@ export default async function handler(req, res) {
       }
     }
 
-    res.json({ success: true, message: property });
+    return res.json({ success: true, message: property });
   } catch (error) {
     console.error("Error Fetching Property:", error);
-    res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 }
