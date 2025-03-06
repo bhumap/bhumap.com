@@ -261,7 +261,7 @@ const ListPropertyForm = ({ property }) => {
 
     console.log("Image Upload Success:", res.target.file);
 
-    fetch("http://localhost:3000/api/upload/file", {
+    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}api/upload/file`, {
       method: "POST",
       "Contetnt-Type": "multipart/form-data",
       body: formData,
