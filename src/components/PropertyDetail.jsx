@@ -11,13 +11,17 @@ import { WhatsappShareButton } from "next-share";
 import Link from "next/link";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import whb from '../../public/images/whb.webp';
+import whb from "../../public/images/whb.webp";
 import { isDev } from "@/src/backend/helpers/util";
+import { toast } from "react-toastify";
+import { getCookies } from "../utils/getCookies";
 
 const PropertyDetail = ({ property }) => {
   const ownerEmail = property?.owner?.email.value;
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -91,6 +95,8 @@ const PropertyDetail = ({ property }) => {
 
   var [sharing, setSharing] = useState(false);
   var [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(property.likes);
+  const router = useRouter();
 
   var [center, setCenter] = useState(
     property.center || {
@@ -104,14 +110,24 @@ const PropertyDetail = ({ property }) => {
       var res = await axios.put(
         `/api/properties/${property._id}?likeDislike=true`
       );
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
+      setLikeCount(res.data?.data?.likes);
       setLiked(!liked);
-      window.location.reload();
-    } catch (error) {}
+      // window.location.reload();
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
+      console.error("Error liking property");
+    }
   };
 
   useEffect(() => {
-    setLiked(property?.likes?.includes(user?._id));
-  }, [user, pathname]);
+    router.push(`${pathname}/?title=${property.title}`, undefined, { shallow: true });
+    setLiked(likeCount?.includes(user?._id));
+  }, [user, pathname, likeCount]);
 
   return (
     <div>
@@ -148,6 +164,16 @@ const PropertyDetail = ({ property }) => {
               <div>
                 <div
                   title="Copy"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${
+                        isDev()
+                          ? process.env.NEXT_PUBLIC_LOCAL_URL
+                          : process.env.NEXT_PUBLIC_DOMAIN
+                      }property/${property._id}`
+                    );
+                    toast.success("Link copied to clipboard");
+                  }}
                   className="border cursor-pointer bg-gray-200 h-[35px] text-lg w-[35px] p-[2px]  flex items-center justify-center rounded-[100%]"
                 >
                   <i className="bx bx-copy  text-black"></i>
@@ -156,7 +182,11 @@ const PropertyDetail = ({ property }) => {
 
               <Link
                 target="_blank"
-                href={`https://www.facebook.com/sharer/sharer.php?u=${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}property/${property._id}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${
+                  isDev()
+                    ? process.env.NEXT_PUBLIC_LOCAL_URL
+                    : process.env.NEXT_PUBLIC_DOMAIN
+                }property/${property._id}`}
               >
                 <div className="bg-[#316FF6] h-[35px] text-lg w-[35px] p-[2px]  flex items-center justify-center rounded-[100%]">
                   <i className="bx bxl-facebook  text-white"></i>
@@ -194,35 +224,42 @@ const PropertyDetail = ({ property }) => {
 
               <Link
                 target="_black"
-                href={`https://www.instagram.com/share?url=${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}property/${property._id}`}
+                href={`https://www.instagram.com/share?url=${
+                  isDev()
+                    ? process.env.NEXT_PUBLIC_LOCAL_URL
+                    : process.env.NEXT_PUBLIC_DOMAIN
+                }property/${property._id}`}
               >
                 <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">
                   <i className="bx bxl-instagram text-white"></i>
                 </div>
               </Link>
-              
 
               <div className=" bg-[#25D366]  flex items-center justify-center  h-[35px] text-lg w-[35px] p-[2px] rounded-[100%]">
                 <WhatsappShareButton
-                  url={`${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}property/${property._id}`}
+                  url={`${
+                    isDev()
+                      ? process.env.NEXT_PUBLIC_LOCAL_URL
+                      : process.env.NEXT_PUBLIC_DOMAIN
+                  }property/${property._id}`}
                   className="flex items-center"
                 >
                   <i className="bx bxl-whatsapp text-xl mt-2 text-white"></i>
                 </WhatsappShareButton>
               </div>
 
-              
-
               <Link
-                href={`https://web.whatsapp.com/send?text= Please Visit ${isDev() ? process.env.NEXT_PUBLIC_LOCAL_URL: process.env.NEXT_PUBLIC_DOMAIN}property/${property._id}`}
+                href={`https://web.whatsapp.com/send?text= Please Visit ${
+                  isDev()
+                    ? process.env.NEXT_PUBLIC_LOCAL_URL
+                    : process.env.NEXT_PUBLIC_DOMAIN
+                }property/${property._id}`}
                 target="_blank"
               >
                 <div className="h-[35px] text-lg w-[35px] p-[2px] bg-[#E4405F] flex items-center justify-center rounded-[100%]">
                   <Image href={whb} />
                 </div>
-                
               </Link>
-
             </div>
           </div>
         </div>
@@ -245,14 +282,16 @@ const PropertyDetail = ({ property }) => {
               } py-1 flex gap-2 items-center rounded-full px-3`}
             >
               <i
-                onClick={() => likeProperty()}
+                onClick={() =>
+                  !getCookies("AccessToken") ? setIsOpen(true) : likeProperty()
+                }
                 className={`bx ${
                   liked ? "text-red-600" : ""
                 } hover:bg-gray-100 cursor-pointer rounded-full bx${
                   liked ? "s" : ""
                 }-like`}
               ></i>
-              <div className="text-sm">{property.likes?.length}</div>
+              <div className="text-sm">{likeCount?.length}</div>
             </div>
           </div>
         </div>

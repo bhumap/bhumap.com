@@ -34,7 +34,7 @@ const SimpleMap = ({center,setCenter}) => {
     <div>
       <LoadScript
         libraries={["places"]}
-        googleMapsApiKey="AIzaSyDa9wzMFWk03neKgcOmteJBKu6yjv-uE-w"
+        googleMapsApiKey="AIzaSyCURVZDeDimYplXjBBebgYu-FepsYycJjc"
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
