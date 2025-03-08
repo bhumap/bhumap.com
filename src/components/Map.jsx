@@ -52,7 +52,7 @@ const Map = ({center,setCenter}) => {
     <div>
       <LoadScript
         libraries={["places"]}
-        googleMapsApiKey="AIzaSyDa9wzMFWk03neKgcOmteJBKu6yjv-uE-w"
+        googleMapsApiKey="AIzaSyCURVZDeDimYplXjBBebgYu-FepsYycJjc"
       >
         <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
           <div className="relative mb-4">

@@ -1,10 +1,11 @@
 import dbConnect from "@/src/backend/config/dbConnect";
+import { JWTVerify } from "@/src/backend/helpers/jwt";
 import PropertiesModel from "@/src/backend/models/property";
+import mongoose from "mongoose";
 
 export default async function handler(req, res) {
   await dbConnect();
   var foundItem;
-
 
   try {
     foundItem = await PropertiesModel.findById(req.query.id).populate(
@@ -35,15 +36,44 @@ export default async function handler(req, res) {
         });
         break;
       case "PUT":
+        var token = req.cookies.AccessToken || "";
+        var userID = await JWTVerify(token);
+        
+        if(!userID || !token){
+          return res.status(401).json({
+            success: false,
+            message: "Unauthorized Access!",
+          });
+        } 
+
+        const likeExist = await PropertiesModel.findById(req.query.id);
+
+        console.log(userID,"userID");
+
+        if(likeExist.likes.includes(userID)){
+          const response = await PropertiesModel.findByIdAndUpdate(
+            req.query.id,
+            { $pull: { likes: new mongoose.Types.ObjectId(userID) } },
+            { new: true }
+          );
+          
+          res.status(201).json({
+            success: false,
+            message: "You unliked this property!",
+            data: response,
+          });
+          return;
+        }
+
         var response = await PropertiesModel.findByIdAndUpdate(
           req.query.id,
-          { $set: req.body },
+          { $push: { likes: new mongoose.Types.ObjectId(userID) } },
           { new: true }
         );
 
         res.status(201).json({
           success: true,
-          message: "Updated Successfully!",
+          message: "You liked this property!",
           data: response,
         });
         break;
