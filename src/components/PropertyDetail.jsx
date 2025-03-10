@@ -125,7 +125,7 @@ const PropertyDetail = ({ property }) => {
   };
 
   useEffect(() => {
-    router.push(`${pathname}/?title=${property.title}`, undefined, { shallow: true });
+    router.push(`${pathname}/?title=${property.title.split(" ").join("-")}`, undefined, { shallow: true });
     setLiked(likeCount?.includes(user?._id));
   }, [user, pathname, likeCount]);
 
@@ -265,13 +265,10 @@ const PropertyDetail = ({ property }) => {
         </div>
 
         <div className="pb-4 flex flex-col md:flex-row items-start gap-2 md:items-center justify-between">
-          <h1 className="text-xl md:text-2xl font-semibold">
-            {property.title}
-          </h1>
-          <div className="flex items-center text-gray-600">
+           <div className="flex items-center text-gray-600">
             <i
               onClick={() => {
-                setSharing(true);
+                user?._id ? setSharing(true) : toast.error("Please login to share this property");
                 document.body.style.overflow = "hidden";
               }}
               className="bx p-2 hover:bg-gray-100 cursor-pointer rounded-full bx-share bx-flip-horizontal"
@@ -283,7 +280,7 @@ const PropertyDetail = ({ property }) => {
             >
               <i
                 onClick={() =>
-                  !getCookies("AccessToken") ? setIsOpen(true) : likeProperty()
+                  likeProperty()
                 }
                 className={`bx ${
                   liked ? "text-red-600" : ""
@@ -293,72 +290,76 @@ const PropertyDetail = ({ property }) => {
               ></i>
               <div className="text-sm">{likeCount?.length}</div>
             </div>
-          </div>
+          </div><h1 className="text-xl md:text-2xl font-semibold">
+            {property.title}
+          </h1>
+         
         </div>
 
-        <div className="grid h-[60vh] grid-cols-6 grid-rows-2 gap-4">
-          {property?.images?.slice(0, 4)?.map((v, i) => {
-            var img = (
-              <Image
-                width="900"
-                height="600"
-                className="w-full h-full object-cover"
-                src={v.secure_url}
-                sizes="100vw"
-                priority
-                alt="Description of my image"
-              />
-            );
-            switch (i) {
-              case 0:
-                return (
-                  <div
-                    key={i}
-                    className="border border-black/30 rounded-lg overflow-hidden row-span-2 col-span-6 md:col-span-4"
-                  >
-                    {img}
-                  </div>
-                );
-              case 1:
-                return (
-                  <div
-                    key={i}
-                    className="border border-black/30 rounded-lg overflow-hidden row-span-1 col-span-3 md:col-span-2 relative"
-                  >
-                    {img}
-                  </div>
-                );
-              case 2:
-                return (
-                  <div
-                    key={i}
-                    className="border border-black/30 rounded-lg overflow-hidden row-span-1 col-span-3 md:col-span-2 relative"
-                  >
-                    {img}
-                    <button
-                      onClick={() => {
-                        setShowSlider(true);
-                        document.body.style.overflow = "hidden";
-                      }}
-                      className="absolute text-xs sm:text-sm bg-gray-100 py-1 px-2 rounded-md border border-black/50 font-medium hover:bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1"
+          <div className="grid h-[60vh] grid-cols-6 grid-rows-2 gap-4">
+            {property?.images?.slice(0, 4)?.map((v, i) => {
+              var img = (
+                <Image
+                  width="900"
+                  height="600"
+                  className="w-full h-full object-cover"
+                  src={v.secure_url}
+                  sizes="100vw"
+                  priority
+                  alt="Description of my image"
+                />
+              );
+              switch (i) {
+                case 0:
+                  return (
+                    <div
+                      key={i}
+                      className="border border-black/30 rounded-lg overflow-hidden row-span-2 col-span-6 md:col-span-4"
                     >
-                      <i className="bx bx-images"></i> See All
-                    </button>
-                  </div>
-                );
-            }
-          })}
-        </div>
+                      {img}
+                    </div>
+                  );
+                case 1:
+                  return (
+                    <div
+                      key={i}
+                      className="border border-black/30 rounded-lg overflow-hidden row-span-1 col-span-3 md:col-span-2 relative"
+                    >
+                      {img}
+                    </div>
+                  );
+                case 2:
+                  return (
+                    <div
+                      key={i}
+                      className="border border-black/30 rounded-lg overflow-hidden row-span-1 col-span-3 md:col-span-2 relative"
+                    >
+                      {img}
+                      <button
+                        onClick={() => {
+                          setShowSlider(true);
+                          document.body.style.overflow = "hidden";
+                        }}
+                        className="absolute text-xs sm:text-sm bg-gray-100 py-1 px-2 rounded-md border border-black/50 font-medium hover:bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1"
+                      >
+                        <i className="bx bx-images"></i> See All
+                      </button>
+                    </div>
+                  );
+              }
+            })}
+          </div>
 
-        <div className="py-2 flex items-start gap-2 md:items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="py-2 gap-2 md:items-center grid grid-cols-12">
+          <div className="flex items-center gap-3 md:col-span-2 col-span-6">
             <div className="w-2 animate-pulse h-2 outline-[3px] outline outline-primary/40 rounded-full bg-primary"></div>
             <p>For {property.purpose}</p>
           </div>
-          <div className="font-semibold text-lg">
+          <div className="font-semibold text-lg relative md:col-span-6 col-span-6 text-end">
             {property.price}
             {/* <span className="text-base text-gray-600 font-medium">month</span> */}
           </div>
+          <div className="flex items-center gap-3 border md:col-span-2 hidden"/>
         </div>
 
         <div className="grid grid-cols-6 gap-6 text-gray-600 mb-4">
