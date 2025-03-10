@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         if(!userID || !token){
           return res.status(401).json({
             success: false,
-            message: "Unauthorized Access!",
+            message: "Please login to like this property!",
           });
         } 
 
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
           );
           
           res.status(201).json({
-            success: false,
+            success: true,
             message: "You unliked this property!",
             data: response,
           });

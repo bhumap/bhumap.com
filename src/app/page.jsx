@@ -3,6 +3,7 @@ import Investments from "@/src/components/Investments";
 import PropertyCardsGrid from "../components/PropertyCardsGrid";
 
 var fetchMyPropertiesNearbyYou = async () => {
+  console.log("called");
   try {
     var res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties`, {
       cache: "no-store",
