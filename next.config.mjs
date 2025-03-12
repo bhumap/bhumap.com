@@ -6,6 +6,9 @@ const nextConfig = {
       { protocol: "https", hostname: "icons.veryicon.com" },
       { protocol: "https", hostname: "img.icons8.com" },
       { protocol: "https", hostname: "bhumap.s3.ap-south-1.amazonaws.com" },
+      { protocol: "https", hostname: "cdn.pixabay.com" },
+      { protocol: "https", hostname: "s.alicdn.com" },
+      { protocol: "https", hostname: "gv.videocdn.alibaba.com" },
     ],
   },
   env: {

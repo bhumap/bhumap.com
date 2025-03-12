@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 
@@ -30,13 +31,13 @@ const Page = () => {
      <h1 className="text-3xl text-center my-4">A WIDE RANGE OF BUILDING MATERIALS</h1>
       <main class="card-container">
       {items.map((item,idx) => (
-        <div key={idx} className="card">
+        <Link href={"/Marketplace/products"} key={idx} className="card">
         <h2 className="text-md">{item.name}</h2>
         <p class="symbol">
           <Image className="mx-auto" width={100} height={120} src={item.image} alt={item.name}/>
         </p>
         <p>{item.description}</p>
-        </div>
+        </Link>
       ))}
     </main>
     </>
