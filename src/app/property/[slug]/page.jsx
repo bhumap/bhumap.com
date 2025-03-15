@@ -23,6 +23,8 @@ const PropertyDetailPage = () => {
         
         const url = new URL(`${process.env.NEXT_PUBLIC_DOMAIN}/api/properties/single`);
         url.searchParams.set('propertyID', slug);
+
+        console.log(url, "url---->>")
         
         if (accessToken) {
           url.searchParams.set('AccessToken', accessToken);
