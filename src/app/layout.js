@@ -16,6 +16,7 @@ import CartProvider from "@/src/context/CartContext";
 
 
 import {QueryClientProvider,QueryClient} from 'react-query'
+import { Suspense } from "react";
 // import { useRouter } from "next/navigation";
 const queryClient = new QueryClient();
 
@@ -35,7 +36,7 @@ export default function RootLayout({ children }) {
         
       </head>
       <body>
-
+       <Suspense>
       <ProgressBar
         height="3px"
         color="rgb(210,103,72)"
@@ -49,13 +50,13 @@ export default function RootLayout({ children }) {
               <CartProvider>
               <Navbar />
               <ToastContainer />
-              
               <Toaster />
               <main className="min-h-[92vh]">{children}</main>
               <Footer />
               </CartProvider>
             </Context>
           </QueryClientProvider>
+          </Suspense>
       </body>
   </html>
   );
