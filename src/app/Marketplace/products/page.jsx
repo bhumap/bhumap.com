@@ -16,6 +16,7 @@ function Page() {
       reviews: "2",
       location: "Ahemadabad, India",
       verified: true,
+      supplierType:"Dealer",
       images:[
         "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
         "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
@@ -35,6 +36,7 @@ function Page() {
     reviews: "5",
     location: "Mumbai, India",
     verified: true,
+    supplierType:"Manufacturer",
     images: [
       "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
       "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
@@ -52,6 +54,7 @@ function Page() {
     reviews: "8",
     location: "Delhi, India",
     verified: true,
+    supplierType:"Vendor",
     images: [
       "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
       "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
@@ -70,6 +73,7 @@ function Page() {
     reviews: "12",
     location: "Bangalore, India",
     verified: true,
+    supplierType:"Manufacturer",
     images: [
       "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
       "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
@@ -88,6 +92,7 @@ function Page() {
     reviews: "3",
     location: "Hyderabad, India",
     verified: false,
+    supplierType:"Dealer",
     images: [
       "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
       "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
@@ -106,6 +111,7 @@ function Page() {
     reviews: "7",
     location: "Chennai, India",
     verified: true,
+    supplierType:"Vendor",
     images: [
       "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg",
       "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg",

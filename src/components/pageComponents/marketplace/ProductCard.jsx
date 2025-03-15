@@ -6,6 +6,8 @@ import React, { useRef } from "react";
 import Slider from "react-slick";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import Button from "../../ui/button";
+import Image from "next/image";
+import verifiedImg from "@/public/images/verified_2x.gif";
 
 export default function ProductCard({
   title,
@@ -18,6 +20,7 @@ export default function ProductCard({
   reviews,
   location,
   verified,
+  supplierType
 }) {
   const sliderRef = useRef(null);
 
@@ -70,9 +73,10 @@ export default function ProductCard({
         </div>
       </div>
 
-      <div className="md:col-span-6 col-span-12 col-span-4 flex flex-col itmes-center justify-center gap-3">
+      <div className="md:col-span-6 col-span-12 flex flex-col itmes-center justify-center gap-1">
         <h1 className="text-md font-bold leading-tight">{title}</h1>
-        <p className="text-md font-semibold mt-2 flex">
+        <Button title={"See this product details"} />
+        <p className="text-sm font-semibold mt-2 flex">
           {
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -87,32 +91,21 @@ export default function ProductCard({
           {price}
         </p>
         <p className="text-sm text-gray-500">Min. order: {minOrder} pieces</p>
-        <div className="flex items-center gap-2 text-gray-500 mt-2">
-          {verified && (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#2854C5"
-            >
-              <path d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm34-102 102-44 104 44 56-96 110-26-10-112 74-84-74-86 10-112-110-24-58-96-102 44-104-44-56 96-110 24 10 112-74 86 74 84-10 114 110 24 58 96Zm102-318Zm-42 142 226-226-56-58-170 170-86-84-56 56 142 142Z" />
-            </svg>
-          )}
-          <span className="text-blue-500 underline cursor-pointer">
-            {supplier} - ({duration})
-          </span>
+        <div className="flex items-center gap-4 text-gray-500">
+          {verified && <Image src={verifiedImg} height={60} width={60} />} {supplierType}
         </div>
-        <p className="font-semibold mt-1">
+        <p className="text-blue-500 underline cursor-pointer">
+          {supplier} - ({duration})
+        </p>
+        <p className="font-semibold text-sm mt-1">
           {rating}/5.0 from ({reviews} reviews)
         </p>
         <p className="text-sm text-gray-500">{location}</p>
       </div>
 
-      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2">
-        <Button title={"Chat Now"} />
-        <Button customClass="hidden md:block" title={"Check Details"} />
-        <Button title={"Check Catalogs"} />
+      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4">
+        <Button title={"Contact Supplier"} />
+        <Button title={"Product Catalog"} />
       </div>
     </div>
   );

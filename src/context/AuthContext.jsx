@@ -19,7 +19,7 @@ const Context = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user: data?.user || null, membership: data?.membership || null, refetch }}>
-        <div
+        {/* <div
           style={{
             height: "100vh",
             display: "flex",
@@ -91,7 +91,7 @@ const Context = ({ children }) => {
               </circle>
             </g>
           </svg>
-        </div>
+        </div> */}
       {children}
     </AuthContext.Provider>
   );
