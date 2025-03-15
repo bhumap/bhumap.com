@@ -442,3 +442,22 @@ input[type="number"] {
   font-weight: bold;
   margin: 10px 0;
 }
+
+
+
+
+
+
+
+/* ------------------------------------Slick Dots --------------------------------------------*/
+.slick-thumb {
+  display: absolute !important;
+  bottom: 0 !important;
+  /* background: red !important; */
+  z-index: 10 !important;
+  /* height: 40px !important; */
+}
+
+/* .slick-dots {
+  color: #f3ebeb !important;
+} */
