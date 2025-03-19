@@ -7,6 +7,7 @@ import { AuthContext } from "@/src/context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faIndianRupeeSign, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { isDev } from "@/src/backend/helpers/util";
+import NewListingModel from "@/src/components/common/NewListingModel";
 
 const Page = () => {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,7 @@ const Page = () => {
           setLoading(false);
         }
       };
-      fetchData();
+      // fetchData();
   }, [user]);
   
     return (
@@ -41,10 +42,7 @@ const Page = () => {
                 <h2 className="text-slate-700 font-semibold text-xl">
                     Products
                 </h2>
-                <a href="./products/add"
-                    className="bg-primary text-white font-bold py-2 px-4 rounded ml-auto">
-                    <FontAwesomeIcon icon={faPlus} className="mr-1" /> Add New Product
-                </a>
+                <NewListingModel/>
             </div>
               <div className="text-center">
                 {products?.length ? (
