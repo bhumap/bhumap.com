@@ -5,26 +5,32 @@ const { ObjectId } = require("mongoose").Types;
 import usersModel from "@/src/backend/models/users";
 import { StatusCodes } from 'http-status-codes';
 import Joi from "joi";
+import mongoose from "mongoose";
 
 const productValidationSchema = Joi.object({
-    name: Joi.string().required(),
-    min_qty: Joi.number().min(1).required(),
-    price: Joi.number().positive().required(),
-    uom: Joi.string().required(),
-    description: Joi.string().allow(null, '').optional(),
-    category_id: Joi.string().hex().length(24).required(),
-    images: Joi.array().items(
+    title: Joi.string().required(),
+    price: Joi.number().positive().optional(),
+    minOrder: Joi.number().min(1).optional(),
+    supplier: Joi.string().optional(),
+    duration: Joi.string().optional(),
+    rating: Joi.number().optional(),
+    reviews: Joi.number().positive().optional(),
+    location: Joi.string().optional(),
+    verified: Joi.boolean().optional(),
+    category_id: Joi.string().optional(),
+    supplierType: Joi.array().items(Joi.string()).optional(),
+    category_id: Joi.string().optional(),
+    images: Joi.array().items( 
         Joi.object({
-            _id: Joi.string(),
             secure_url: Joi.string().uri().required(),
             public_id: Joi.string().required()
         })
     ).optional(),
-    status: Joi.string().valid("drafted", "publish", "delete", "inactive").default("drafted").required()
+    status: Joi.string().valid("Drafted", "Publish", "Inactive").default("Drafted").required()
 });
 
+
 export default async function handler(req, res) {
-    console.log('2');
     await dbConnect();
     
     switch(req.method) {
@@ -40,11 +46,14 @@ export default async function handler(req, res) {
                     });
                 }
 
+                console.log(req.query,"::::::::::::::::::::::::::::::");
                 const { id } = req.query;
+
                 const { error, value } = productValidationSchema.validate(req.body, { abortEarly: false });
                     
                 if (error) {
-                    return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map(err => err.message)})
+                    console.log(error)
+                    return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map((err)=>err.message)})
                 }
 
                 const product = await ProductsModel.findById(id);

@@ -6,21 +6,28 @@ import { StatusCodes } from 'http-status-codes';
 const { ObjectId } = require("mongoose").Types;
 import usersModel from "@/src/backend/models/users";
 import Joi from "joi";
+import mongoose from "mongoose";
 
 const productValidationSchema = Joi.object({
-    name: Joi.string().required(),
-    min_qty: Joi.number().min(1).required(),
-    price: Joi.number().positive().required(),
-    uom: Joi.string().required(),
-    description: Joi.string().allow(null, '').optional(),
-    category_id: Joi.string().hex().length(24).required(),
+    title: Joi.string().required(),
+    price: Joi.number().positive().optional(),
+    minOrder: Joi.number().min(1).optional(),
+    supplier: Joi.string().optional(),
+    duration: Joi.string().optional(),
+    rating: Joi.number().optional(),
+    reviews: Joi.number().positive().optional(),
+    location: Joi.string().optional(),
+    verified: Joi.boolean().optional(),
+    category_id: Joi.string().optional(),
+    supplierType: Joi.array().items(Joi.string()).optional(),
+    category_id: Joi.string().optional(),
     images: Joi.array().items( 
         Joi.object({
             secure_url: Joi.string().uri().required(),
             public_id: Joi.string().required()
         })
     ).optional(),
-    status: Joi.string().valid("drafted", "publish", "delete", "inactive").default("drafted").required()
+    status: Joi.string().valid("Drafted", "Publish", "Inactive").default("Drafted").required()
 });
 
 
@@ -46,12 +53,15 @@ export default async function (req, res) {
                     return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map(err => err.message)})
                 }
 
-                const product = new ProductsModel({...value, vendor_id: new ObjectId(userID)});
+                console.log("::::::::::::::::::", new ObjectId(userID));
+
+                const product = new ProductsModel({...value, vendor_id: new mongoose.Types.ObjectId(userID)});
                 await product.save();
 
                 res.status(StatusCodes.CREATED).json({
                     success: true,
-                    message: 'Product Saved Successfully!'
+                    message: 'Product Saved Successfully!',
+                    data: product
                 });
             } catch (error) {
                 res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: error.message });
@@ -72,11 +82,9 @@ export default async function (req, res) {
                 const limit = req.query.limit || 10;
                 const skip = (page - 1) * limit;
 
-                const category_id = req.query.category_id;
+                const query = {};
 
-                const query = {
-                    status: 'publish'
-                };
+                const category_id = req.query.category_id;
                 
                 if (category_id) {
                     query.category_id = new ObjectId(category_id);
@@ -85,6 +93,8 @@ export default async function (req, res) {
                 if (user && user.userType === 'Vendor') {
                     query.vendor_id = new ObjectId(user._id);
                 }
+
+                req.query.status && (query.status = req.query.status);
 
 
                 const products = await ProductsModel.find(query)
