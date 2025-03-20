@@ -29,48 +29,44 @@ const productsSchema = new mongoose.Schema({
     },
     price:{
         type:Number,
-        default:null
+    
     },
     minOrder:{
         type:Number,
-        default:null
+    
     },
     supplier:{
         type:String,
-        default:null
+    
     },
     duration:{
         type:String,
-        default:null
+    
     },
     rating:{
         type:Number,
-        default:null
+    
     },
     reviews:{
         type:Number,
-        default:null
+    
     },
     location:{
         type:String,
-        default:null
+    
     },
     verified:{
         type:Boolean,
-        default:null
     },
     supplierType:{
         type:String,
-        default:null,
         enum:["Manufacturer","Wholesaler","Retailer"]
     },
     images:{
-        type:[String],
-        default:null
+        type:[String]
     },
     category_id:{
         type: mongoose.Schema.Types.ObjectId,
-        default:null,
         ref:"categories"
     },
     vendor_id:{

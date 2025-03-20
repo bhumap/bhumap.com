@@ -96,6 +96,8 @@ export default async function (req, res) {
 
                 req.query.status && (query.status = req.query.status);
 
+                console.log(query)
+
 
                 const products = await ProductsModel.find(query)
                     .limit(limit)

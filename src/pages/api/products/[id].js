@@ -8,6 +8,7 @@ import Joi from "joi";
 import mongoose from "mongoose";
 
 const productValidationSchema = Joi.object({
+    _id:Joi.string(),
     title: Joi.string().required(),
     price: Joi.number().positive().optional(),
     minOrder: Joi.number().min(1).optional(),
@@ -18,15 +19,10 @@ const productValidationSchema = Joi.object({
     location: Joi.string().optional(),
     verified: Joi.boolean().optional(),
     category_id: Joi.string().optional(),
-    supplierType: Joi.array().items(Joi.string()).optional(),
+    supplierType: Joi.string().optional(),
     category_id: Joi.string().optional(),
-    images: Joi.array().items( 
-        Joi.object({
-            secure_url: Joi.string().uri().required(),
-            public_id: Joi.string().required()
-        })
-    ).optional(),
-    status: Joi.string().valid("Drafted", "Publish", "Inactive").default("Drafted").required()
+    images: Joi.array().optional(),
+    status: Joi.string().valid("Drafted","Published","Inactive").default("Drafted").required()
 });
 
 
@@ -56,7 +52,7 @@ export default async function handler(req, res) {
                     return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map((err)=>err.message)})
                 }
 
-                const product = await ProductsModel.findById(id);
+                let product = await ProductsModel.findById(id);
                 if (!product) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,
@@ -64,10 +60,11 @@ export default async function handler(req, res) {
                     });
                 }
 
-                await ProductsModel.findByIdAndUpdate(id, {...value, vendor_id: new ObjectId(userID)}, { new: true });
+                product = await ProductsModel.findByIdAndUpdate(id, {...value, vendor_id: new ObjectId(userID)}, { new: true });
 
                 res.status(StatusCodes.CREATED).json({
                     success: true,
+                    data:product,
                     message: 'Product Updated Successfully!'
                 });
             } catch (error) {
@@ -87,8 +84,23 @@ export default async function handler(req, res) {
                 }
 
                 const { id } = req.query;
+                // {
+                //     title: "",
+                //     price: "",
+                //     minOrder: "",
+                //     supplier: "",
+                //     duration: "",
+                //     rating: "",
+                //     reviews: "",
+                //     location: "",
+                //     verified: false,
+                //     supplierType: "Manufacturer",
+                //     category_id: "",
+                //     images: [],
+                //     status: "Drafted",
+                //   }
 
-                const product = await ProductsModel.findById(id, "-vendor_id -createdAt -updatedAt -__v");
+                const product = await ProductsModel.findById(id, "title price minOrder supplier duration rating reviews location verified supplierType category_id images status");
                 if (!product) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,

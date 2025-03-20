@@ -1,125 +1,31 @@
 import FeaturedProduct from "@/src/components/pageComponents/marketplace/FeaturedProduct";
 import ProductCard from "@/src/components/pageComponents/marketplace/ProductCard";
+import axios from "axios";
 import Image from "next/image";
 import React from "react";
 
-function Page() {
-  const products = [
-    {
-      title:
-        "Tuya Control 120V WiFi Smart Plug, Alexa & Google Assistant Compatible, Remote Control, Timer, Energy Monitoring, No Hub Required, Easy Setup.",
-      price: "708.00",
-      minOrder: "100",
-      supplier: "Shenzhen Tuya Smart Technology Co., Ltd.",
-      duration: "2 years",
-      rating: "4.9",
-      reviews: "2",
-      location: "Ahemadabad, India",
-      verified: true,
-      supplierType:"Dealer",
-      images:[
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/01/29/03/22/circuit-breakers-1167327_1280.jpg",
-      ]
-    },
-    {
-    title: "Tuya 120V WiFi Smart Plug, Alexa & Google Assistant Compatible, Remote Control, Timer, No Hub Required",
-    price: "750.00",
-    minOrder: "50",
-    supplier: "Shenzhen Tuya Smart Technology Co., Ltd.",
-    duration: "2 years",
-    rating: "4.8",
-    reviews: "5",
-    location: "Mumbai, India",
-    verified: true,
-    supplierType:"Manufacturer",
-    images: [
-      "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
-      "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
-      "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
-      "https://cdn.pixabay.com/photo/2018/01/20/06/41/earphone-3093921_1280.jpg",
-    ]
-  },
-  {
-    title: "Smart WiFi Plug 110V-240V, Voice Control with Alexa & Google, Timer & Energy Monitoring",
-    price: "680.00",
-    minOrder: "100",
-    supplier: "Guangzhou Smart Home Tech Co., Ltd.",
-    duration: "1.5 years",
-    rating: "4.7",
-    reviews: "8",
-    location: "Delhi, India",
-    verified: true,
-    supplierType:"Vendor",
-    images: [
-      "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
-      "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
-      "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
-      "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
-      "https://cdn.pixabay.com/photo/2023/05/29/17/04/computer-8026591_1280.jpg",
-    ]
-  },
-  {
-    title: "WiFi Smart Plug with Alexa, Google Assistant & SmartThings, Remote Control, No Hub Needed",
-    price: "720.00",
-    minOrder: "75",
-    supplier: "Shenzhen IoT Solutions Ltd.",
-    duration: "3 years",
-    rating: "4.9",
-    reviews: "12",
-    location: "Bangalore, India",
-    verified: true,
-    supplierType:"Manufacturer",
-    images: [
-      "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/00/camera-510528_1280.jpg"
-    ]
-  },
-  {
-    title: "Mini Smart Plug, 120V WiFi Control with Alexa, Google Assistant, Energy Monitoring & Timer",
-    price: "699.00",
-    minOrder: "30",
-    supplier: "Smart Living Innovations Pvt. Ltd.",
-    duration: "2 years",
-    rating: "4.6",
-    reviews: "3",
-    location: "Hyderabad, India",
-    verified: false,
-    supplierType:"Dealer",
-    images: [
-      "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
-      "https://cdn.pixabay.com/photo/2014/10/31/10/01/camera-510530_1280.jpg",
-    ]
-  },
-  {
-    title: "WiFi Enabled Smart Plug 120V, Works with Alexa, Google Assistant, App & Voice Control",
-    price: "730.00",
-    minOrder: "60",
-    supplier: "TechSmart Home Solutions",
-    duration: "2.5 years",
-    rating: "4.8",
-    reviews: "7",
-    location: "Chennai, India",
-    verified: true,
-    supplierType:"Vendor",
-    images: [
-      "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg",
-      "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg",
-      "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg",
-      "https://cdn.pixabay.com/photo/2022/05/26/14/26/camera-7223045_1280.jpg"
-    ]
-  }
-  ];
+
+const getProducts = async() =>{
+     try {
+         const res = await axios.get("http://localhost:3000/api/products?status=Published",{
+          headers:{
+            "Pragma":"no-cache"
+          }
+         });
+         return res?.data
+     } catch (error) {
+        // alert(error.message);
+        return null;
+     }
+}
+
+async function Page() {
+
+   const data = await getProducts();
+
+   console.log(data.message.data, "products=====>")
+
+  const products = data?.message?.data
 
   const featuredProduct = [
     {
