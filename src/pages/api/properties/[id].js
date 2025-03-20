@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 
         const likeExist = await PropertiesModel.findById(req.query.id);
 
-        console.log(userID,"userID");
+        console.log(userID,"userID", req.query.id);
 
         if(likeExist.likes.includes(userID)){
           const response = await PropertiesModel.findByIdAndUpdate(
@@ -70,6 +70,14 @@ export default async function handler(req, res) {
           { $push: { likes: new mongoose.Types.ObjectId(userID) } },
           { new: true }
         );
+
+        if(req?.body){
+           await PropertiesModel.findByIdAndUpdate(
+            req.query.id,
+            req.body,
+            { new: true }
+          )
+        }
 
         res.status(201).json({
           success: true,
