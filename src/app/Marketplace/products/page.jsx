@@ -7,11 +7,7 @@ import React from "react";
 
 const getProducts = async() =>{
      try {
-         const res = await axios.get("http://localhost:3000/api/products?status=Published",{
-          headers:{
-            "Pragma":"no-cache"
-          }
-         });
+         const res = await axios.get("http://localhost:3000/api/products?status=Published");
          return res?.data
      } catch (error) {
         // alert(error.message);
