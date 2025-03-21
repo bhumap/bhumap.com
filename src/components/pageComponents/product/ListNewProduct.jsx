@@ -66,10 +66,13 @@ export default function EditProductPage({ params }) {
     imageFormData.append("file", file);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}api/upload/file`, {
-        method: "POST",
-        body: imageFormData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN}api/upload/file`,
+        {
+          method: "POST",
+          body: imageFormData,
+        }
+      );
       const data = await response.json();
 
       if (!data?.data) {
@@ -79,8 +82,8 @@ export default function EditProductPage({ params }) {
 
       const updatedImages = [...formData.images, ...data.data];
       setFormData((prev) => {
-        const data = { ...prev, images: updatedImages }
-        updateProductImages(data)
+        const data = { ...prev, images: updatedImages };
+        updateProductImages(data);
         return data;
       });
 
@@ -95,8 +98,12 @@ export default function EditProductPage({ params }) {
   // Remove image from form data and update in DB
   const removeImage = (index) => {
     const updatedImages = formData.images.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, images: updatedImages }));
-    updateProductImages(updatedImages);
+    console.log(updatedImages);
+    setFormData((prev) => {
+      const data = { ...prev, images: updatedImages };
+      updateProductImages(data);
+      return data;
+    });
   };
 
   // Fetch product data on component mount
@@ -118,7 +125,12 @@ export default function EditProductPage({ params }) {
         <div className="flex flex-wrap gap-2 mt-2">
           {formData.images.map((image, index) => (
             <div key={index} className="relative h-40 w-40 border rounded-md">
-              <Image src={image} fill alt="Product" className="object-cover rounded-md" />
+              <Image
+                src={image}
+                fill
+                alt="Product"
+                className="object-cover rounded-md"
+              />
               <button
                 className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full p-1"
                 onClick={() => removeImage(index)}
@@ -159,17 +171,29 @@ export default function EditProductPage({ params }) {
             type="checkbox"
             name="verified"
             checked={formData.verified}
-            onChange={(e) => setFormData((prev) => ({ ...prev, verified: e.target.checked }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, verified: e.target.checked }))
+            }
           />
           <span>Verified Supplier</span>
         </label>
 
         {/* Supplier Type & Category */}
         <div className="grid grid-cols-2 gap-4">
-          {[{ name: "supplierType", options: supplierTypes }, { name: "category_id", options: categories }].map(({ name, options }) => (
+          {[
+            { name: "supplierType", options: supplierTypes },
+            { name: "category_id", options: categories },
+          ].map(({ name, options }) => (
             <div key={name}>
-              <label className="block font-medium mb-1">{name.replace("_", " ")}</label>
-              <select name={name} value={formData[name]} onChange={handleInputChange} className="w-full p-2 border rounded-md">
+              <label className="block font-medium mb-1">
+                {name.replace("_", " ")}
+              </label>
+              <select
+                name={name}
+                value={formData[name]}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded-md"
+              >
                 {options.map((opt) => (
                   <option key={opt.id || opt} value={opt.id || opt}>
                     {opt.name || opt}
@@ -186,11 +210,19 @@ export default function EditProductPage({ params }) {
             <button
               key={status}
               className={`py-2 px-4 rounded-md text-white ${
-                status === "Inactive" ? "bg-red-500" : status === "Drafted" ? "bg-gray-500" : "bg-blue-500"
+                status === "Inactive"
+                  ? "bg-red-500"
+                  : status === "Drafted"
+                  ? "bg-gray-500"
+                  : "bg-blue-500"
               }`}
               onClick={() => handleSubmit(status)}
             >
-              {status === "Inactive" ? "Delete" : status === "Drafted" ? "Save as Draft" : "Publish"}
+              {status === "Inactive"
+                ? "Delete"
+                : status === "Drafted"
+                ? "Save as Draft"
+                : "Publish"}
             </button>
           ))}
         </div>
