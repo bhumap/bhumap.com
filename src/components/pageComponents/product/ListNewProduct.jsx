@@ -30,12 +30,15 @@ export default function EditProductPage({ params }) {
     status: "Drafted",
   });
 
-  useEffect(() => {
+  const handleSubmit = (status) => {
     axios
-      .get(`/api/products/${params.id}`)
-      .then((res) => setFormData(res.data.data))
+      .put(`/api/products/${params?.id}`, { ...formData, status })
+      .then((res) => {
+        setFormData(res.data.data);
+        toast.success(`Product saved as ${status}`);
+      })
       .catch((err) => alert(err.message));
-  }, [params.id]);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -67,16 +70,13 @@ export default function EditProductPage({ params }) {
       images: prev.images.filter((_, i) => i !== index),
     }));
   };
-
-  const handleSubmit = (status) => {
+  
+  useEffect(() => {
     axios
-      .put(`/api/products/${params?.id}`, { ...formData, status })
-      .then((res) => {
-        setFormData(res.data.data);
-        toast.success(`Product saved as ${status}`);
-      })
+      .get(`/api/products/${params.id}`)
+      .then((res) => setFormData(res.data.data))
       .catch((err) => alert(err.message));
-  };
+  }, [params.id]);
 
   return (
     <div className="max-w-3xl mx-auto p-6">
