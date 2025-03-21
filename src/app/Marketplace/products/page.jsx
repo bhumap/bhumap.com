@@ -11,15 +11,13 @@ const getProducts = async() =>{
          return res?.data
      } catch (error) {
         // alert(error.message);
-        return null;
+        return null
      }
 }
 
 async function Page() {
 
    const data = await getProducts();
-
-   console.log(data.message.data, "products=====>")
 
   const products = data?.message?.data
 
