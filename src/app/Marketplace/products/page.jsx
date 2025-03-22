@@ -7,7 +7,9 @@ import React from "react";
 
 const getProducts = async() =>{
      try {
-         let res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products?status=Published`);
+         let res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products?status=Published`,{
+          cache:"no-cache"
+         });
          res = await res.json();
          return res
      } catch (error) {
