@@ -10,24 +10,19 @@ import mongoose from "mongoose";
 
 const productValidationSchema = Joi.object({
     title: Joi.string().required(),
-    price: Joi.number().positive().optional(),
-    minOrder: Joi.number().min(1).optional(),
+    price: Joi.string().optional(),
+    minOrder: Joi.string().min(1).optional(),
     supplier: Joi.string().optional(),
-    duration: Joi.string().optional(),
-    rating: Joi.number().optional(),
-    reviews: Joi.number().positive().optional(),
+    supplierage: Joi.string().optional(),
+    unit: Joi.string().optional(),
+    rating: Joi.string().optional(),
+    reviews: Joi.string().optional(),
     location: Joi.string().optional(),
     verified: Joi.boolean().optional(),
     category_id: Joi.string().optional(),
-    supplierType: Joi.array().items(Joi.string()).optional(),
-    category_id: Joi.string().optional(),
-    images: Joi.array().items( 
-        Joi.object({
-            secure_url: Joi.string().uri().required(),
-            public_id: Joi.string().required()
-        })
-    ).optional(),
-    status: Joi.string().valid("Drafted", "Publish", "Inactive").default("Drafted").required()
+    supplierType: Joi.string().optional(),
+    images: Joi.array().optional(),
+    status: Joi.string().valid("Drafted", "Published", "Inactive").default("Drafted").required()
 });
 
 
@@ -50,6 +45,7 @@ export default async function (req, res) {
                 const { error, value } = productValidationSchema.validate(req.body, { abortEarly: false });
                 
                 if (error) {
+                    console.log("===========================================================================>")
                     return res.status(StatusCodes.BAD_REQUEST).json({success: false, error: error.details.map(err => err.message)})
                 }
 
@@ -64,6 +60,7 @@ export default async function (req, res) {
                     data: product
                 });
             } catch (error) {
+                console.log("===========================================================================>")
                 res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: error.message });
             }
             break;

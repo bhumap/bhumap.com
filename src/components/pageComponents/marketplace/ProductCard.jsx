@@ -15,8 +15,9 @@ export default function ProductCard({
   price,
   minOrder,
   supplier,
-  duration,
+  supplierage,
   rating,
+  unit,
   reviews,
   location,
   verified,
@@ -90,12 +91,13 @@ export default function ProductCard({
           }
           {price}
         </p>
+        <p className="text-sm text-gray-500">Unit: {unit}</p>
         <p className="text-sm text-gray-500">Min. order: {minOrder} pieces</p>
         <div className="flex items-center gap-4 text-gray-500">
           {verified && <Image src={verifiedImg} height={60} width={60} />} {supplierType}
         </div>
         <p className="text-blue-500 underline cursor-pointer">
-          {supplier} - ({duration})
+          {supplier} - ({supplierage})
         </p>
         <p className="font-semibold text-sm mt-1">
           {rating}/5.0 from ({reviews} reviews)

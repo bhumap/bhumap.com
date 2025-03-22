@@ -3,7 +3,7 @@ import React from "react";
 
 function Page({params}) {
  
-  return <div>
+  return <div className="overflow-y-auto">
     <EditProductPage params={params}/>
     {/* <EditProductPage params={params}/> */}
    </div>;

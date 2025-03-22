@@ -8,21 +8,20 @@ import Joi from "joi";
 import mongoose from "mongoose";
 
 const productValidationSchema = Joi.object({
-    _id:Joi.string(),
     title: Joi.string().required(),
-    price: Joi.number().positive().optional(),
-    minOrder: Joi.number().min(1).optional(),
+    price: Joi.string().optional(),
+    minOrder: Joi.string().min(1).optional(),
     supplier: Joi.string().optional(),
-    duration: Joi.string().optional(),
-    rating: Joi.number().optional(),
-    reviews: Joi.number().positive().optional(),
+    supplierage: Joi.string().optional(),
+    unit: Joi.string().optional(),
+    rating: Joi.string().optional(),
+    reviews: Joi.string().optional(),
     location: Joi.string().optional(),
     verified: Joi.boolean().optional(),
     category_id: Joi.string().optional(),
     supplierType: Joi.string().optional(),
-    category_id: Joi.string().optional(),
     images: Joi.array().optional(),
-    status: Joi.string().valid("Drafted","Published","Inactive").default("Drafted").required()
+    status: Joi.string().valid("Drafted", "Published", "Inactive").default("Drafted").required()
 });
 
 
@@ -44,6 +43,8 @@ export default async function handler(req, res) {
 
                 console.log(req.query,"::::::::::::::::::::::::::::::");
                 const { id } = req.query;
+
+                delete req.body._id;
 
                 const { error, value } = productValidationSchema.validate(req.body, { abortEarly: false });
                     
@@ -100,7 +101,7 @@ export default async function handler(req, res) {
                 //     status: "Drafted",
                 //   }
 
-                const product = await ProductsModel.findById(id, "title price minOrder supplier duration rating reviews location verified supplierType category_id images status");
+                const product = await ProductsModel.findById(id, "title price minOrder supplier supplierage unit rating reviews location verified supplierType category_id images status").populate("category_id");
                 if (!product) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,

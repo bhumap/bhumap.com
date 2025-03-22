@@ -28,27 +28,30 @@ const productsSchema = new mongoose.Schema({
         required:true
     },
     price:{
-        type:Number,
+        type:String,
     
     },
     minOrder:{
-        type:Number,
+        type:String,
     
     },
     supplier:{
         type:String,
     
     },
-    duration:{
+    supplierage:{
         type:String,
     
     },
+    unit:{
+        type:String
+    },
     rating:{
-        type:Number,
+        type:String,
     
     },
     reviews:{
-        type:Number,
+        type:String,
     
     },
     location:{

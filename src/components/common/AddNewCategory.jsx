@@ -4,20 +4,20 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-function NewListingModel() {
+function AddNewCategory() {
   var [loading, setLoading] = useState(false);
   var [showCreateModal, setShowCreateModal] = useState(false);
-  var [propertyTitle, setPropertyTitle] = useState("");
-  const router = useRouter();
+  var [categoryname, setCategoryName] = useState("");
 
   const createProduct = (e) => {
       e.preventDefault();
-      axios.post("/api/products",{
-        title:propertyTitle,
-        status:"Drafted"
+      axios.post("/api/categories",{
+        name:categoryname,
+        status:"Active"
       }).then((res)=>{
         // console.log(res?.data?.data?._id)
-           window.location.href = `/portal/products/edit/${res?.data?.data?._id}`;
+        //    window.location.href = `/portal/products/edit/${res?.data?.data?._id}`;
+        toast.success("category added successfully!");
       }).catch((err)=>{
         toast.error(err.message);
       })
@@ -33,7 +33,7 @@ function NewListingModel() {
                 }}
                 className="border px-3 py-2 rounded-md bg-primary text-white shadow-md italic"
               >
-                List New Products
+                  Add New Category
               </button>
        }
       <div
@@ -52,15 +52,15 @@ function NewListingModel() {
         ></div>
         <div className="absolute min-w-[300px] bg-white shadow-lg top-1/2 left-1/2 rounded-lg -translate-x-1/2 -translate-y-1/2 z-10">
           <h2 className="font-semibold text-lg border-b py-2 px-4 border-black/20">
-            List New Products
+            Add New Category
           </h2>
           <form onSubmit={createProduct} className="p-4">
             <input
               type="text"
               disabled={loading}
-              onChange={(e) => setPropertyTitle(e.target.value)}
+              onChange={(e) => setCategoryName(e.target.value)}
               className="block w-full mb-4 border rounded-md border-black/20"
-              placeholder="Enter Listing Title"
+              placeholder="Enter New Category Name"
             />
             <div className="flex justify-end gap-3">
               <button
@@ -91,4 +91,4 @@ function NewListingModel() {
   );
 }
 
-export default NewListingModel;
+export default AddNewCategory;
