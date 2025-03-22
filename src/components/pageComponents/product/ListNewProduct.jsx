@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
-const supplierTypes = ["Manufacturer", "Wholesaler", "Retailer"];
-const categories = [
-  { id: "1", name: "Electronics" },
-  { id: "2", name: "Home Appliances" },
-  { id: "3", name: "Automotive" },
+
+const supplierTypes = [
+  { id: "Manufacturer", name: "Manufacturer" },
+  { id: "Wholesaler", name: "Wholesaler" },
+  { id: "Retailer", name: "Retailer" },
 ];
 
 export default function EditProductPage({ params }) {
@@ -18,16 +19,20 @@ export default function EditProductPage({ params }) {
     price: "",
     minOrder: "",
     supplier: "",
-    duration: "",
+    supplierage: "",
+    unit: "",
     rating: "",
     reviews: "",
-    location: "",
+    location:"",
     verified: false,
     supplierType: "Manufacturer",
     category_id: "",
     images: [],
     status: "Drafted",
   });
+  const [categories, setCategories] = useState([]);
+  const [uploadStatus, setuploadStatus] = useState(false);
+  const router = useRouter()
 
   // Function to update product images in the database
   const updateProductImages = async (data) => {
@@ -47,13 +52,16 @@ export default function EditProductPage({ params }) {
       .then((res) => {
         setFormData(res.data.data);
         toast.success(`Product saved as ${status}`);
+        router.push("/portal/products");
       })
       .catch((err) => toast.error(err.message));
+    console.log(formData,":::::")
   };
 
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name,value,"test")
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -64,6 +72,8 @@ export default function EditProductPage({ params }) {
 
     const imageFormData = new FormData();
     imageFormData.append("file", file);
+
+    setuploadStatus(true);
 
     try {
       const response = await fetch(
@@ -76,9 +86,12 @@ export default function EditProductPage({ params }) {
       const data = await response.json();
 
       if (!data?.data) {
+        setuploadStatus(false);
         toast.error("Failed to upload image");
         return;
       }
+
+      setuploadStatus(false);
 
       const updatedImages = [...formData.images, ...data.data];
       setFormData((prev) => {
@@ -90,6 +103,7 @@ export default function EditProductPage({ params }) {
       // Update images in the database
       // updateProductImages({...prev, images:updatedImages});
     } catch (error) {
+      setuploadStatus(false);
       console.error("Image Upload Error:", error);
       toast.error("Image upload failed. Please try again.");
     }
@@ -112,19 +126,28 @@ export default function EditProductPage({ params }) {
       .get(`/api/products/${params.id}`)
       .then((res) => setFormData(res.data.data))
       .catch((err) => toast.error(err.message));
+    
+    axios
+       .get("/api/categories")
+       .then((res) =>{ setCategories(res.data.data); })
+       .catch((err) => toast.error(err.message));
   }, [params.id]);
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl h-full mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-4">Edit Product</h2>
 
       {/* Image Upload */}
       <div>
         <label className="block font-medium mb-2">Upload Images</label>
         <input type="file" onChange={handleImageUpload} className="mb-2" />
-        <div className="flex flex-wrap gap-2 mt-2">
+        {uploadStatus && <p className="text-blue-500 text-sm">Uploading...</p>}
+        <div className="flex mt-2 gap-2 overflow-x-scroll">
           {formData.images.map((image, index) => (
-            <div key={index} className="relative h-40 w-40 border rounded-md">
+            <div
+              key={index}
+              className="relative shrink-0 h-40 w-40 border rounded-md"
+            >
               <Image
                 src={image}
                 fill
@@ -145,12 +168,13 @@ export default function EditProductPage({ params }) {
       <div className="space-y-4 mt-4">
         {[
           { label: "Product Title", name: "title", type: "text" },
-          { label: "Price", name: "price", type: "number" },
-          { label: "Min Order Quantity", name: "minOrder", type: "number" },
+          { label: "Price", name: "price", type: "text" },
+          { label: "Min Order Quantity", name: "minOrder", type: "text" },
+          { label: "Unit", name: "unit", type: "text" },
           { label: "Supplier Name", name: "supplier", type: "text" },
-          { label: "Warranty Duration", name: "duration", type: "text" },
-          { label: "Rating", name: "rating", type: "number" },
-          { label: "Reviews Count", name: "reviews", type: "number" },
+          { label: "Supplier Age", name: "supplierage", type: "text" },
+          { label: "Rating", name: "rating", type: "text" },
+          { label: "Reviews Count", name: "reviews", type: "text" },
           { label: "Location", name: "location", type: "text" },
         ].map(({ label, name, type }) => (
           <div key={name}>
@@ -181,22 +205,22 @@ export default function EditProductPage({ params }) {
         {/* Supplier Type & Category */}
         <div className="grid grid-cols-2 gap-4">
           {[
-            { name: "supplierType", options: supplierTypes },
-            { name: "category_id", options: categories },
-          ].map(({ name, options }) => (
+            { name: "supplierType",label:"Supplier Type", options: supplierTypes },
+            { name: "category_id",label:"Select Category", options: categories },
+          ].map(({ name, options,label }) => (
             <div key={name}>
               <label className="block font-medium mb-1">
-                {name.replace("_", " ")}
               </label>
               <select
                 name={name}
-                value={formData[name]}
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded-md"
               >
-                {options.map((opt) => (
-                  <option key={opt.id || opt} value={opt.id || opt}>
-                    {opt.name || opt}
+                { name === "supplierType" && <option defaultValue={formData[name]}>{formData[name]}</option>}
+                { name === "category_id" && <option defaultValue={formData[name]?._id}>{formData[name]?.name}</option>}
+                { options.map((opt,id) => (
+                  <option key={id} value={opt?._id}>
+                    {opt?.name }
                   </option>
                 ))}
               </select>

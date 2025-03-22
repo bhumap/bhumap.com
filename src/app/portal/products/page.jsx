@@ -13,6 +13,7 @@ import {
 import { isDev } from "@/src/backend/helpers/util";
 import NewListingModel from "@/src/components/common/NewListingModel";
 import DraftProductCard from "@/src/components/pageComponents/product/DraftCard";
+import AddNewCategory from "@/src/components/common/AddNewCategory";
 
 const Page = () => {
   const [products, setProducts] = useState([]);
@@ -30,7 +31,7 @@ const Page = () => {
             isDev()
               ? process.env.NEXT_PUBLIC_LOCAL_URL
               : process.env.NEXT_PUBLIC_DOMAIN
-          }api/products?page=${1}&limit=${10}&status=Drafted&status=Inactive`
+          }api/products?page=${1}&limit=${10}`
         );
         setProducts(response.data.message.data);
       } catch (err) {
@@ -49,11 +50,14 @@ const Page = () => {
         <div className="flex flex-col gap-6">
           {/* Viewed */}
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap items-center justify-between mt-2 mb-4">
               <h2 className="text-slate-700 font-semibold text-xl">Products</h2>
-              <NewListingModel />
+              <div className="flex gap-2">
+                 <AddNewCategory/>
+                 <NewListingModel />
+              </div>
             </div>
-            <div className="text-center">
+            <div className="text-center gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
               {products?.length ? (
                 products.map((item, id) => (
                   <Link href={`/portal/products/edit/${item?._id}`} key={id}>
