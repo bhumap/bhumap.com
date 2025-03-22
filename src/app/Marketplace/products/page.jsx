@@ -7,8 +7,9 @@ import React from "react";
 
 const getProducts = async() =>{
      try {
-         const res = await axios.get("http://localhost:3000/api/products?status=Published");
-         return res?.data
+         let res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products?status=Published`);
+         res = await res.json();
+         return res
      } catch (error) {
         // alert(error.message);
         return null
@@ -20,6 +21,8 @@ async function Page() {
    const data = await getProducts();
 
   const products = data?.message?.data
+
+  console.log("chal>>>>>>>>>>>>>>>", data)
 
   const featuredProduct = [
     {
