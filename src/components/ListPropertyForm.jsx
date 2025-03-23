@@ -118,11 +118,11 @@ const ListPropertyForm = ({ property }) => {
       required: false,
     },
     {
-      label: "Address line 3",
+      label: "Area / Suburb",
       name: "address.line3",
       type: "text",
       cols: 2,
-      required: false,
+      required: true,
     },
     {
       label: "City / Town",

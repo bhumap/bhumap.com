@@ -36,6 +36,11 @@ export default function EditProductPage({ params }) {
 
   // Function to update product images in the database
   const updateProductImages = async (data) => {
+
+    if(typeof data["category_id"] === 'object'){
+      data["category_id"] = data['category_id']?._id
+    }
+
     try {
       await axios.put(`/api/products/${params.id}`, data);
       toast.success("Product images updated successfully");
@@ -47,6 +52,11 @@ export default function EditProductPage({ params }) {
 
   // Handle form submission
   const handleSubmit = (status) => {
+     
+    if(typeof formData["category_id"] === 'object'){
+      formData["category_id"] = formData['category_id']?._id
+    }
+
     axios
       .put(`/api/products/${params.id}`, { ...formData, status })
       .then((res) => {
@@ -67,6 +77,7 @@ export default function EditProductPage({ params }) {
 
   // Handle image upload
   const handleImageUpload = async (e) => {
+
     const file = e.target.files[0];
     if (!file) return;
 
@@ -210,6 +221,7 @@ export default function EditProductPage({ params }) {
           ].map(({ name, options,label }) => (
             <div key={name}>
               <label className="block font-medium mb-1">
+               {label}
               </label>
               <select
                 name={name}
