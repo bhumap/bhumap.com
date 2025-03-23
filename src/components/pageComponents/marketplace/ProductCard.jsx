@@ -21,9 +21,11 @@ export default function ProductCard({
   reviews,
   location,
   verified,
-  supplierType
+  supplierType,
+  vendor_id
 }) {
   const sliderRef = useRef(null);
+
 
   const next = () => {
     sliderRef.current?.slickNext();
@@ -41,6 +43,8 @@ export default function ProductCard({
     slidesToScroll: 1,
     arrows: false,
     dotsClass: "slick-dots slick-thumb",
+    swipe:true,
+    // swipeToSlide: true
   };
 
   return (
@@ -105,8 +109,8 @@ export default function ProductCard({
         <p className="text-sm text-gray-500">{location}</p>
       </div>
 
-      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4">
-        <Button title={"Contact Supplier"} />
+      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4"> 
+        <Button title={"Contact Supplier"} onClick={() => window.location.href=`https://wa.me/${vendor_id?.phone?.value}`} />
         <Button title={"Product Catalog"} />
       </div>
     </div>

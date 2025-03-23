@@ -81,9 +81,11 @@ export default async function (req, res) {
 
                 const query = {};
 
-                const category_id = req.query.category_id;
+                const categoryname = req.query?.category;
+                let category_id = null
                 
-                if (category_id) {
+                if (categoryname) {
+                    category_id = await CategoryModel.findOne({name:categoryname});
                     query.category_id = new ObjectId(category_id);
                 }
 

@@ -66,7 +66,7 @@ const Card = ({ property }) => {
                     {property.title}
                   </h4>
                   <p className="text-[12px] md:text-md mt-1">
-                    {property.address?.cityTown}, {property.address?.district},{" "}
+                    {property?.address?.line3}, {property.address?.cityTown}, {property.address?.district},{" "}
                     {property.address?.zipCode}
                   </p>
                 </div>

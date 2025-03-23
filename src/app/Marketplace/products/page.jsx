@@ -1,13 +1,12 @@
 import FeaturedProduct from "@/src/components/pageComponents/marketplace/FeaturedProduct";
 import ProductCard from "@/src/components/pageComponents/marketplace/ProductCard";
-import axios from "axios";
 import Image from "next/image";
 import React from "react";
 
 
-const getProducts = async() =>{
+const getProducts = async({category}) =>{
      try {
-         let res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products?status=Published`,{
+         let res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products?status=Published&category=${category}`,{
           cache:"no-cache"
          });
          res = await res.json();
@@ -18,13 +17,13 @@ const getProducts = async() =>{
      }
 }
 
-async function Page() {
+async function Page({searchParams}) {
 
-   const data = await getProducts();
+   const data = await getProducts(searchParams);
 
   const products = data?.message?.data
 
-  console.log("chal>>>>>>>>>>>>>>>", data)
+  console.log("chal>>>>>>>>>>>>>>>", data,searchParams)
 
   const featuredProduct = [
     {
