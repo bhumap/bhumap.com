@@ -21,6 +21,8 @@ const productValidationSchema = Joi.object({
     category_id: Joi.string().optional(),
     supplierType: Joi.string().optional(),
     images: Joi.array().optional(),
+    features: Joi.array().optional(),
+    catalog: Joi.string().allow(null, '').optional(),
     status: Joi.string().valid("Drafted", "Published", "Inactive").default("Drafted").required()
 });
 
@@ -60,6 +62,8 @@ export default async function handler(req, res) {
                         message: "Product not found"
                     });
                 }
+
+                console.log(value, "::::::::::::::::")
 
                 product = await ProductsModel.findByIdAndUpdate(id, {...value, vendor_id: new ObjectId(userID)}, { new: true });
 
@@ -101,7 +105,7 @@ export default async function handler(req, res) {
                 //     status: "Drafted",
                 //   }
 
-                const product = await ProductsModel.findById(id, "title price minOrder supplier supplierage unit rating reviews location verified supplierType category_id images status").populate("category_id");
+                const product = await ProductsModel.findById(id, "title price minOrder supplier supplierage unit rating reviews location verified supplierType category_id images status features catalog").populate("category_id");
                 if (!product) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         success: false,
