@@ -22,6 +22,8 @@ const productValidationSchema = Joi.object({
     category_id: Joi.string().optional(),
     supplierType: Joi.string().optional(),
     images: Joi.array().optional(),
+    features: Joi.array().optional(),
+     catalog: Joi.string().allow(null, '').optional(),
     status: Joi.string().valid("Drafted", "Published", "Inactive").default("Drafted").required()
 });
 

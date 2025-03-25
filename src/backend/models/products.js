@@ -68,6 +68,12 @@ const productsSchema = new mongoose.Schema({
     images:{
         type:[String]
     },
+    features:{
+        type:[String]
+    },
+    catalog:{
+        type:String
+    },
     category_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"categories"

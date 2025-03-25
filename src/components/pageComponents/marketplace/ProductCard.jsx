@@ -8,6 +8,10 @@ import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import Button from "../../ui/button";
 import Image from "next/image";
 import verifiedImg from "@/public/images/verified_2x.gif";
+import ProductFeaturesModel from "./ProductFeaturesModel";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function ProductCard({
   title,
@@ -22,10 +26,11 @@ export default function ProductCard({
   location,
   verified,
   supplierType,
-  vendor_id
+  vendor_id,
+  features,
+  catalog,
 }) {
   const sliderRef = useRef(null);
-
 
   const next = () => {
     sliderRef.current?.slickNext();
@@ -43,9 +48,13 @@ export default function ProductCard({
     slidesToScroll: 1,
     arrows: false,
     dotsClass: "slick-dots slick-thumb",
-    swipe:true,
-    // swipeToSlide: true
+    swipe: true,
+    swipeToSlide: true,
+    touchThreshold: 10,
+    draggable: true
   };
+
+  const router = useRouter();
 
   return (
     <div className="grid grid-cols-12 gap-4 mx-auto p-6 shadow-xl rounded-2xl mt-4">
@@ -80,7 +89,7 @@ export default function ProductCard({
 
       <div className="md:col-span-6 col-span-12 flex flex-col itmes-center justify-center gap-1">
         <h1 className="text-md font-bold leading-tight">{title}</h1>
-        <Button title={"See this product details"} />
+        <ProductFeaturesModel features={features} />
         <p className="text-sm font-semibold mt-2 flex">
           {
             <svg
@@ -98,7 +107,8 @@ export default function ProductCard({
         <p className="text-sm text-gray-500">Unit: {unit}</p>
         <p className="text-sm text-gray-500">Min. order: {minOrder} pieces</p>
         <div className="flex items-center gap-4 text-gray-500">
-          {verified && <Image src={verifiedImg} height={60} width={60} />} {supplierType}
+          {verified && <Image src={verifiedImg} height={60} width={60} />}{" "}
+          {supplierType}
         </div>
         <p className="text-blue-500 underline cursor-pointer">
           {supplier} - ({supplierage})
@@ -109,9 +119,41 @@ export default function ProductCard({
         <p className="text-sm text-gray-500">{location}</p>
       </div>
 
-      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4"> 
-        <Button title={"Contact Supplier"} onClick={() => window.location.href=`https://wa.me/${vendor_id?.phone?.value}`} />
-        <Button title={"Product Catalog"} />
+      <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4">
+        <Button
+          title={"Contact Supplier"}
+          onClick={() => {
+            const phone = vendor_id?.phone?.value;
+            if (!phone) return;
+
+            // Detect device type
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(
+              navigator.userAgent
+            );
+
+            if (isMobile) {
+              // Open WhatsApp with intent (Android) or universal link (iOS)
+              window.location.href = `intent://send/${phone}#Intent;scheme=whatsapp;package=com.whatsapp;S.browser_fallback_url=https://wa.me/${phone};end;`;
+            } else {
+              // For Desktop, open WhatsApp Web
+              window.open(
+                `https://web.whatsapp.com/send?phone=${phone}`,
+                "_blank"
+              );
+            }
+          }}
+        />
+
+        <Button
+          title={"Product Catalogs"}
+          onClick={() => {
+            if (!catalog) {
+              toast.error("No catalog available");
+              return;
+            }
+            window.open(catalog, "_blank");
+          }}
+        />
       </div>
     </div>
   );
