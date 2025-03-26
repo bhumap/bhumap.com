@@ -128,7 +128,7 @@ export default function ProductCard({
         <Button
           title={"Contact Supplier"}
           onClick={() => {
-              window.open(`https://wa.me/${user?.phone?.number}`, "_blank");
+              window.open(`https://wa.me/${user?.phone?.value}`, "_blank");
           }}
         />
 
