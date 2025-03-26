@@ -354,13 +354,13 @@ export default function EditProductPage({ params }) {
           <label className="block font-medium mb-1 flex justify-between">
             <span>Product Features</span>
             <span className="text-sm text-gray-400 italic">
-              max char length 50
+              max char length 70
             </span>
           </label>
           {formData?.features?.map((feature, index) => (
             <div key={index} className="flex items-center gap-2 mb-2">
               <input
-                maxLength={50}
+                maxLength={70}
                 type="text"
                 value={feature}
                 onChange={(e) => handleFeatureChange(index, e.target.value)}
