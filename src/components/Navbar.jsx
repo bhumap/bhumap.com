@@ -223,12 +223,7 @@ const Navbar = () => {
             {user && (
               <>
                 {user.userType === "Vendor" ? (
-                  <Link
-                    className="block p-2 md:inline-block"
-                    href="/portal/my-properties2"
-                  >
-                    My Listing
-                  </Link>
+                 null
                 ) : (
                   <Link
                     className="block p-2 md:inline-block"

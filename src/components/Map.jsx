@@ -26,7 +26,7 @@ const Map = ({center,setCenter}) => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-      }
+      } 
     });
   }, []);
 

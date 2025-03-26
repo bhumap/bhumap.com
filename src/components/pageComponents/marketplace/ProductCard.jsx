@@ -2,7 +2,7 @@
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Slider from "react-slick";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import Button from "../../ui/button";
@@ -12,6 +12,7 @@ import ProductFeaturesModel from "./ProductFeaturesModel";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { AuthContext } from "@/src/context/AuthContext";
 
 export default function ProductCard({
   title,
@@ -31,6 +32,10 @@ export default function ProductCard({
   catalog,
 }) {
   const sliderRef = useRef(null);
+
+   const { user } = useContext(AuthContext);
+
+   console.log(user)
 
   const next = () => {
     sliderRef.current?.slickNext();
@@ -123,24 +128,7 @@ export default function ProductCard({
         <Button
           title={"Contact Supplier"}
           onClick={() => {
-            const phone = vendor_id?.phone?.value;
-            if (!phone) return;
-
-            // Detect device type
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(
-              navigator.userAgent
-            );
-
-            if (isMobile) {
-              // Open WhatsApp with intent (Android) or universal link (iOS)
-              window.location.href = `intent://send/${phone}#Intent;scheme=whatsapp;package=com.whatsapp;S.browser_fallback_url=https://wa.me/${phone};end;`;
-            } else {
-              // For Desktop, open WhatsApp Web
-              window.open(
-                `https://web.whatsapp.com/send?phone=${phone}`,
-                "_blank"
-              );
-            }
+              window.open(`https://wa.me/${user?.phone?.number}`, "_blank");
           }}
         />
 
