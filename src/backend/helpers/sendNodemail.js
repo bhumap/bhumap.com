@@ -1,32 +1,40 @@
 "use server"
-import { createTransport } from "nodemailer";
 
-const transporter = createTransport({
-  host: "mail.bhumap.com",
-  port: 465,
-  secure: true, // Use `true` for port 465, `false` for all other ports
+const nodemailer = require("nodemailer");
+
+
+
+
+// Create a transporter using Gmail SMTP
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
   auth: {
-    user: "info@bhumap.com",
-    pass: "Bhumap@2024",
+    user: 'bhumapmail@gmail.com', 
+    pass: 'slkz kldg ppvv pqag', 
   },
 });
 
-function sendNodemail(receiverEmail, subject, message) {
-  // send mail with defined transport object
-  try {
-    const info = transporter.sendMail({
-      from: 'info@bhumap.com', // sender address
-      to: receiverEmail, // list of receivers
-      subject: subject, // Subject line
-      html: message, // html body
-    })
+
+
+// Function to send an email
+async function sendEmail({receiverEmail, subject, message, html}) {
     
-    return info
+  console.log(receiverEmail, subject,message,":::::::::::::::::::::::::::::::::::::")
+  const mailOptions = {
+    from: 'bhumapmail@gmail.com', 
+    to: receiverEmail,
+    subject: subject,
+    text: message,
+    html
+  };
+
+  try {
+      await transporter.sendMail(mailOptions);    
   } catch (error) {
-    console.log(error)
-     return false
+    console.error('Error sending email:', error);
   }
+} 
 
-}
 
-export default sendNodemail
+
+module.exports = { sendEmail };

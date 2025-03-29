@@ -11,7 +11,7 @@ const propertiesSchema = new Schema({
   description: { type: String },
   group: { type: String },
   features: [{ type: String }],
-  images: [
+  images: [ 
     {
       secure_url:{ type: String },
       public_id:{ type: String },

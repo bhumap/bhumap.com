@@ -125,12 +125,9 @@ export default function ProductCard({
       </div>
 
       <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4">
-        <Button
-          title={"Contact Supplier"}
-          onClick={() => {
-              window.open(`https://wa.me/${user?.phone?.value}`, "_blank");
-          }}
-        />
+        <Link className={`bg-blue-500 text-xs px-4 py-2 rounded-xl bg-primary hover:bg-primary-600 text-white transition`} target="_blank" href={`https://wa.me/${user?.phone?.value}`}>
+            Contact Supplier
+        </Link>
 
         <Button
           title={"Product Catalogs"}

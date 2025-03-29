@@ -1,14 +1,17 @@
 import dbConnect from "@/src/backend/config/dbConnect";
 import CommentsModel from "@/src/backend/models/comments";
 import { JWTVerify } from "@/src/backend/helpers/jwt";
+import { sendEmail } from "@/src/backend/helpers/sendNodemail";
+import PropertiesModel from "@/src/backend/models/property";
+import mongoose from "mongoose";
+import { sendComments } from "@/src/backend/helpers/templates/sendComments";
 const { ObjectId } = require("mongoose").Types;
 
 export default async function handler(req, res) {
   await dbConnect();
 
   var token = req.cookies.AccessToken || "";
-  var userID = await JWTVerify(token) || req.query.id
-
+  var userID = (await JWTVerify(token)) || req.query.id;
 
   switch (req.method) {
     case "GET":
@@ -26,13 +29,13 @@ export default async function handler(req, res) {
           ];
         }
 
-        if(req.query.property){
-          match.property = new ObjectId(req.query.property)
+        if (req.query.property) {
+          match.property = new ObjectId(req.query.property);
         }
 
-        
-
-        const comments = await CommentsModel.find(match).populate("user","fullName photo").populate("replies.user","fullName photo")
+        const comments = await CommentsModel.find(match)
+          .populate("user", "fullName photo")
+          .populate("replies.user", "fullName photo email")
           .limit(limit)
           .skip(skip)
           .sort({ createdAt: -1 });
@@ -54,27 +57,86 @@ export default async function handler(req, res) {
       } catch (error) {
         res.status(500).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       }
       break;
     case "POST":
       try {
+        var item;
 
-        var item
+        if (req.query.commentId) {
+          item = await CommentsModel.findByIdAndUpdate(
+            req.query.commentId,
+            {
+              $push: {
+                replies: {
+                  ...req.body,
+                  user: userID || process.env.ANONYMOUSE_USER_ID,
+                },
+              },
+            },
+            { new: true }
+          ).populate("replies.user", "fullName photo email").populate("user","email").populate({
+            path:"property",
+            populate:{
+              path:"owner",
+              select:"email"
+            }
+          });
 
-        if(req.query.commentId){
-          item = await CommentsModel.findByIdAndUpdate(req.query.commentId,{$push:{replies:{...req.body,user:(userID || process.env.ANONYMOUSE_USER_ID)}}},{new:true});
-        }else{
-          item = await CommentsModel.create({...req.body,user:(userID || process.env.ANONYMOUSE_USER_ID)});
+
+        } else {
+          item = await CommentsModel.create({
+            ...req.body,
+            user: userID || process.env.ANONYMOUSE_USER_ID,
+          });
         }
+
+        const propertyOwner = await PropertiesModel.findById(
+          req?.body?.property
+        ).populate("owner", "email fullName _id");
+
+      
+
+
+        //Email Notification for Commentors
+        if (propertyOwner && propertyOwner?.owner?.id != userID && !item.replies.length) {
+          await sendEmail({
+            receiverEmail: propertyOwner.owner.email.value,
+            subject: "New Comment",
+            message: item?.text,
+            html: sendComments(propertyOwner?.owner?.fullName, item?.text, item?.property)
+          });
+        }
+
+        
+
+        //Email Noticafication for Replyiers
+        if(item.replies.length > 0){
+
+          let repliesEmails = item?.replies.filter((reply) => reply?.user?.id != userID).map((reply) => reply?.user?.email?.value);
+          repliesEmails.push(item?.user?.email?.value);
+          repliesEmails.push(item?.property?.owner?.email?.value); 
+          repliesEmails = [...new Set(repliesEmails)]
+
+          await sendEmail({  
+            receiverEmail: repliesEmails.join(","),
+            subject: "New Reply",
+            message: item?.text,
+            html:sendComments("Bhumap User",item?.text, item.property?._id)
+          });
+          
+        }
+
+
+       
 
         res.status(201).json({
           success: true,
           message: "Added Successfully!",
           data: item,
         });
-        
       } catch (err) {
         // For duplicate Error
         if (err.code === 11000) {
@@ -85,15 +147,15 @@ export default async function handler(req, res) {
         }
 
         // required fields error handling
-        var requiredFildName = Object.keys(err.errors)[0];
-        if (requiredFildName) {
-          return res.status(400).json({
-            success: false,
-            message: `${requiredFildName} is required!`,
-          });
-        }
+        // var requiredFildName = Object.keys(err.errors)[0];
+        // if (requiredFildName) {
+        //   return res.status(400).json({
+        //     success: false,
+        //     message: `${requiredFildName} is required!`,
+        //   });
+        // }
 
-        console.log(err)
+        // console.log(err);
 
         res.status(500).json({
           success: false,
