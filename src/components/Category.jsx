@@ -59,7 +59,7 @@ export default function Category({ params }) {
         },
       })
       .then((res) => {
-        setProperties(res.data.message.data);
+        setProperties(res.data.message);
         setLoading(false); // Stop loading
       })
       .catch((err) => {
