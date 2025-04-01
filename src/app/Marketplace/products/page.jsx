@@ -23,7 +23,7 @@ async function Page({searchParams}) {
 
   const products = data?.message?.data
 
-  console.log("chal>>>>>>>>>>>>>>>", data,searchParams)
+  console.log("chal>>>>>>>>>>>>>>>", JSON.stringify(products),searchParams)
 
   const featuredProduct = [
     {

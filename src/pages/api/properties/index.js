@@ -19,25 +19,33 @@ export default async function handler(req, res) {
         const limit = req.query.limit || 10;
         const skip = (page - 1) * limit;
 
-        if (req.query.s) {
-          match.$or = [
-            { title: new RegExp(req.query.s, "i") },
-            { "address.zipCode": new RegExp(req.query.s, "i") },
-          ];
-        }
+
+        // if (req.query.s) {
+        //   match.$or = [
+        //     { title: new RegExp(req.query.s, "i") },
+        //     { "address.zipCode": new RegExp(req.query.s, "i") },
+        //   ];
+        // }
 
         if (req.query.purpose) {
-          match.purpose = req.query.purpose;
+          req.query.purpose === "buy" ? (match.purpose = "Sale") : (match.purpose = "Rent") ;
         }
 
-        if (req.query.type) {
-          match.propertyType = req.query.type;
+        if (req.query.propertyType) {
+          // ["plot", "industrial", "commercial", "residential", "agricultural"].includes(req.query.propertyType)
+          match.propertyType = new RegExp(req.query.propertyType, "i")
         }
 
         if (req.query.subtype) {
-          match.residentialSubType = req.query.subtype;
+          match.residentialSubType = new RegExp(req.query.subtype, "i")
         }
 
+          req.query.zipCode  && (match["address.zipCode"] = req.query.zipCode);
+          req.query.cityTown  && (match["address.cityTown"] = new RegExp(req.query.cityTown, "i"));
+          // req.query.type && (match["propertyType"] = req.query.type);
+        
+          console.log(match, "::::::match::::::::")
+        
         const properties = await PropertiesModel.find(
           { ...match, status: "Published" },
           { description: false, features: false }

@@ -86,14 +86,6 @@ const ListPropertyForm = ({ property }) => {
       required: true,
     },
     {
-      label: "Property Type",
-      name: "propertyType",
-      type: "select",
-      options: propertyTypes,
-      cols: 1,
-      required: true,
-    },
-    {
       label: "Group Sell",
       name: "group",
       type: "select",
