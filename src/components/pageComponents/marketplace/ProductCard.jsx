@@ -125,7 +125,7 @@ export default function ProductCard({
       </div>
 
       <div className="md:col-span-2 col-span-12 flex md:flex-col items-end gap-2 mx-auto gap-4">
-        <Link className={`bg-blue-500 text-xs px-4 py-2 rounded-xl bg-primary hover:bg-primary-600 text-white transition`} target="_blank" href={`https://wa.me/${user?.phone?.value}`}>
+        <Link className={`bg-blue-500 text-xs px-4 py-2 rounded-xl bg-primary hover:bg-primary-600 text-white transition`} target="_blank" href={`https://wa.me/${vendor_id?.phone?.value}`}>
             Contact Supplier
         </Link>
 
