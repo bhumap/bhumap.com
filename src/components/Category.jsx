@@ -205,7 +205,7 @@ export default function Category({ params }) {
         <div>
           {loading ? ( // Show loader when fetching data
             <div className="flex justify-center items-center">
-              <div className="loader"></div> {/* Add your loader component here */}
+              <div className="loader"></div> 
             </div>
           ) : properties?.data?.length > 0 ? (
             <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 flex justify-center">
