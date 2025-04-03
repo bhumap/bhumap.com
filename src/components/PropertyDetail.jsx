@@ -408,13 +408,15 @@ const PropertyDetail = ({ property }) => {
             {/* Video Review */}
             <div className="border-b pb-4 mb-4">
               <h2 className="font-semibold text-xl mb-1 text-black">
-                Video Review
+                Property Video
               </h2>
-              <CldVideoPlayer
+              {
+                property.video ? <CldVideoPlayer
                 width="100%"
                 id="second"
                 src={property.video || "bhumap/j5bjcf980o5kinngfffr"}
-              />
+              /> : "Video for this property is not available!"
+              }
             </div>
 
             {/* Location View */}

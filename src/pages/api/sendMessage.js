@@ -1,3 +1,5 @@
+import { sendEmail } from "@/src/backend/helpers/sendNodemail";
+import { propertyQueryTemplate } from "@/src/backend/helpers/templates/propertyQuery";
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
@@ -26,7 +28,13 @@ export default async function handler(req, res) {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+        
+      await sendEmail({
+        receiverEmail: ownerEmail,
+        subject: `Message from ${fullName}`,
+        message,
+        html: propertyQueryTemplate(fullName,email,phoneNumber,message)
+      })
       res.status(200).json({ success: true });
     } catch (error) {
       console.error("Error sending email:", error);

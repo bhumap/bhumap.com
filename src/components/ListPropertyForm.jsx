@@ -202,6 +202,11 @@ const ListPropertyForm = ({ property }) => {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    if(formData?.features?.length < 3){
+      toast.error("At least 3 Property features are Required!")
+      return;
+    }
+
     try {
       setFormLoading(true);
 
